@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>공지사항</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="page">
+
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/header-image2.jpg}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>공지사항</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>도서관안내</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu selected_menu" th:href="@{/notice/pagelist}">공지사항</a> <a
+									class="nav_menu" th:href="@{/board/useinfoboard}">이용안내</a> <a class="nav_menu"
+									th:href="@{/board/howtocomeboard}">오시는길</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+                
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_search">
+                            <div class="page_title_box">
+                                <img th:src="@{/images/write.png}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <form th:action="@{/notice/write}" method="post" th:object=${noticeBoard} enctype="multipart/form-data">
+                                <table class="writepage_table">
+                                    <tbody class="writepage_table_body">
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="nbtitle" placeholder="제목을 입력해 주세요." autofocus>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <textarea rows="5" cols="30" name="nbcontent" placeholder="내용을 입력해 주세요."></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                            	<label for="noticeBoardFile" class="file_upload_btn" onclick="fileUploadBtn()">파일 첨부</label>
+                                                <input class="select_file" type="file" name="noticeBoardFile">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="write_form_btn_box">
+                                    <button type="submit" class="write_btn">등록</button>
+                                    <a th:href="@{/notice/pagelist}"><button type="button" class="cancel_btn">취소</button></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	
+<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+	function fileUploadBtn() {
+	  document.querySelector(".select_file").click();
+	}
+</script>
+</body>
+</html>

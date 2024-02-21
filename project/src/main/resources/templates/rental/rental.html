@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>도서대여</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<div id="container">
+		<h2>도서대여</h2>
+		<div class="detail">
+			<form th:action="@{/templates/rental/rental}" method="post">
+				<ul>
+					<li>
+						<span th:text="${#dates.format(rental.rentalDate, 'yyyy-MM-dd HH:mm')}"></span>
+					</li>
+					<li>
+						<span th:text="${#dates.format(rental.deadlineDate, 'yyyy-MM-dd HH:mm')}"></span>
+					</li>
+					<li>
+						<a th:href="@{/templates/rental/rental}"><button type="button">대여하기</button></a>
+						<a th:href="@{/book/list}"><button type="button">책목록</button></a>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

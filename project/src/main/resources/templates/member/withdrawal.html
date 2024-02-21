@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원탈퇴</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	    <div id="container">
+        <section class="page">
+            <div class="page_top">
+                <div class="page_top_imgbox">
+                    <div class="page_img">
+                        <img th:src="@{/images/header-image2.jpg}" alt="img">
+                    </div>
+                    <div class="page_title">
+                        <p>회원탈퇴</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page_content_box">
+                <nav class="page_side_nav">
+                    <div class="nav_content">
+                        <div class="nav_content_top">
+                            <div class="nav_top_title">
+                                <p>나의책숲</p>
+                            </div>
+                        </div>
+                        <div class="nav_content_mid">
+                            <div class="nav_links">
+
+                                <a class="nav_menu" th:href="@{/member/rentallist}">내서재</a>
+                                <a class="nav_menu selected_menu" th:href="@{|/member/update/${member.memberId}|}">내정보수정</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_title">
+                        </div>
+                    </div>
+
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <form th:action="@{/member/withdrawal}" method="post" th:object="${memberDTO}" class="member_update_form">
+                                <input type="hidden" name="memberId" th:value="${member.memberId}">
+                                    <table>
+                                          <tbody>
+                                            <tr>
+                                                <td rowspan="3"><img class="user_update_icon" th:src="@{/images/user.png}" alt=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="password">비밀번호 (<span class="required">*</span>)</label></td>
+                                                <td colspan="2">
+                                                    <input type="password" name="password" id="password" placeholder="현재 비밀번호를 입력해 주세요.">
+                                                    <p th:if="${not #strings.isEmpty(wrongPassword)}" th:text="${wrongPassword}" class="withdrawalError"></p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>    
+                                    <div class="member_update_btn_box">
+                                        <button type="submit" class="member_update_confirm" onclick="return confirm('정말로 탈퇴하시겠습니까?')">탈퇴</button>
+                                        <button type="reset" class="member_update_cancel">취소</button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

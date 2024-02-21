@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>선유도서관_게시판</title>
+<link href='/css/calender.css' rel='stylesheet' />
+<script src='/js/calender.js'></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/common@5.11.2/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.11.2/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@5.11.2/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.11.2/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@5.11.2/main.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+<link th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}" rel="stylesheet">
+<script type='text/javascript'>
+document.addEventListener('DOMContentLoaded', function() {
+	  var calendarEl = document.getElementById('calendar');
+	  var calendar = new FullCalendar.Calendar(calendarEl, {
+	    headerToolbar: {
+	      left: 'prev,next today',
+	      center: 'title',
+	      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+	    },
+	    initialDate: '2024-02-18',
+	    navLinks: true,
+	    selectable: true,
+	    selectMirror: true,
+	    select: function(arg) {
+	      var title = prompt('Event Title:');
+	      if (title) {
+	        calendar.addEvent({
+	          title: title,
+	          start: arg.start,
+	          end: arg.end,
+	          allDay: arg.allDay
+	        })
+	      }
+	      calendar.unselect()
+	    },
+	    eventClick: function(arg) {
+	      if (confirm('계획을 삭제하시겠습니까?')) {
+	        arg.event.remove()
+	      }
+	    },
+	    editable: true,
+	    dayMaxEvents: true, // allow "more" link when too many events
+	    events: [
+	        
+	        {
+	          title: '휴관',
+	          start: '2024-02-01',
+	          
+	        },
+	        {
+	          title: '휴관',
+	          start: '2024-02-09',
+	          end: '2024-02-13'
+	        },
+	        {
+	          title: '휴관',
+	          start: '2024-02-15',
+	         
+	        },
+	        {
+	          title: '종강',
+	          start: '2024-02-20T18:30:00',
+	          end: '2024-02-20T18:30:00'
+	        }
+	        
+	        
+	      ],
+	   //Google Calendar 이벤트 소스
+	      eventSources: [
+	          {
+	              googleCalendarApiKey: '',
+	              googleCalendarId: '',
+	              className: '',
+	              color: '#4885ed', // 이벤트 색상 (옵션)
+	              textColor: '#ffffff' // 텍스트 색상 (옵션)
+	          }
+	      ]
+	    });
+	    calendar.render();
+	  });
+
+</script>
+
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="page">
+
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/header-image2.jpg}" alt="img">
+					</div>
+
+					<div class="page_title">
+						<p>이용시간 및 휴관일</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>이용안내</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu selected_menu"
+									th:href="@{/board/useinfoboard}">이용시간 및 휴관일</a> <a
+									class="nav_menu" th:href="@{/board/joininfoboard}">회원가입안내</a> <a
+									class="nav_menu" th:href="@{/board/datauseinfoboard}">자료이용안내</a>
+								<a class="nav_menu" th:href="@{/board/hopebookboard}">도서신청안내</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+
+				<div class="page_content">
+				<div id='calendar'></div>
+					<div class="page_content_top">
+						
+						<div class="page_menu_title"></div>
+					</div>
+					<div class="page_content_mid">
+
+						<div class="page_content_box">
+							<div class="page_info_box">
+								<div class="use_time_info">
+									<h2>이용시간</h2>
+									<br>
+									<table>
+										<thead>
+											<tr>
+												<th>구분</th>
+												<th>이용대상</th>
+												<th>월~금요일</th>
+												<th>토,일요일</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>문헌정보실</td>
+												<td>중학생이상</td>
+												<td>09:00~20:00</td>
+												<td>09:00~17:00</td>
+											</tr>
+											<tr>
+												<td>어린이실</td>
+												<td>유아 및 초등학생</td>
+												<td>09:00~18:00</td>
+												<td>09:00~17:00</td>
+											</tr>
+											<tr>
+												<td>지율학습실</td>
+												<td>중학생이상</td>
+												<td colspan="2">(3월~10월)07:00~22:00 <br>
+													(11월~2월)08:00~22:00
+												</td>
+											</tr>
+											<tr>
+												<td>휴게실</td>
+												<td>제한없음</td>
+												<td>09:00~20:00</td>
+												<td>09:00~20:00</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div class="holiday_date_info">
+									<h2>휴관일</h2>
+									<br>
+									<ul class="second_ul">
+										<li>정기휴관일 : 매월 첫째, 셋째 목요일</li>
+										<li>법정공휴일 : 일요일을 제외한 법정공휴일 및 임시공휴일 <br>다만, 일요일과 다른
+											공휴일이 겹치는 경우에는 휴관
+										</li>
+										<li>임시휴관일 : 기타 관장이 필요하다고 인정하는 날</li>
+
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

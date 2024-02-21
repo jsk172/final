@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>도서관에바란다</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}"
+	crossorigin>
+<link
+	th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}"
+	rel="stylesheet">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="page">
+
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/header-image2.jpg}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>도서관에 바란다</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>열린공간</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu" th:href="@{/freeboard/pagelist}">자유게시판</a>
+								<a class="nav_menu" th:href="@{/event/pagelist}">독서이벤트</a>
+								<a class="nav_menu selected_menu" th:href="@{/hopeboard/pagelist}">도서관에바란다</a>
+								<a class="nav_menu" th:href="@{/faq/pagelist}">자주하는질문</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+
+				<div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_search">
+                       		<form th:action="@{/hopeboard/pagelist}" method="get">
+	                            <div class="page_menu_search_box">
+	                                
+	                                    <select class="page_menu_search_select" name="searchOption">
+	                                        <option value="title">제목</option>
+	                                        <option value="content">내용</option>
+	                                    </select>
+	                                    <input class="page_menu_search_input" type="text" name="keyword" th:value="${keyword}">
+	                                    <button class="page_menu_input_btn" type="submit">
+	                                        <img class="page_menu_search_img" th:src="@{/images/magnifying4.png}" alt="">
+	                                    </button>
+	                                
+	                            </div>
+                            </form>
+                        </div>
+                    </div>
+					<div class="page_content_mid">
+						<div class="page_table_box">
+							<table class="page_table">
+								<thead class="page_table_head">
+									<tr>
+										<th class="page_table_no">번호</th>
+										<th class="page_table_title">제목</th>
+										<th class="page_table_writer">작성자</th>
+										<th class="page_table_date">작성일</th>
+										<th class="page_table_hit">조회수</th>
+									</tr>
+								</thead>
+								<tbody class="page_table_body">
+									<tr th:each="hopeBoard : ${hopeBoardPage.content}">
+										<td th:text="${hopeBoard.hbid}"></td>
+										<td><a th:href="@{|/hopeboard/${hopeBoard.hbid}|}"
+											th:text="${hopeBoard.hbtitle}"></a></td>
+										<td th:text="${hopeBoard.member.mid}"></td>
+										<!-- <td th:text="${hopeBoard.hbcontent}"></td> -->
+										<td
+											th:text="${#dates.format(hopeBoard.createdDate, 'yyyy-MM-dd')}"></td>
+										<td th:text="${hopeBoard.hbhit}"></td>
+										<!-- <td><a th:href="@{|/hopeboard/delete/${hopeBoard.hbid}|}">삭제</a></td> -->
+									</tr>
+
+								</tbody>
+							</table>
+                            <div class="page_write_btn_box">
+                                <a th:href="@{/hopeboard/write}"><button type="button" class="page_write_btn">글쓰기</button></a>
+                            </div>
+						</div>
+					</div>
+					
+					<div class="pagination">
+						<ul>
+							<!-- 이전 페이지 -->
+							<li th:if="${hopeBoardPage.hasPrevious()}"><a
+								th:href="@{/hopeboard/pagelist?page=${hopeBoardPage.pageable.pageNumber-1}}">이전</a>
+							</li>
+
+							<!-- 페이지 번호 -->
+							<li
+								th:each="pageNum : ${#numbers.sequence(0, hopeBoardPage.totalPages-1)}">
+								<a th:href="@{/hopeboard/pagelist?page=${pageNum}}"
+								th:text="${pageNum + 1}"
+								th:classappend="${pageNum} == ${hopeBoardPage.pageable.pageNumber} ? 'current' : ''">
+								</a>
+							</li>
+
+							<!-- 다음 페이지 -->
+							<li th:if="${hopeBoardPage.hasNext()}"><a
+								th:href="@{/hopeboard/pagelist?page=${hopeBoardPage.pageable.pageNumber+1}}">다음</a>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+	<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

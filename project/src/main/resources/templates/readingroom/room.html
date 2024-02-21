@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>열람실</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{header::header-fragment}"></div>
+
+<div id="container">
+    <section class="page">
+
+        <div class="page_top">
+            <div class="page_top_imgbox">
+                <div class="page_img">
+                    <img th:src="@{/images/header-image2.jpg}" alt="img">
+                </div>
+                <div class="page_title">
+                    <p>열람실 현황</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="page_content_box">
+            <nav class="page_side_nav">
+                <div class="nav_content">
+                    <div class="nav_content_top">
+                        <div class="nav_top_title">
+                            <p>열람실</p>
+                        </div>
+                    </div>
+                    <div class="nav_content_mid">
+                        <div class="nav_links">
+                            <a class="nav_menu selected_menu" th:href="@{/readingRoom/room}">열람실 현황</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!--          <tbody>
+                        <tr th:each="seat : ${seatList}">
+                           <td th:text="${seat.seat}"></td>
+                                <td th:text="${seat.member != null ? seat.member.mid : '-'}"></td>
+                                <td th:text="${seat.seatAvailable == true} ? '사용 가능' : '사용중'"></td>
+                                <td>
+                                    <form th:if="${seat.seatAvailable == false}" th:action="@{/readingRoom/checkout}" method="post">
+                                        <input type="hidden" th:name="readingId" th:value="${seat.readingId}">
+                                        <input type="submit" value="반납" class="returnBtn" onclick="return confirm('반납 하시겠습니까?')">
+                                    </form>
+                                    <form th:if="${seat.seatAvailable == true}" th:action="@{/readingRoom/select}" method="post">
+                                        <input type="hidden" th:name="readingId" th:value="${seat.readingId}">
+                                        <input type="submit" value="사용" class="returnBtn" onclick="return confirm('사용 하시겠습니까?')">
+                                    </form>
+                                </td>
+                        </tr>
+                     </tbody> -->
+
+
+
+            <div class="page_content">
+                <div class="page_content_top">
+                    <div class="page_menu_title">
+                    </div>
+                </div>
+                <div class="page_content_mid">
+                    <div class="page_content_box">
+                        <div class="study_room_page">
+                            <div class="seats_section">
+                                <div class="seats_box">
+                                    <div class="big_seats">
+                                        <div class="seat_form" th:each="seat, iterStat :  ${seatList.subList(0, 24)}">
+                                            <form th:if="${seat.seatAvailable == false}" th:action="@{/readingRoom/checkout}" method="post" class="seat-form">
+                                                <input type="hidden" th:name="readingId" th:value="${seat.readingId}">
+                                                <input type="hidden" class="member-id" th:value="${seat.member.mid}">
+                                                <input type="button" th:value="${seat.seat}" class="returnBtn alreadyUse">
+                                            </form>
+                                            <form th:if="${seat.seatAvailable == true}" th:action="@{/readingRoom/select}" method="post">
+                                                <input type="hidden" th:name="readingId" th:value="${seat.readingId}">
+                                                <input type="button" th:value="${seat.seat}" class="returnBtn canUse">
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="small_seats_box">
+                                        <div class="small_seats_1">
+                                            <div class="seat_form" th:each="seat, iterStat :  ${seatList.subList(24, 30)}">
+                                                <form th:if="${seat.seatAvailable == false}" th:action="@{/readingRoom/checkout}" method="post" class="seat-form">
+                                                    <input type="hidden" th:name="readingId" th:value="${seat.readingId}">
+                                                    <input type="hidden" class="member-id" th:value="${seat.member.mid}">
+                                                    <input type="button" th:value="${seat.seat}" class="returnBtn alreadyUse">
+                                                </form>
+                                                <form th:if="${seat.seatAvailable == true}" th:action="@{/readingRoom/select}" method="post">
+                                                    <input type="hidden" th:name="readingId" th:value="${seat.readingId}">
+                                                    <input type="button" th:value="${seat.seat}" class="returnBtn canUse">
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="small_seats_2">
+                                            <div class="seat_form" th:each="seat, iterStat :  ${seatList.subList(30, 34)}">
+                                                <form th:if="${seat.seatAvailable == false}" th:action="@{/readingRoom/checkout}" method="post" class="seat-form">
+                                                    <input type="hidden" th:name="readingId" th:value="${seat.readingId}">
+                                                    <input type="hidden" class="member-id" th:value="${seat.member.mid}">
+                                                    <input type="button" th:value="${seat.seat}" class="returnBtn alreadyUse">
+                                                </form>
+                                                <form th:if="${seat.seatAvailable == true}" th:action="@{/readingRoom/select}" method="post">
+                                                    <input type="hidden" th:name="readingId" th:value="${seat.readingId}">
+                                                    <input type="button" th:value="${seat.seat}" class="returnBtn canUse">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="seats_info_board_box">
+                                <div class="seats_info_board">
+                                    <h3>좌석 이용 현황</h3>
+                                    <div>
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>전체 좌석 수</th>
+                                                <th>사용 좌석 수</th>
+                                                <th>잔여 좌석 수</th>
+                                                <th>이용률(%)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td id="td1"></td>
+                                                <td id="td2"></td>
+                                                <td id="td3"></td>
+                                                <td id="td4"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="seats_using_board">
+                                    <div class="seats_using_info">
+                                        <h3>좌석 이용자 현황</h3>
+                                    </div>
+                                    <div class="seats_using_list">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>좌석 번호</th>
+                                                <th>사용자</th>
+                                                <th>입실 시간</th>
+                                                <th>퇴실 예정 시간</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="seat : ${seatList}" th:if="${!seat.seatAvailable}">
+                                                <td th:text="${seat.seat}"></td>
+                                                <td th:text="${seat.member.mid}"></td>
+                                                <td th:text="${#dates.format(seat.enter, 'yyyy-MM-dd HH:mm')}"></td>
+                                                <td th:text="${#dates.format(seat.checkOut, 'yyyy-MM-dd HH:mm')}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="seat_using_list_paging">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+    const counting = () => {
+        let td1 = document.querySelector("#td1");
+        let td2 = document.querySelector("#td2");
+        let td3 = document.querySelector("#td3");
+        let td4 = document.querySelector("#td4");
+
+        let seats = document.querySelectorAll('input[type="button"]').length;
+
+        let usedSeats = document.querySelectorAll('.alreadyUse').length;
+
+        let usableSeats = document.querySelectorAll('.canUse').length;
+
+        let ratio = usedSeats / seats * 100;
+
+        td1.textContent = seats;
+        td2.textContent = usedSeats;
+        td3.textContent = usableSeats;
+        td4.textContent = ratio.toFixed(1) + "(%)";
+    }
+
+    counting();
+
+    $(".canUse").click(function (){
+        let confirmationMessage = "사용 하시겠습니까?";
+        if(confirm(confirmationMessage)){
+            if([[${seatCnt}]] > 0) {
+                alert("이미 사용중인 좌석이 있습니다.");
+                return;
+            }
+
+            $(this).closest("form").submit()
+            alert("사용 시작.");
+            counting();
+        } else{
+            return false;
+        }
+    });
+
+    $(".alreadyUse").click(function (){
+        let loginUser = '[[${#authentication.principal.username}]]';
+        let seatUser = $(this).closest(".seat-form").find(".member-id").val();
+        let message = "반납 하시겠습니까?";
+        if(confirm(message)){
+            if(loginUser !== seatUser){
+                alert("권한이 없습니다.");
+                return false;
+            }else{
+                $(this).closest("form").submit()
+                alert("반납 완료.");
+                counting();
+                return true;
+            }
+        }else{
+            return false;
+        }
+    })
+</script>
+</body>
+</html>

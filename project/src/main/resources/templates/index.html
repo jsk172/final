@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>선유도서관</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" href="@{https://fonts.googleapis.com">
+<link rel="preconnect" href="@{https://fonts.gstatic.com}" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script th:src="@{/js/script.js}"></script>
+<script>
+	// 검색어 입력란에서 Enter 키를 누르면 네이버 검색 페이지로 이동하는 함수
+	function handleSearchKeyPress(event) {
+		if (event.key === 'Enter') {
+			searchNaver();
+		}
+	}
+
+	function searchNaver() {
+		var searchInput = document.getElementById('searchInput');
+		var searchTerm = searchInput.value.trim();
+
+		if (searchTerm !== '') {
+			window.location.href = 'https://search.naver.com/search.naver?query='
+					+ encodeURIComponent(searchTerm);
+		}
+	}
+	function handleSearchKeyPress(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // 폼 제출 방지
+            submitSearchForm();
+        }
+    }
+
+    function submitSearchForm() {
+        var searchInput = document.getElementById('searchInput');
+        var searchForm = document.getElementById('searchForm');
+
+        // 검색어가 비어있지 않은 경우에만 검색 수행
+        if (searchInput.value.trim() !== '') {
+            searchForm.submit();
+        }
+    }
+
+    $.ajax({
+        url: "/notice/main",
+        method : "GET",
+        success : function (data) {
+            console.log(data)
+            for(let i = 0; i < data.length; i++) {
+                $(".main_openspace_board_table").find("tbody").append(
+                    "<tr>" +
+                    "<td>" + data[i].nbid + "</td>" +
+                    "<td><a href='/notice/" + data[i].nbid + "'>" + data[i].nbtitle + "</a></td>" +
+                    "<td>" + moment(data[i].createdDate).format("YYYY-MM-DD") + "</td>" +
+                    "</tr>"
+                )
+            }
+        }
+    })
+
+    $.ajax({
+        url: "/freeboard/main",
+        method : "GET",
+        success : function (data) {
+            console.log(data)
+            for(let i = 0; i < data.length; i++) {
+                $(".main_free_board_table").find("tbody").append(
+                    "<tr>" +
+                    "<td>" + data[i].fbid + "</td>" +
+                    "<td><a href='/freeboard/" + data[i].fbid + "'>" + data[i].fbtitle + "</a></td>" +
+                    "<td>" + moment(data[i].createdDate).format("YYYY-MM-DD") + "</td>" +
+                    "</tr>"
+                )
+            }
+        }
+    })
+</script>
+<style type="text/css">
+</style>
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="main">
+
+			<div class="main_top">
+				<div class="main_pic_box">
+						<img class="main_pic active" th:src="@{/images/main-pic1.jpg}" alt="">
+						<img class="main_pic" th:src="@{/images/main-pic3.jpg}" alt="">
+						<img class="main_pic" th:src="@{/images/main-pic5.jpg}" alt=""> 
+				</div>
+
+				<div class="main_welcome">
+					<p class="main_big_welcome">
+						도서관에서 여러분의 <br>다음 책을 만나보세요
+					</p>
+					<p class="main_small_welcom">모든 이야기가 당신을 기다립니다</p>
+				</div>
+
+				<div class="timer main_timer">
+					<div class="main_timer_pointer"></div>
+				</div>
+				<div class="main_timer_circle">
+					<button class="main_toggle_btn" onClick="togglePicture()">||</button>
+				</div>
+
+				<form id="searchForm" action="https://search.naver.com/search.naver"
+					method="get" target="_blank">
+					<div class="main_search">
+						<input id="searchInput" class="main_search_input" type="text"
+							name="query" placeholder="검색"
+							onkeydown="handleSearchKeyPress(event)">
+						<button class="main_input_btn" type="submit">
+							<img class="main_search_icon" th:src="@{/images/magnifying3.png}">
+						</button>
+					</div>
+				</form>
+
+			</div>
+
+			<div class="main_mid">
+
+				<div class="main_mid_text_box">
+					<p class="main_mid_small_text">선유책숲을 소개합니다</p>
+					<p class="main_mid_big_text">
+						<img class="main_mid_text_img"
+							th:src="@{/images/board_title_img.png}" alt="#"> 언제나 열려있는
+						도서관<br> 내 방처럼 친근한<br> 선유책숲에 오신 것을 환영합니다
+					</p>
+				</div>
+
+				<div class="main_mid_board_box">
+					<div class="main_mid_schedule">
+						<p class="main_schedule_title">
+							이용 시간 안내 <img class="main_schedule_mark"
+								th:src="@{/images/main_boardimg.png}" alt="">
+						</p>
+						<!-- <article class="main_calender"></article> -->
+						<div class="main_using_time_info">
+							<table class="main_usable_time_table">
+								<!-- table_element_area => reference to bottom -->
+								<thead>
+									<tr>
+										<th>구분</th>
+										<th>이용대상</th>
+										<th>주중</th>
+										<th>주말</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>문헌정보실</td>
+										<td>중학생 이상</td>
+										<td>09:00~20:00</td>
+										<td>09:00~17:00</td>
+									</tr>
+									<tr>
+										<td>어린이실</td>
+										<td>초등학생 이하</td>
+										<td>09:00~18:00</td>
+										<td>09:00~17:00</td>
+									</tr>
+									<tr>
+										<td>열람실</td>
+										<td>중학생 이상</td>
+										<td colspan="2">07:00~22:00 (3~10월) <br>
+											08:00~22:00 (11~2월)
+										</td>
+									</tr>
+									<tr>
+										<td>휴게실</td>
+										<td>제한없음</td>
+										<td>09:00~20:00</td>
+										<td>09:00~20:00</td>
+									</tr>
+								</tbody>
+							</table>
+							<p class="holiday_date">정기 휴관일 : 매월 첫째, 셋째 주 목요일</p>
+						</div>
+					</div>
+
+					<div class="main_mid_openspace">
+
+						<p class="main_openspace_title"> 공지 사항
+                            <img class="main_openspace_mark" th:src="@{/images/main_boardimg.png}" alt="">
+
+						</p>
+						<div class="main_openspace_board">
+							<table class="main_openspace_board_table">
+								<!-- not yet making table element -->
+								<thead>
+									<tr>
+										<th>번호</th>
+										<th>제목</th>
+										<th>게시일</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="main_mid_free">
+						<p class="main_free_title">
+							자유게시판 <img class="main_openspace_mark"
+								th:src="@{/images/main_boardimg.png}" alt="">
+						</p>
+						<div class="main_free_board">
+							<table class="main_free_board_table">
+								<!-- not yet making table element -->
+								<thead>
+									<tr>
+										<th>번호</th>
+										<th>제목</th>
+										<th>게시일</th>
+									</tr>
+								</thead>
+								<tbody>
+                                </tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="main_icons">
+				<img class="icons_background" th:src="@{/images/background.jpg}">
+				<div class="main_use_info">
+					<a th:href="@{/board/useinfoboard}"> <img class="use_info_icon"
+						th:src="@{/images/use_info_icon.png}" alt="#">
+						<p>이용안내</p>
+					</a>
+				</div>
+				<div class="main_reading_event">
+					<a th:href="@{/event/pagelist}"> <img class="reading_event_icon"
+						th:src="@{/images/event_icon.png}" alt="">
+						<p>독서 이벤트</p>
+					</a>
+				</div>
+				<div class="main_study_room">
+					<a th:href="@{/readingRoom/room}"> <img class="study_room_icon"
+						th:src="@{/images/study_room_icon.png}" alt="">
+						<p>자율 학습실</p>
+					</a>
+				</div>
+				<div class="main_request_book">
+					<a th:href="@{/wantbook/write}"> <img class="request_book_icon"
+						th:src="@{/images/request_book_icon.png}" alt="">
+						<p>희망 도서 신청</p>
+					</a>
+				</div>
+				<div class="main_my_library">
+					<a th:href="@{/member/rentallist}"> <img class="my_library_icon"
+						th:src="@{/images/my_library_icon.png}" alt="">
+						<p>내서재</p>
+					</a>
+				</div>
+			</div>
+
+			<div class="main_bottom">
+				<div class="main_bottom_text_box">
+					<p class="main_bottom_small_text">선유책숲의 추천 도서</p>
+					<p class="main_bottom_big_text">
+						<img class="main_bottom_text_img"
+							th:src="@{/images/recommand_img.png}" alt=""> 마음의 창을 열어주는 책<br>선유책숲의
+						추천 도서를 통해<br>새로운 이야기들을 찾아보세요
+					</p>
+				</div>
+
+				<div class="main_bottom_recommand_books">
+					<div id="book1" class="main_best_book best_book">
+						<span class="best_mark">BEST★</span> <img
+							class="main_best_book_img" th:src="@{/images/best_book.jpg}"
+							alt="#"> <a th:href="@{/}"><p
+								class="main_best_book_title">가짜 모범생</p></a>
+						<p class="main_best_book_author">손현주</p>
+					</div>
+					<div id="book2" class="main_best_book">
+						<img class="main_best_book_img" th:src="@{/images/book2.jpg}"
+							alt="#"> <a th:href="@{/}"><p
+								class="main_best_book_title">그곳에 네가 있어준다면</p></a>
+						<p class="main_best_book_author">이하연</p>
+					</div>
+					<div id="book3" class="main_best_book">
+						<img class="main_best_book_img" th:src="@{/images/book3.jpg}"
+							alt="#"> <a th:href="@{/}"><p
+								class="main_best_book_title">중세 유럽인 이야기</p></a>
+						<p class="main_best_book_author">주경철</p>
+					</div>
+					<div id="book4" class="main_best_book">
+						<img class="main_best_book_img" th:src="@{/images/book4.jpg}"
+							alt="#"> <a th:href="@{/}"><p
+								class="main_best_book_title">파견자들</p></a>
+						<p class="main_best_book_author">김초엽</p>
+					</div>
+					<div id="book5" class="main_best_book">
+						<img class="main_best_book_img" th:src="@{/images/book5.jpg}"
+							alt="#"> <a th:href="@{/}"><p
+								class="main_best_book_title">오직 나를 위한 미술관</p></a>
+						<p class="main_best_book_author">정여울</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<div th:replace="~{footer::footer-fragment}"></div>
+	<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

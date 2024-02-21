@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>도서수정</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}"
+	crossorigin>
+<link
+	th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}"
+	rel="stylesheet">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	    <div id="container">
+        <section class="page">
+
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/header-image2.jpg}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>도서수정</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>도서관리</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu" th:href="@{#}">도서등록</a> 
+                                <a class="nav_menu" th:href="@{#}">도서목록</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <!-- <div class="page_menu_title">
+                            <p>게시판 메뉴1</p>
+                        </div> -->
+                        <div class="page_menu_search">
+                            <div class="page_title_box">
+                                <img th:src="@{/images/write.png}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <form th:action="@{/book/update}" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="bookId" th:value="${book.bookId}">
+                                <table class="writepage_table">
+                                    <tbody class="writepage_table_body">
+                                        <tr>
+                                            <td>
+                                            	<label for="hopeBoardFile" class="file_upload_btn" onclick="fileUploadBtn()">도서 이미지를 넣어주세요</label>
+                                                <input class="select_file" type="file" name="bookFile" id="fileInput">
+                                                <br><br>
+                                                
+                                                <!-- 확인해야 할 부분 -->
+                                                
+                                                <div class="book_img_preview">
+												    <img th:if="${showPreviewImage}" id="previewImage">
+												    <img th:unless="${showPreviewImage}" th:src="|/upload/${book.bfilename}|">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="bname" id="bname" th:value="${book.bname}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="publisher" id="publisher" th:value="${book.publisher}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="author" id="author" th:value="${book.author}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="category" id="catrgory" th:value="${book.category}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="bnumber" id="bnumber" th:value="${book.bnumber}">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="write_form_btn_box" style="margin-top: 30px">
+                                    <button type="submit" class="write_btn">수정</button>
+                                    <a th:href="@{|/book/detail/${book.bookId}|}"><button type="button" class="cancel_btn">취소</button></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	
+<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+	const fileInput = document.querySelector(".select_file");
+	
+	fileInput.addEventListener('change', function() {
+	    const file = fileInput.files[0];
+	    if (file) {
+	        // FileReader HTML5 File API 활용
+	        const reader = new FileReader();
+	        reader.onload = function(e) {
+	            // 파일을 미리보기하기 위해 새로운 <img> 요소를 동적으로 생성
+	            const previewImage = document.createElement('img');
+	            previewImage.src = e.target.result;
+	            previewImage.id = 'previewImage'; // id 설정
+	            document.querySelector('.book_img_preview').appendChild(previewImage); // 동적으로 생성된 이미지를 삽입
+	        };
+	        reader.readAsDataURL(file);
+	    } else {
+	        // 파일을 선택하지 않은 경우, previewImage를 제거
+	        const previewImage = document.getElementById('previewImage');
+	        if (previewImage) {
+	            previewImage.remove();
+	        }
+	    }
+	});
+
+	function fileUploadBtn() {
+	  document.querySelector(".select_file").click();
+	}
+</script>
+</body>
+</html>

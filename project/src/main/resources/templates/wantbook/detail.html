@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="utf-8">
+<title>희망도서신청</title>
+<script
+src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous">
+</script>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+<link th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}" rel="stylesheet">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="page">
+
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/header-image2.jpg}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>희망도서신청</p>
+					</div>
+				</div>
+			</div>
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>도서검색</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu" th:href="@{/freeboard/pagelist}">자료검색</a>
+								<a class="nav_menu" th:href="@{#}">대출베스트(추천도서)</a>
+								<a class="nav_menu selected_menu" th:href="@{/wantbook/pagelist}">희망도서신청</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_search">
+                            <div class="page_title_box">
+                                <img th:src="@{/images/write.png}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <table class="detailpage_table">
+                                <tbody class="detailpage_table_body">
+                                    <tr>
+                                        <td>
+                                        	<div class="detail_info">
+	                                            <div class="detail_page_info_date" th:text="${#dates.format(wantbookBoard.createdDate, 'yyyy-MM-dd')}"></div>
+	                                            <div class="detail_page_info_mid" th:text="${wantbookBoard.member.mid}"></div>
+	                                            <div class="detail_page_info_hit" th:text="'조회수 ' + ${wantbookBoard.wbhit}"></div>
+                                        	</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input class="detail_page_title_input" type="text" name="wbtitle" th:value="${wantbookBoard.wbtitle}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea rows="5" cols="30" name="wbcontent" th:text="${wantbookBoard.wbcontent}" readonly></textarea>
+                                            <div class="page_textarea_img_box">
+
+                                                <img th:if="${wantbookBoard.wantbookFilename != null}" th:src="@{|/upload/${wantbookBoard.wantbookFilename}|}"/>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="detail_btn_box">
+                                <a th:href="@{/wantbook/pagelist}"><button type="button" class="page_go_list">목록</button></a>
+                                <a th:href="@{|/wantbook/update/${wantbookBoard.wbid}|}"><button type="button" class="page_go_update">수정</button></a>
+                                <a th:href="@{|/wantbook/delete/${wantbookBoard.wbid}|}"><button type="button" class="page_go_delete">삭제</button></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- page_reply -->
+                    <div class="page_reply">
+                        <div class="page_reply_list_box" th:if="${#lists.size(wantbookBoard.wantbookReplyList) > 0}">
+                            <div class="page_reply_list" th:each="wantbookReply:${wantbookBoard.wantbookReplyList}">
+                            	<div class="reply_writer">
+                            		<img th:src="@{/images/user.png}" alt="">
+                                	<p class="wantbook_reply_writer" th:text="${wantbookReply.member.mid}"></p>
+                                	<span th:text="'(작성일: ' + ${#dates.format(wantbookReply.createdDate, 'yyyy-MM-dd')} + ')'"></span>
+                            	</div>
+                            	<div class="wantbook_reply_content_box">
+	                                <p class="wantbook_reply_content" th:text="${wantbookReply.hrcontent}"></p>
+                                    <th:block sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal.getUsername()} == ${wantbookBoard.member.mid}">
+	                                    <div class="wantbook_reply_update">
+	                                        <div class="reply_update_btn_box">
+	                                            <button class="reply_update_btn" type="button" th:onClick="replyObject.updateReply([[${wantbookBoard.wbid}]], [[${wantbookReply.wrid}]])">수정</button>
+	                                            <button class="reply_delete_btn" type="button" th:onClick="replyObject.deleteReply([[${wantbookBoard.wbid}]], [[${wantbookReply.wrid}]])">삭제</button>
+	                                        </div>
+	                                    </div>
+	                                </th:block>
+                            	</div>
+                                <div id="replyModal" class="modal" style="display: none;">
+                                	<div class="modal_content">
+                                    	<div style="display: none;" id="originalContent" th:text="${wantbookReply.hrcontent}">
+                                     	</div>
+                                    	<textarea id="replyContent" rows="4" cols="50"></textarea>
+                                 	</div>
+                                 	<div class="reply_update_confirm_box">
+    	                           		<button id="updateReplyBtn_confirm">확인</button>
+	                               		<button id="updateReplyBtn_cancel" type="reset">취소</button>
+                                 	</div>
+                               </div>
+
+                            </div>
+                        </div>
+                        <div class="no_reply_yet" th:unless="${#lists.size(wantbookBoard.wantbookReplyList) > 0}">
+						    <p>작성된 댓글이 없습니다.</p>
+						</div>
+                        <div class="wantbook_reply_insert">
+                            <input type="hidden" id="board_id" th:value="${wantbookBoard.wbid}">
+                            <div class="reply_textarea_box">
+                                <textarea id="reply_content" rows="3" cols="50" placeholder="댓글을 남겨 주세요."></textarea>
+                           		<button id="save_reply_btn">등록</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:replace="~{footer::footer-fragment}"></div>
+	<script th:src="@{/js/reply.js}"></script>
+</body>
+</html>

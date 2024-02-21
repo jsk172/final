@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>선유도서관_게시판</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+    <link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+        <section class="page">
+
+            <div class="page_top">
+                <div class="page_top_imgbox">
+                    <div class="page_img">
+                        <img th:src="@{/images/header-image2.jpg}" alt="img">
+                    </div>
+                    <div class="page_title">
+                        <p>희망도서 신청안내</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page_content_box">
+                <nav class="page_side_nav">
+                    <div class="nav_content">
+                        <div class="nav_content_top">
+                            <div class="nav_top_title">
+                                <p>도서관 이용안내</p>
+                            </div>
+                        </div>
+                        <div class="nav_content_mid">
+                            <div class="nav_links">
+                                <a class="nav_menu" th:href="@{/board/useinfoboard}">이용시간 및 휴관일</a>
+                                <a class="nav_menu" th:href="@{/board/joininfoboard}">회원가입안내</a>
+                                <a class="nav_menu" th:href="@{/board/datauseinfoboard}">자료이용안내</a>
+                                <a class="nav_menu selected_menu" th:href="@{/board/hopebookboard}">도서신청안내</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_title">
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_content_box">
+                            <div class="page_info_box">
+                                <h2>희망도서 신청안내</h2><br>
+                                <ul class="second_ul">
+                                    <li>대상
+                                        <ul class="third_ul">
+                                            <li>대출회원</li>
+                                        </ul>
+                                    </li>
+                                    <li>신청방법
+                                    	<ul class="third_ul">
+											<li>희망하시는 도서가 소장된 자료인지 확인하시고 없을 경우 <br>
+											    홈페이지 자료검색>희망도서 신청화면에서 도서정보 및 신상정보를 정확히 기재하고 신청해주시기 바랍니다.<br>
+											</li>
+                                    	</ul>
+                                    </li>
+                                    <li>처리주기
+                                    	<ul class="third_ul">
+											<li>주1회</li>
+                                    	</ul>
+                                    </li>
+                                    <li>신청숸수
+                                    	<ul class="third_ul">
+											<li>1인 월3권</li>
+                                    	</ul>
+                                    </li>
+                                    <li>통보방법
+                                    	<ul class="third_ul">
+											<li>홈페이지 희망도서 신청현황에서 처리결과 게시</li>
+                                    	</ul>
+                                    </li>
+                                </ul>
+                                
+                                <br><br><br>
+                                
+                                <h2>희망도서 선정 제외 기준</h2><br>
+                                <ul class="third_ul">
+                                    <li>강동도서관 소장도서 및 중복신청 도서</li>
+                                    <li>다른 서울특별시교육청 소속 도서관·평생학습관에 중복신청한 도서</li>
+                                    <li>서지사항(서명, 저자명, 출판사명 등)이 불명확하거나 검색이 불가능한 도서</li>
+                                    <li>품절, 절판되어 구입이 불가능한 도서</li>
+                                    <li>이미 개정판이 출간되어 있는 구판 도서</li>
+                                    <li>출판년도가 5년 이상 경과된 도서(2018년 이전 출판 도서), 컴퓨터,과학,신학문 분야의 경우 3년 이상 경과된 도서(2020년 이전 출판 도서)</li>
+                                    <li>장서로서 가치가 없는 만화와 잡서(단 우량 만화는 제외)</li>
+                                    <li>고가의 도서(5만원 이상)</li>
+                                    <li>3권을 초과하는 시리즈 및 전집류</li>
+                                    <li>스프링, 제본 및 규격 외 판형, 팸플릿 등의 자료</li>
+                                    <li>청소년 유해도서(19세 미만 구독 불가 도서), 한 주제에 편중된 도서, 희귀도서, 미풍양속, 정서에 문제를 유발할 수 있는 도서 등 도서관 자료로 부적합하거나 도서관 장서구성 목적에 맞지 않는 도서</li>
+                                    <li>판타지, 무협지, 로맨스, 인터넷소설, 라이트노벨, 그래픽노블, 게임가이드북, (외국어)대본집 등</li>
+                                    <li>상업적인 영리를 위해 개인이나 단체가 신청한 도서로 동일 출판사, 동일 저자의 도서를 지속적으로 신청하거나 저작자 본인 도서를 다량 신청하는 경우</li>
+                                    <li>민감한 정치이슈 도서</li>
+                                    <li>학위논문 및 논문집, 원서, 비도서, 연속간행물, 큰글자, e-book, POD, 악보 등 특수 유형 및 매체의 자료</li>
+                                    <li>글이 거의 없이 그림, 사진, 차트, 도표 등이 내용의 대부분을 차지하는 도서</li>
+                                    <li>문제집, 수험서, 입시자료, 대학교재 및 전문서적</li>
+                                    <li>출간예정(예약판매)도서</li>
+                                    <li>정부, 지자체 등 공공기관 발행도서</li>
+                                    <li>연감, 백서, 사전, 보고서 등 참고도서류</li>
+                                    <li>경전(성경, 불경 등), 개인의 신앙생활, 설교, 간증, 영성, 전도, 목회 등 개인 신앙생활 관련도서</li>
+                                    <li>내용변화가 거의 없는 단순 개정판 도서</li>
+                                    <li>사회적으로 물의를 일으킨 저자가 발간한 도서</li>
+                                    <li>기타 우리 도서관 자료선정기준에 맞지 않는 도서는 희망도서 선정에서 제외하며, 정기 구입 시 자료선정위원회의 추가 심의 후 최종 구입여부를 결정</li>
+                                </ul>
+                                     
+                                <br><br><br>
+                                     
+								<h2>희망도서 선정 확인</h2><br>
+                                <ul class="second_ul">
+                                    <li>홈페이지 로그인 후 <b>나의책숲 -> 희망도서신청</b> 코너에서 신청하신 희망도서의 진행상태를 확인하실 수 있으며 각 진행상태는 아래와 같습니다
+                                        <ul class="third_ul">
+                                            <li>신청중: 담당자 검토중</li>
+                                            <li>처리중: 선정되어 주문 중이거나 입수되어 정리중</li>
+                                            <li>취소됨: 선정 제외됨. 제목을 클릭하면 취소사유 확인가능</li>
+                                            <li>소장중: 입수되어 비치중</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+	                            <div class="hopebookboard_btn_box">
+	                            	<a th:href="@{/book/list}"><button class="searching_before_request">희망도서신청전 소장자료검색</button></a>
+	                            	<a th:href="@{/wantbook/write}"><button class="hopebook_request">희망도서 신청하기</button></a>
+	                            </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>아이디 찾기</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="container">
+		<section id="find_id">
+		<div class="login">
+			<div class="find_id_result_text">
+    	        <h2>아이디를 찾았습니다.</h2>
+	            <p>찾으시는 아이디는 <span th:text="${foundId}"></span> 입니다.</p>
+			</div>
+		</div>
+		</section>
+	</div>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>도서목록</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}"
+	crossorigin>
+<link
+	th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}"
+	rel="stylesheet">	
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+<style>
+.booklist_add_book_btn {
+	float: right;
+	margin: 20px;
+    border: 1px solid #E1E1E1;
+    border-radius: 4px;
+    padding: 6px;
+    background-color: #fff;
+    font-size: 0.8rem;
+    box-shadow: 3px 3px 3px #eee;
+    cursor: pointer;
+}
+
+.booklist_add_book_btn:hover {
+	background-color: rgba(200, 206, 122, 0.1);
+	border: 1px solid rgba(200, 206, 122, 0.1);
+	color: #777;
+	box-shadow: 3px 3px 3px #eee;
+}
+
+.book_menu_search_box {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+.book_menu_search_input {
+	flex: 1;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px 0 0 5px;
+	outline: none;
+}
+
+.book_menu_input_btn {
+	position: relative;
+	right: 0;
+	top: 0;
+	padding: 1.5px;
+	background-color: #799c4b;
+	color: #fff;
+	border: 1px solid #799c4b;
+	border-radius: 0 6px 6px 0;
+	cursor: pointer;
+}
+
+
+.book_menu_input_btn:hover {
+	background-color: #607d3b;
+	border-color: #607d3b;
+}
+
+.book_register {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px; /* 버튼과의 간격 조정을 위해 추가 */
+}
+
+.icon-btn {
+    background: #799c4b; /* 배경색 설정 */
+    color: white; /* 텍스트 색상 설정 */
+    padding: 10px 20px; /* 내부 여백 설정 */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 30px; /* 태원형으로 설정 */
+    border: none;
+    transition: background-color 0.3s ease; /* hover 효과를 위한 transition 설정 */
+}
+
+.icon-btn i {
+    margin-right: 5px; /* 아이콘과 텍스트 사이의 간격 조정 */
+}
+
+.icon-btn:hover {
+    background-color: #607d3b; /* hover 시 배경색 변경 */
+}
+</style>
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="page">
+		
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/header-image2.jpg}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>자료검색</p>
+					</div>
+				</div>
+			</div>
+		
+		
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>자료검색</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu selected_menu" th:href="@{/book/list}">자료검색</a>
+								<a class="nav_menu" th:href="@{/rentalReturn/rentalbest}">대출베스트(추천도서)</a>
+								<a class="nav_menu" th:href="@{/wantbook/write}">희망도서신청</a>
+                                 <a class="nav_menu" th:href="@{/wantbook/pagelist}" sec:authorize="hasAnyAuthority('Admin')">희망도서신청내역</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+				
+				<div class="page_content">
+				<div class="book_menu_search">
+							<form th:action="@{/book/list}" method="get">
+
+								<div class="book_menu_search_box" >
+								
+									<input class="book_menu_search_input" type="text" name="keyword" th:value="${keyword}"  placeholder="제목 혹은 저자를 입력하세요">
+                                    <button class="book_menu_input_btn" type="submit">
+                                        <img class="book_menu_search_img" th:src="@{/images/magnifying4.png}" alt="">
+                                    </button>
+
+								</div>
+							</form>
+						</div>
+					<div class="page_content_top">
+						
+					</div>
+					<div class="page_content_mid">
+						<div class="page_table_box">
+							<table class="page_table">
+								<thead class="page_table_head">
+									<tr>
+										<th>도서코드</th>
+										<th>서명</th>
+										<th>출판사</th>
+										<th>저자</th>
+										<th>ISBN</th>
+										<th>카테고리</th>
+										<th>등록일</th>
+										<th>조회</th>
+									</tr>
+								</thead>
+								<tbody class="page_table_body">
+									<tr th:each="book : ${bookPage.content}">
+										<td th:text="${book.bookId}" ></td>
+										<td th:text="${book.bname}"  style="text-align: center"></td>
+										<td th:text="${book.publisher}" ></td>
+										<td th:text="${book.author}" ></td>
+										<td th:text="${book.bnumber}" ></td>
+										<td th:text="${book.category}" ></td>
+										<td th:text="${#dates.format(book.createdDate, 'yyyy-MM-dd')}" ></td>
+										<!-- 버티컬바(|)는 ${member.id}를 숫자로 유지시켜줌 -->
+										<td><a th:href="@{|/book/detail/${book.bookId}|}" >조회</a></td>
+										<td><a th:href="@{|/book/delete/${book.bookId}|}"
+											sec:authorize="hasAnyAuthority('Admin')"
+											onclick="return confirm('삭제 하시겠습니까?')">삭제</a></td>
+									</tr>
+								</tbody>
+                            </table>
+                            <div class="book_register">
+                            	<a th:href="@{/book/register}" sec:authorize="hasAnyAuthority('Admin')" class="icon-btn"><i class="fas fa-book"></i> 책등록</a>
+							</div>
+						</div>
+					</div>
+					
+					<div class="pagination">
+						<ul>
+							<!-- 이전 페이지 -->
+							<li th:if="${bookPage.hasPrevious()}"><a
+								th:href="@{|/book/list?page=${bookPage.pageable.pageNumber-1}|}"> < </a>
+							</li>
+
+							<!-- 페이지 번호 -->
+							<li th:if="${bookPage.totalPages != 0}"
+								th:each="pageNum : ${#numbers.sequence(0, bookPage.totalPages-1)}">
+								<a th:href="@{|/book/list?page=${pageNum}|}"
+								th:text="${pageNum + 1}"
+								th:classappend="${pageNum} == ${bookPage.pageable.pageNumber} ? 'current' : ''">
+								</a>
+							</li>
+                            <li th:if="${bookPage.totalPages == 0}"
+                                >
+                                <a th:href="@{|/book/list?page=${pageNum}|}"
+                                   th:text="1"
+                                   th:classappend="${pageNum} == ${bookPage.pageable.pageNumber} ? 'current' : ''">
+                                </a>
+                            </li>
+
+							<!-- 다음 페이지 -->
+							<li th:if="${bookPage.hasNext()}"><a
+								th:href="@{|/book/list?page=${bookPage.pageable.pageNumber+1}|}"> > </a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

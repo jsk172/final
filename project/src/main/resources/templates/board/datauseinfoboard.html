@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>선유도서관_게시판</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+    <link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+        <section class="page">
+
+            <div class="page_top">
+                <div class="page_top_imgbox">
+                    <div class="page_img">
+                        <img th:src="@{/images/header-image2.jpg}" alt="img">
+                    </div>
+                    <div class="page_title">
+                        <p>회원가입안내</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page_content_box">
+                <nav class="page_side_nav">
+                    <div class="nav_content">
+                        <div class="nav_content_top">
+                            <div class="nav_top_title">
+                                <p>도서관 이용안내</p>
+                            </div>
+                        </div>
+                        <div class="nav_content_mid">
+                            <div class="nav_links">
+                                <a class="nav_menu" th:href="@{/board/useinfoboard}">이용시간 및 휴관일</a>
+                                <a class="nav_menu" th:href="@{/board/joininfoboard}">회원가입안내</a>
+                                <a class="nav_menu selected_menu" th:href="@{/board/datauseinfoboard}">자료이용안내</a>
+                                <a class="nav_menu" th:href="@{/board/hopebookboard}">도서신청안내</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                
+                                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_title">
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_content_box">
+                            <div class="page_info_box">
+                                <div class="use_time_info">
+                                    <h2>대출/반납/분실</h2><br>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>구분</th>
+                                                <th>대출권수</th>
+                                                <th>대출기간</th>
+                                                <th>연기</th>
+                                                <th>연체시 제재조치</th>
+                                                <th>분실시 배상</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>도서</td>
+                                                <td>7권</td>
+                                                <td>14일(2주일)</td>
+                                                <td>1회 7일</td>
+                                                <td>연체 1일, 연체자료 1책 당 1일의 대출정지 또는
+                                                    <br>연체 1일, 연체자료 1책 당 100원 납부 후 즉시대출
+                                                    <br>선택하여 이용가능</td>
+                                                <td>현물 또는 정가</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span>※ 연기방법 : 인터넷 홈페이지 또는 전화</span>
+                                </div>
+
+                                <div class="holiday_date_info">
+                                    <h2>무인자동반납기 운영</h2><br>
+                                    <ul class="second_ul">
+                                        <li>위치: 도서관 현관 좌측</li>
+                                        <li>이용시간
+                                            <div class="auto_return_service">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="2">개관일</td>
+                                                            <td rowspan="2">휴관일<br>(정기/임시휴관일)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>평일</td>
+                                                            <td>토요일</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>20:00 이후</td>
+                                                            <td>17:00 이후</td>
+                                                            <td>24시간</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                                <div class="holiday_date_info">
+                                    <h2>복사안내(문헌정보실)</h2><br>
+                                    <ul class="second_ul">
+                                        <li>도서관 소장자료에 한하며 저작권법에 의하여 부분 복사만 가능</li>
+                                        <li>개인소유자료 복사불허</li>
+                                        <li>A4(1매당) 30원, B4(1매당) 50원</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

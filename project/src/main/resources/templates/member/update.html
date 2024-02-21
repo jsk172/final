@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원수정</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	    <div id="container">
+        <section class="page">
+            <div class="page_top">
+                <div class="page_top_imgbox">
+                    <div class="page_img">
+                        <img th:src="@{/images/header-image2.jpg}" alt="img">
+                    </div>
+                    <div class="page_title">
+                        <p>내정보수정</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page_content_box">
+                <nav class="page_side_nav">
+                    <div class="nav_content">
+                        <div class="nav_content_top">
+                            <div class="nav_top_title">
+                                <p>나의책숲</p>
+                            </div>
+                        </div>
+                        <div class="nav_content_mid">
+                            <div class="nav_links">
+
+                                <a class="nav_menu" th:href="@{/member/rentallist}">내서재</a>
+                                <a class="nav_menu selected_menu" th:href="@{|/member/update/${member.memberId}|}">내정보수정</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_title">
+                        </div>
+                        <!-- <div class="page_menu_search">
+                            <div class="page_menu_search_box">
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <form th:action="@{/member/update}" method="post" th:object="${memberDTO}" class="member_update_form">
+                                <input type="hidden" name="memberId" th:value="${member.memberId}">
+                                    <table>
+									                      <tbody>
+                                            <tr>
+                                                <td rowspan="3"><img class="user_update_icon" th:src="@{/images/user.png}" alt=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="mid">아이디 <br><span><small>(수정 불가)</small></span></label></td>
+                                                <td><input type="text" name="mid" id="mid" th:value="${member.mid}" readonly></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="role">권한 <br><span><small>(수정 불가)</small></span></label></td>
+                                                <td colspan="2"><input type="text" name="role" id="role" th:value="${member.role}" readonly></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><label for="password">비밀번호 (<span class="required">*</span>)</label></td>
+                                                <td colspan="2">
+                                                    <input type="password" name="password" id="password" placeholder="비밀번호는 영문, 숫자, 특수문자를 모두 포함한 8글자 이상 20자 이하로 입력해 주세요." required>
+                                                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></p>
+                                                    <p id="passwordMessage" class="password_message"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="passwordConfirm">비밀번호 확인 (<span class="required">*</span>)</label></td>
+                                                <td colspan="2">
+                                                    <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="비밀번호 확인" required>
+                                                    <p id="passwordConfirm-error" class="check_password"></p>
+                                                    <p id="passwordConfirm-success" class="check_password"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="name">이름 (<span class="required">*</span>)</label></td>
+                                                <td colspan="2">
+                                                    <input type="text" name="name" id="name" th:value="${member.name}">
+                                                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></p>
+                                                    <p id="nameMessage" class="name_message"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="email">이메일 (<span class="required">*</span>) </label></td>
+                                                <td colspan="2">
+                                                    <input type="text" name="email" id="email" th:value="${member.email}">
+                                                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></p>
+                                                    <p id="emailMessage" class="email_message"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            	<td><label for="count">대출한 책수<br><span><small>(수정 불가)</small></span></label></td>
+                                            	<td colspan="2"><input type="text" name="count" id="count" th:value="${rental}" readonly></td>
+                                            </tr>
+                                            <tr>
+                                            	<td><label for="rentalAvailable">대출 가능여부<br><span><small>(수정 불가)</small></span></label></td>
+                                            	<td colspan="2">
+                                            		<span th:if="${!#strings.contains(able, member.memberId)}">
+                                                        <input type="text" class="able" name="able" th:value="'대출 가능'" readonly>
+                                                    </span>
+                                                                <span th:unless="${!#strings.contains(able, member.memberId)}">
+                                                        <input type="text" class="able" name="able" th:value="'대출 불가능'" readonly>
+                                                    </span>
+                                           		</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>    
+                                    <div class="member_update_btn_box">
+                                    <a th:href="@{|/member/withdrawal/${member.memberId}|}"><button type="button" class="member_update_leave">탈퇴</button></a>
+                                        <button type="submit" class="member_update_confirm">수정</button>
+                                        <button type="reset" class="member_update_cancel">취소</button>
+                                    </div>
+                            </form>
+<!--                             <a th:href="@{|/member/withdrawal/${member.memberId}|}"><button type="button" class="member_update_leave">탈퇴</button></a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	<div th:replace="~{footer::footer-fragment}"></div>
+	<script>
+        const hideErrorMessage = (inputField) => {
+            inputField.siblings(".error").css("display", "none");
+        };
+        $("input[type='text'], input[type='password']").focus(function () {
+            hideErrorMessage($(this));
+        });
+        const checkMid = () => {
+            let inputMid = document.getElementById("mid").value;
+            let checkResult = document.getElementById("check-result");
+            let idMessage = document.getElementById("idMessage");
+            $.ajax({
+                type: "POST",
+                url: "/member/check-id",
+                data: {
+                    mid: inputMid
+                },
+                success: function (res) {
+                    if (res == "OK") {
+                        checkResult.innerHTML = "사용가능한 아이디입니다.";
+                        checkResult.style.color = "green";
+                    } else if (res == "len") {
+                        checkResult.innerHTML = "아이디는 6글자이상 14글자 이하로 입력해 주세요.";
+                        checkResult.style.color = "#991";
+                    } else {
+                        checkResult.innerHTML = "이미 등록된 아이디입니다.";
+                        checkResult.style.color = "red";
+                    }
+                    checkResult.style.display = "block";
+                    idMessage.style.display = "none";
+                },
+                error: function (error) {
+                    console.log("실패: ", error);
+                }
+            })
+        };
+        $("#checkBtn").click(checkMid);
+
+
+        $("#passwordConfirm").on("keyup", function () {
+            let password = $("#password").val();
+            let passwordConfirm = $(this).val();
+            let errorMessage = $("#passwordConfirm-error");
+            let successMessage = $("#passwordConfirm-success");
+
+            if (password === passwordConfirm) {
+                errorMessage.text("");
+                successMessage.text("비밀번호가 일치합니다.");
+                successMessage.css("color", "green");
+                $(this).css("border-color", "green");
+                successMessage.removeClass("check_password");
+            } else {
+                errorMessage.text("비밀번호가 일치하지 않습니다.");
+                errorMessage.css("color", "red");
+                $(this).css("border-color", "red");
+                successMessage.text("");
+                errorMessage.removeClass("check_password");
+            }
+        });
+
+        $(document).ready(function() {
+            $("form").submit(function(event) {
+                let password = $("#password").val();
+                let passwordMessage = $("#passwordMessage");
+                let passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!*]).*$/;
+
+                if (password.trim() === '') {
+                    passwordMessage.text("");
+                    return;
+                }
+
+                if (password.length < 8 || password.length > 20) {
+                    passwordMessage.text("비밀번호는 8글자 이상 20글자 이하여야 합니다.");
+                    passwordMessage.css("color", "red");
+                    event.preventDefault();
+                    return;
+                } else if (!passwordRegex.test(password)) {
+                    passwordMessage.text("비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.");
+                    passwordMessage.css("color", "red");
+                    event.preventDefault();
+                    return;
+                } else {
+                    passwordMessage.text("비밀번호가 유효합니다.");
+                    passwordMessage.css("color", "green");
+                }
+            });
+        });
+
+        /*$("#password").on("keyup", function () {
+            let password = $(this).val();
+            let passwordMessage = $("#passwordMessage");
+
+            if (password.trim() === '') {
+                passwordMessage.text("");
+                return;
+            }
+            let passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!*]).*$/;
+                if (password.length < 8 || password.length > 20) {
+                    passwordMessage.text("비밀번호는 8글자 이상 20글자 이하여야 합니다.");
+                    passwordMessage.css("color", "red");
+                } else if (!passwordRegex.test(password)) {
+                    passwordMessage.text("비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.");
+                    passwordMessage.css("color", "red");
+                } else {
+                    passwordMessage.text("비밀번호가 유효합니다.");
+                    passwordMessage.css("color", "green");
+                }
+        })*/
+
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                var password = $("#password").val();
+                var passwordConfirm = $("#passwordConfirm").val();
+
+                if (password !== passwordConfirm) {
+                    event.preventDefault();
+                    alert("비밀번호가 일치하지 않습니다.")
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

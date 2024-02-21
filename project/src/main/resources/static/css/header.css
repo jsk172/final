@@ -1,0 +1,122 @@
+/* <uniquifier>: Use a uniquifier for the class name
+<weight>: Use a value from 100 to 900 */
+
+/* .noto-sans kr-<uniquifier> {
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+
+* {margin: 0; padding: 0; font-family: "Noto Sans KR", sans-serif;}
+
+#header{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    top: 0;
+}
+
+.header {
+    width: 80%;
+    height: 100px;
+    margin: 0;
+    text-align: center;
+    justify-content: space-around;
+    display: flex;
+    align-items: center;
+}
+
+.header_logo_box {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+}
+
+.header_logo {
+    width: 180px;
+}
+
+.header_library_name {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #7D704E;
+}
+
+.header_links {
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    align-items: center;
+}
+
+.header_link {
+    width: 60%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+
+.header_link a {
+    font-weight: 600;
+    color: #7D704E;
+    text-decoration: none;
+}
+
+.header_member {
+    width: 15%;
+    color: #A5B569;
+}
+
+.header_member a {
+    font-size: 0.7rem;
+    color: #A5B569;
+    text-decoration: none;
+}
+
+/* header_sub_menu */
+.header_link_search,
+.header_link_open_space,
+.header_link_library_info,
+.header_link_study_room,
+.header_link_my_library {
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+}
+
+.header_sub_link_search,
+.header_sub_link_open_space,
+.header_sub_link_library_info,
+.header_sub_link_study_room,
+.header_sub_link_my_library {
+    position: absolute;
+    width: 200px;
+    display: none;
+    top: 75px;
+}
+
+.header_link_search:hover .header_sub_link_search{
+    display: block;
+}
+.header_link_open_space:hover .header_sub_link_open_space{
+    display: block;
+}
+.header_link_library_info:hover .header_sub_link_library_info{
+    display: block;
+}
+.header_link_study_room:hover .header_sub_link_study_room{
+    display: block;
+}
+.header_link_my_library:hover .header_sub_link_my_library{
+    display: block;
+}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>책등록</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}"
+	crossorigin>
+<link
+	th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}"
+	rel="stylesheet">
+</head>
+<body>
+
+	<div th:replace="~{header::header-fragment}"></div>
+	    <div id="container">
+        <section class="page">
+
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/header-image2.jpg}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>도서등록</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>도서관리</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+                                <a class="nav_menu" th:href="@{/rentalReturn/list}">대출정보</a>
+                                <a class="nav_menu" th:href="@{/member/list}">회원목록</a>
+                                <a class="nav_menu selected_menu" th:href="@{/book/register}">도서등록</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <!-- <div class="page_menu_title">
+                            <p>게시판 메뉴1</p>
+                        </div> -->
+                        <div class="page_menu_search">
+                            <div class="page_title_box">
+                                <img th:src="@{/images/write.png}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <form th:action="@{/book/register}" method="post" enctype="multipart/form-data">
+                                <table class="writepage_table">
+                                    <tbody class="writepage_table_body">
+                                        <tr>
+                                            <td>
+                                            	<label for="hopeBoardFile" class="file_upload_btn" onclick="fileUploadBtn()">도서 이미지를 넣어주세요</label>
+                                                <input class="select_file" type="file" name="bookFile" id="fileInput">
+                                                <br><br>
+                                                <div class="book_img_preview">
+	                                            	<img id="previewImage">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="bname" id="bname" placeholder="'서명'을 입력해주세요" autofocus>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="publisher" id="publisher" placeholder="'출판사'를 입력해주세요" autofocus>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="author" id="author" placeholder="'저자'를 입력해주세요" autofocus>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="bnumber" id="bnumber" placeholder="'고유번호'를 입력해주세요" autofocus>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="category" id="category" placeholder="카테고리" autofocus>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="write_form_btn_box" style="margin-top: 30px">
+                                    <button type="submit" class="write_btn">등록</button>
+                                    <a th:href="@{/}"><button type="button" class="cancel_btn">취소</button></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	
+<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+	const fileInput = document.getElementById('fileInput');
+	const previewImage = document.getElementById('previewImage');
+	
+	fileInput.addEventListener('change', function() {
+	  const file = fileInput.files[0];
+	  if (file) {
+		  // FileReader HTML5 File API 활용
+	    const reader = new FileReader();
+	    reader.onload = function(e) {
+	      previewImage.src = e.target.result;
+	    };
+	    reader.readAsDataURL(file);
+	  } else {
+	    previewImage.src = '';
+	  }
+	});
+
+	function fileUploadBtn() {
+	  document.querySelector(".select_file").click();
+	}
+</script>
+</body>
+</html>

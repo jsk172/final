@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>Hope for the library : PAGE_LIST</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}"
+	crossorigin>
+<link
+	th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}"
+	rel="stylesheet">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="page">
+
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/main_library_picture1.PNG}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>도서관에 바란다</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>열린 공간</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu selected_menu" th:href="@{#}">도서관에 바란다</a> <a
+									class="nav_menu" th:href="@{#}">자유 게시판</a> <a class="nav_menu"
+									th:href="@{#}">도서관 이벤트</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+                
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <!-- <div class="page_menu_title">
+                            <p>게시판 메뉴1</p>
+                        </div> -->
+                        <div class="page_menu_search">
+                            <div class="page_title_box">
+                                <img th:src="@{/images/write.png}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+							<form th:action="@{|/freeboard/update/${freeboard.fbid}|}" method="post"
+								  enctype="multipart/form-data">
+								<input type="hidden" name="fbhit" th:value="${freeboard.fbhit}">
+								<table class="writepage_table">
+									<tbody class="writepage_table_body">
+										<tr>
+											<td>
+												<input class="write_page_title_input" type="text" name="fbtitle" th:value="${freeboard.fbtitle}">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<textarea rows="5" cols="30" name="fbcontent" th:text="${freeboard.fbcontent}"></textarea>
+												<div class="page_textarea_img_box">
+													<img th:src="${freeboard.hopeFilepath}"/>
+												</div>
+											</td>
+										</tr>
+										<tr>
+                                            <td>
+                                            	<label for="freeboardFile" class="file_upload_btn" onclick="fileUploadBtn()">첨부 파일 변경</label>
+                                                <input class="select_file" type="file" name="freeboardFile">
+                                            </td>
+										</tr>
+									</tbody>
+								</table>
+                                <div class="write_form_btn_box">
+                                    <button type="submit" class="write_btn">수정</button>
+                                    <a th:href="@{|/freeboard/${freeboard.fbid}|}"><button type="button" class="cancel_btn">취소</button></a>
+                                </div>
+							</form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	
+<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+	function fileUploadBtn() {
+	  document.querySelector(".select_file").click();
+	}
+</script>
+</body>
+</html>

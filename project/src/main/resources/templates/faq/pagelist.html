@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="utf-8">
+    <title>자주하는질문</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600&display=swap');
+
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .top-line {
+            display: flex; /* Flexbox 레이아웃 사용 */
+            align-items: center; /* 수직 방향에서 중앙 정렬 */
+            font-size: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #555;
+        }
+
+        .top-line p {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0; /* 기본 마진 제거 */
+            padding: 0; /* 필요에 따라 패딩 제거 */
+            letter-spacing: 0.05em; /* 글자 사이의 공간을 더욱 넓힙니다 */
+        }
+
+        .top-line p+p {
+            margin-left: auto; /* 첫 번째 p 요소 이후의 p에만 왼쪽 자동 마진 적용 */
+        }
+
+        #faq-side-text {
+            font-size: 12px;
+            color: #999;
+            margin-left: 10px; /* FAQ와의 간격을 20px로 설정 */
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+
+        .faq-container {
+            width: 200%;
+            max-width: 100%; /* 또는 실제 컨테이너의 최대 너비에 맞게 조정 */
+            margin: 0 auto;
+        }
+
+        .faq-toggle {
+            background: #FFFFFF;
+            padding: 20px;
+            margin: 0; /* 상단 여백을 0으로 설정 */
+            cursor: pointer;
+            position: relative; /* 화살표 아이콘을 위한 위치 지정 */
+            font-size: 14px;
+            color: #333;
+        }
+
+        .faq-toggle.active {
+            font-weight: 500; /* 클릭했을 때 굵기를 bold로 변경 */
+        }
+
+        /* 화살표 아이콘 위치 조정 */
+        .faq-toggle::after {
+            content: '▼'; /* 또는 사용자의 화살표 아이콘을 사용 */
+            font-size: 12px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%); /* 아이콘을 정중앙에 배치 */
+        }
+
+        /* 활성화된 토글에 대한 화살표 변화 */
+        .faq-toggle.active::after {
+            content: '▲'; /* 또는 사용자의 화살표 아이콘을 사용 */
+        }
+
+        .faq-content {
+            padding: 0 50px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            /* background: #f7f7f7; */
+            background: #fdfcf5;
+            border-bottom: 1px solid #b5b5b5;
+            color: #333;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+        .faq-content p {
+            padding: 20px;
+            margin: 0; /* 아래쪽 여백을 0으로 설정 */
+        }
+
+        /* 활성화된 내용에 대한 스타일 */
+        .active .faq-content {
+            max-height: 1000px; /* 콘텐츠의 크기에 따라 조정이 필요할 수 있음 */
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{header::header-fragment}"></div>
+<div id="container">
+    <section class="page">
+        <div class="page_top">
+            <div class="page_top_imgbox">
+                <div class="page_img">
+                    <img th:src="@{/images/header-image2.jpg}" alt="img">
+                </div>
+                <div class="page_title">
+                    <p>자주하는 질문</p>
+                </div>
+            </div>
+        </div>
+        <div class="page_content_box">
+            <nav class="page_side_nav">
+                <div class="nav_content">
+                    <div class="nav_content_top">
+                        <div class="nav_top_title">
+                            <p>열린공간</p>
+                        </div>
+                    </div>
+                    <div class="nav_content_mid">
+                        <div class="nav_links">
+                            <a class="nav_menu" th:href="@{/freeboard/pagelist}">자유게시판</a>
+                            <a class="nav_menu" th:href="@{/event/pagelist}">독서이벤트</a>
+                            <a class="nav_menu" th:href="@{/hopeboard/pagelist}">도서관에바란다</a>
+                            <a class="nav_menu selected_menu" th:href="@{/faq/pagelist}">자주하는질문</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+
+            <!-- FAQ 영역 -->
+            <div class="page_content">
+
+                <div class="faq-container">
+
+                    <div class="top-line">
+                        <p>FAQ</p>
+                        <p id="faq-side-text">자주 하는 질문을 찾아 보세요.</p>
+                    </div>
+
+                    <div class="faq-toggle">희망도서 신청은 어떻게 하나요?</div>
+                    <div class="faq-content">
+                        <p> 1. 희망도서 신청방법 : 홈페이지 로그인- 자료검색 - 희망도서신청 - 신청하기<br>
+                            2. 희망도서 신청 권수 : 1인당 월 3권<br>
+                            3. 희망도서 접수 : 매주 월(전주 월~일 신청도서) <br>
+                            <br>
+                            선정제외도서(자세한 내용은 홈페이지 희망도서 신청 안내 참조) <br>
+                            - 비도서, 서양서, 만화류<br>
+                            - 만화, 무협지, 라이트 소설, 판타지 및 인터넷 소설<br>
+                            - 시험 및 자격증 취득을 위한 수험서<br>
+                            - 교재, 문제집, 전집류<br>
+                            - 5년 이전 발간도서<br>
+                            - 고가의 도서(5만원 이상)<br>
+                            - 기관의 자료선정기준에 맞지 않는 도서 <br>
+                            <희망도서 처리> <br>
+                                - 희망도서는 매주 월 처리하고 1인당 월 3권까지 신청가능<br>
+                                - 희망도서 선정 결과 홈페이지 신착자료목록에 게시<br>
+                                - 희망도서 취소 사유 희망도서 신청 시 입력한 메일로 안내<br>
+                                - 희망도서 신청 시 입력된 핸드폰으로 대출 가능함을 알려주는 문자메시지 전송<br>
+                                - 희망도서 비치기간 : 연락 후 3일 동안 별도 비치(자료실 직원에게 문의)
+                        </p>
+                    </div>
+
+                    <div class="faq-toggle">무선인터넷(Wi-Fi)는 어떻게 이용하나요?</div>
+                    <div class="faq-content">
+                        <p>
+                            서울특별시교육청 정보보안 기본지침 제46조(무선랜 보안관리)강화 및 통합도서관 ID/PW 입력 간소화에 따라<br>
+                            <br>
+                            2018.4.2.(월)부터 도서관 무선 네트워크(Wi-Fi)연결 및 인증 방식이 변경되었습니다.<br>
+                            <br>
+                            변경 된 연결 및 인증 방식을 안내 해 드리니 이용에 참고하시기 바랍니다.<br>
+                        </p>
+                    </div>
+
+                    <div class="faq-toggle">로그인 오류가 발생한 경우</div>
+                    <div class="faq-content">
+                        <p>
+                            홈페이지 보안강화로 2012.11.20(화)부터 windows XP 이용자는 서비스팩3을 설치해야 로그인이 가능하며 오류발생 시 다음을 참고하여 업그레이드 하시기 바랍니다.<br>
+                             								<br>
+                            ◆ 오류발생 PC : Windows XP SP2(서비스팩2) 이하 버전의 PC<br>
+                            ◆ 오류현상 : "웹페이지를 투시할 수 없습니다" 라는 메시지 보임<br>
+                            ◆ 조치방법 : Windows XP SP3(서비스팩3)로 업그레이드<br>
+                            ◆ Windows XP SP3 설치방법<br>
+                            &emsp;→ Windows Update 및 다운로드 센터에서 수동 설치<br>
+                            &emsp;[windows Update 사이트]<br>
+                            &emsp;&emsp;http://update.microsoft.com/<br>
+                            &emsp;[서비스팩 다운로드센터]<br>
+                            &emsp;&emsp;http://windows.microsoft.com/ko-KR/windows/downloads/service-packs<br>
+                            ◆ 서비스팩 확인 방법 : 내컴퓨터 → 속성 → 확인
+                    </div>
+
+                    <div class="faq-toggle">회원 정보 수정 방법</div>
+                    <div class="faq-content">
+                        <p>
+                            홈페이지 내 회원 정보 수정은 나의책숲-내정보수정 메뉴에서 가능합니다.<br>
+                            <br>
+                            홈페이지에서 이용자가 직접 수정 가능한 개인정보는 이름, 비밀번호, 이메일주소입니다.
+                        </p>
+                    </div>
+
+                    <div class="faq-toggle">도서 대출 방법</div>
+                    <div class="faq-content">
+                        <p>
+                            도서 대여는 홈페이지 로그인 후 상단 메뉴인 자료검색에서<br>
+                            <br>
+                            원하는 책을 검색 후, '대여' 버튼을 클릭합니다.<br>
+                        </p>
+                    </div>
+
+                    <div class="faq-toggle">그동안 대출했던 도서 목록 확인</div>
+                    <div class="faq-content">
+                        <p>
+                            이전 대출 내역 확인은 홈페이지 상단 메뉴인 나의책숲-내서재 메뉴에서 확인 가능합니다.
+                        </p>
+                    </div>
+
+                    <div class="faq-toggle">찾고 싶은 도서 검색</div>
+                    <div class="faq-content">
+                        <p>
+                            도서 검색은 홈페이지 상단 도서검색-자료검색 메뉴에서 자료를 확인해보실 수 있습니다.
+                        </p>
+                    </div>
+
+                    <div class="faq-toggle">개인 공부가 가능한 열람실 이용 방법</div>
+                    <div class="faq-content">
+                        <p>
+                            * 이용시간<br>
+                            - 하절기(3월-10월) 07:00~22:00[주말 ~22:00]<br>
+                            - 동절기(11월-2월) 08:00~ 22:00[주말 ~22:00]<br>
+                            <br>
+                            <br>
+                            * 이용방법<br>
+                            - 1인 1좌석제 원칙<br>
+                            - 상단메뉴-자율학습실현황 메뉴에서 좌석을 선택하여 입실 처리-<br>
+                            - 1시간 이상 자리 비울 경우 좌석표 재발행<br>
+                        </p>
+                    </div>
+
+                </div>
+            </div><!-- FAQ 영역 -->
+
+
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{footer::footer-fragment}"></div>
+
+<script>
+    var faqs = document.getElementsByClassName('faq-toggle');
+    for (var i = 0; i < faqs.length; i++) {
+        faqs[i].addEventListener('click', function() {
+            this.classList.toggle('active');
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight){
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

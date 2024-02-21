@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="utf-8">
+<title>Hope for the library : DETAIL</title>
+<script
+src="https://code.jquery.com/jquery-3.7.1.js"
+integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+<link rel="preconnect" th:href="@{https://fonts.gstatic.com}"
+	crossorigin>
+<link
+	th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}"
+	rel="stylesheet">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="page">
+
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/main_library_picture1.PNG}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>도서관에 바란다</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>열린 공간</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu" th:href="@{/hopeboard/pagelist}">도서관에 바란다</a> 
+								<a class="nav_menu selected_menu" th:href="@{/freeboard/pagelist}">자유 게시판</a> 
+								<a class="nav_menu" th:href="@{#}">도서관 이벤트</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+
+
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_search">
+                            <div class="page_title_box">
+                                <img th:src="@{/images/write.png}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <table class="detailpage_table">
+                                <tbody class="detailpage_table_body">
+                                    <tr>
+                                        <td>
+                                        	<div class="detail_info">
+	                                            <div class="detail_page_info_date" th:text="${#dates.format(freeBoard.createdDate, 'yyyy-MM-dd')}"></div>
+	                                            <div class="detail_page_info_mid" th:text="${freeBoard.member.mid}"></div>
+	                                            <div class="detail_page_info_hit" th:text="'조회수 ' + ${freeBoard.hbhit}"></div>
+                                        	</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input class="detail_page_title_input" type="text" name="hbtitle" th:value="${freeBoard.hbtitle}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <textarea rows="5" cols="30" name="hbcontent" th:text="${freeBoard.hbcontent}" readonly></textarea>
+                                            <div class="page_textarea_img_box">
+                                                <img th:src="${freeBoard.hopeFilepath}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="detail_btn_box">
+                                <a th:href="@{/freeboard/pagelist}"><button type="button" class="page_go_list">목록</button></a>
+                                <a th:href="@{|/freeboard/update/${freeBoard.hbid}|}"><button type="button" class="page_go_update">수정</button></a>
+                                <a th:href="@{|/freeboard/delete/${freeBoard.hbid}|}"><button type="button" class="page_go_delete">삭제</button></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- page_reply -->
+                    <div class="page_reply">
+                        <div class="page_reply_list_box" th:if="${#lists.size(freeBoard.freeReplyList) > 0}">
+                            <div class="page_reply_list" th:each="freeReply:${freeBoard.freeReplyList}">
+                            	<div class="reply_writer">
+                            		<img th:src="@{/images/user.png}" alt="">
+                                	<p class="hope_reply_writer" th:text="${freeReply.member.mid}"></p>
+                                	<span th:text="'(작성일: ' + ${#dates.format(freeReply.createdDate, 'yyyy-MM-dd')} + ')'"></span>
+                            	</div>
+                            	<div class="hope_reply_content_box">
+	                                <p class="hope_reply_content" th:text="${freeReply.hrcontent}"></p>
+                                    <th:block sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal.getUsername()} == ${freeBoard.member.mid}">
+	                                    <div class="hope_reply_update">
+	                                        <div class="reply_update_btn_box">
+	                                            <button class="reply_update_btn" type="button" th:onClick="replyObject.updateReply([[${freeBoard.hbid}]], [[${freeReply.hrid}]])">수정</button>  
+	                                            <button class="reply_delete_btn" type="button" th:onClick="replyObject.deleteReply([[${freeBoard.hbid}]], [[${freeReply.hrid}]])">삭제</button>
+	                                        </div>
+	                                    </div>
+	                                </th:block>
+                            	</div>
+                                <div id="replyModal" class="modal" style="display: none;">
+                                	<div class="modal_content">
+                                    	<div style="display: none;" id="originalContent" th:text="${freeReply.hrcontent}">
+                                     	</div> 
+                                    	<textarea id="replyContent" rows="4" cols="50"></textarea>
+                                 	</div>
+                                 	<div class="reply_update_confirm_box">
+    	                           		<button id="updateReplyBtn_confirm">수정 확인</button>
+	                               		<button id="updateReplyBtn_cancel" type="reset">수정 취소</button>
+                                 	</div>
+                               </div>
+
+                            </div>
+                        </div>
+                        <div class="no_reply_yet" th:unless="${#lists.size(freeBoard.freeReplyList) > 0}">
+						    <p>아직 댓글이 없습니다</p>
+						</div>
+                        <div class="hope_reply_insert">
+                            <input type="hidden" id="board_id" th:value="${freeBoard.hbid}">
+                            <div class="reply_textarea_box">
+                                <textarea id="reply_content" rows="3" cols="50" placeholder="댓글을 남겨주세요"></textarea>
+                           		<button id="save_reply_btn">댓글 등록</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <div th:replace="~{footer::footer-fragment}"></div>
+	<script th:src="@{/js/reply.js}"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="utf-8">
+<title>희망도서신청</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<style>
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+/*     padding: 20px; */
+}
+
+.form-container {
+    background-color: #fff;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.required-label:before {
+    content: "* ";
+    color: red;
+} 
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 13px;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: #f4f4f4;
+   	color: #333;
+}
+
+.checkbox-label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+button {
+    display: block;
+    width: 58px;
+    padding: 6px;
+    border: 1px solid #E1E1E1;
+    border-radius: 4px;
+    box-shadow: 3px 3px 3px #eee;
+    background-color: white;
+    color: #777;
+	text-decoration: none;
+    margin-top: 10px;
+    cursor: pointer;
+    margin-left: 90%;
+    margin-top: 0;
+}
+
+button:hover {
+	 background-color : rgba(200, 206, 122, 0.1);
+	 border: 1px solid rgba(200, 206, 122, 0.1);
+	 color: #777;
+	 box-shadow: 3px 3px 3px #eee;
+}
+
+.phone-number-container {
+    display: flex;
+    align-items: center;
+}
+
+.phone-number-container select,
+.phone-number-container input[type="text"] {
+/*     margin: 0 5px; */
+    text-align: center;
+}
+
+.phone-number-container span {
+    user-select: none; /* Prevent user from selecting the dash */
+    margin: 0 5px 0 5px;
+}
+
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px; /* 좌우 패딩을 제거하여 열 간 격차를 맞춤 */
+}
+
+.column {
+    flex: 50%; /* 열의 너비를 50%로 설정하여 두 개의 열을 만듦 */
+    padding: 0 15px; /* 패딩을 추가하여 내용물과 테두리 간의 공간을 만듦 */
+}
+
+/* 반응형 디자인을 위해 필요한 경우 미디어 쿼리를 추가 */
+@media screen and (max-width: 600px) {
+    .column {
+        flex: 100%; /* 화면이 작아질 때는 각 열의 너비를 100%로 설정하여 위아래로 쌓임 */
+    }
+}
+
+</style>
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+		<section class="page">
+			<div class="page_top">
+				<div class="page_top_imgbox">
+					<div class="page_img">
+						<img th:src="@{/images/header-image2.jpg}" alt="img">
+					</div>
+					<div class="page_title">
+						<p>희망도서신청</p>
+					</div>
+				</div>
+			</div>
+			<div class="page_content_box">
+				<nav class="page_side_nav">
+					<div class="nav_content">
+						<div class="nav_content_top">
+							<div class="nav_top_title">
+								<p>도서검색</p>
+							</div>
+						</div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu" th:href="@{/book/list}">자료검색</a>
+								<a class="nav_menu" th:href="@{/rentalReturn/rentalbest}">대출베스트(추천도서)</a>
+								<a class="nav_menu selected_menu" th:href="@{/wantbook/write}">희망도서신청</a>
+								<a class="nav_menu" th:href="@{/wantbook/pagelist}" sec:authorize="hasAnyAuthority('Admin')">희망도서신청내역</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+
+				<!-- wantbook 영역 -->
+				<div class="page_content">
+					<div class="form-container">
+						<form id="book-request-form" action="/wantbook/write" method="post">
+ 								<div class="row">
+
+								<!-- 왼쪽 필드 -->
+								<div class="column">
+									<div class="form-group required">
+									    <label for="today-date">신청일</label>
+									    <!-- <input type="text" id="today-date" name="today-date" required readonly> -->
+									    <input type="text" id="today-date" name="todayDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required readonly>
+									</div>
+
+									<div class="form-group required">
+										<label for="name">신청자</label> <input type="text" id="name"
+											name="name" th:value="${member.name}" required readonly>
+									</div>
+
+									<div class="form-group required">
+										<label for="birthdate">이메일</label> <input type="text"
+											id="birthdate" name="birthdate" th:value="${member.email}"
+											required readonly>
+									</div>
+
+									<div class="form-group required">
+									    <label for="contact1">연락처</label>
+									    <div class="phone-number-container">
+									        <select id="contact1" name="wbphone1">
+									            <option value="">선택</option>
+									            <option value="010">010</option>
+									            <option value="011">011</option>
+									            <option value="016">016</option>
+									            <option value="017">017</option>
+									            <option value="018">018</option>
+									            <option value="019">019</option>
+									        </select>
+									        <span> - </span>
+									        <input type="text" id="contact2" name="wbphone2" pattern="\d{3,4}" maxlength="4" placeholder="1234">
+									        <span> - </span>
+									        <input type="text" id="contact3" name="wbphone3" pattern="\d{4}" maxlength="4" placeholder="5678">
+									    </div>
+									</div>
+								</div> <!-- 왼쪽 필드  -->
+
+								<!-- 오른쪽 필드 -->
+								<div class="column">
+								    <div class="form-group">
+								        <label for="title" class="required-label">제목</label>
+								        <input type="text" id="title" name="wbtitle" required>
+								    </div>
+								
+								    <div class="form-group">
+								        <label for="author" class="required-label">저자</label>
+								        <input type="text" id="author" name="wbwrite" required>
+								    </div>
+								
+								    <div class="form-group">
+								        <label for="publisher" class="required-label">출판사</label>
+								        <input type="text" id="publisher" name="wbpublisher" required>
+								    </div>
+								    
+								    <div class="form-group">
+								        <label for="publish-year" class="required-label">출판년도</label>
+    									<input type="text" list="year-list" id="publish-year" name="wbpubliyear" required pattern="\d{4}" placeholder="YYYY">
+								        <datalist id="year-list">
+								            <!-- 자바스크립트로 현재 년도를 기준으로 목록 생성 -->
+								        </datalist>
+								    </div>
+								</div> <!-- 오른쪽 필드 -->
+														
+								<button type="submit">신청</button>
+
+							</div> <!-- row -->
+							
+						</form>
+					</div>
+				</div><!-- wantbook 영역 -->
+
+			</div>
+		</section>
+	</div>
+
+	<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+window.onload = function() {
+    // 오늘 날짜 설정
+    var today = new Date();
+    var day = String(today.getDate()).padStart(2, '0');
+    var month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    var year = today.getFullYear();
+    var formattedToday = year + '-' + month + '-' + day;
+    document.getElementById('today-date').value = formattedToday;
+    
+    // 출판년도 목록 생성
+    var currentYear = new Date().getFullYear();
+    var earliestYear = currentYear - 124; // 최근 124년을 기준으로 설정
+    var datalist = document.getElementById('year-list');
+    
+    for (var year = currentYear; year >= earliestYear; year--) {
+        var option = document.createElement('option');
+        option.value = year;
+        datalist.appendChild(option);
+    }
+};
+
+document.getElementById('book-request-form').addEventListener('submit', function(event) {
+    // 기본 폼 제출을 방지
+    event.preventDefault();
+
+    // 폼 데이터를 FormData 객체로 생성
+    var formData = new FormData(this);
+
+    // fetch API를 사용하여 비동기 POST 요청 실행
+    fetch(this.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // 성공적으로 처리됐을 때 알림창 표시
+            alert('신청이 완료되었습니다.');
+            // 필요한 경우 폼 입력을 초기화하거나, 다른 페이지로 리다이렉트 할 수 있음
+            // this.reset();
+            // window.location.href = 'thankyou_page.html'; // 예: 감사 페이지로 리다이렉트
+        } else {
+            // 서버에서 에러 응답이 올 경우
+            alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
+    })
+    .catch(error => {
+        // 네트워크 오류 등의 이유로 요청 자체가 실패한 경우
+        console.error('Form submit error:', error);
+        alert('오류가 발생했습니다. 다시 시도해주세요.');
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+#footer{
+    width: 100%;
+    margin: 0; 
+    padding: 0; 
+    background-color: #f4f4f4;
+}
+
+.footer {
+    width: 100%;
+    height: 150px;
+    text-align: center;
+}
+
+/* footer-top */
+.footer_top {
+    width: 100%;
+    height: 50px;
+    background-color: #7D704E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer_top_text_box {
+    width: 45%;
+}
+
+.footer_top_text_box p {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.footer_top_text_box p a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* footer-bottom */
+.footer_bottom {
+    width: 100%;
+    height: 100px;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.team_info_box {
+    width: 75%;
+}
+
+.team_info_box p {
+    color: #fff;
+}
+
+.team_basic_info {
+    font-size: 0.8rem;
+}
+
+.team_copyright {
+    font-size: 0.7rem;
+}

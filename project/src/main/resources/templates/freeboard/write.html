@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>자유게시판</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+    <link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+        <section class="page">
+
+            <div class="page_top">
+                <div class="page_top_imgbox">
+                    <div class="page_img">
+                        <img th:src="@{/images/images/header-image2.jpg}" alt="img">
+                    </div>
+                    <div class="page_title">
+                        <p>PAGE TITLE</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="page_content_box">
+                <nav class="page_side_nav">
+                    <div class="nav_content">
+                        <div class="nav_content_top">
+                            <div class="nav_top_title">
+                                <p>BOARD_TILTE</p>
+                            </div>
+                        </div>
+						<div class="nav_content_mid">
+							<div class="nav_links">
+								<a class="nav_menu selected_menu" th:href="@{/freeboard/pagelist}">자유게시판</a>
+								<a class="nav_menu" th:href="@{/event/pagelist}">독서이벤트</a>
+								<a class="nav_menu" th:href="@{/hopeboard/pagelist}">도서관에바란다</a>
+								<a class="nav_menu" th:href="@{/faq/pagelist}">자주하는질문</a>
+							</div>
+						</div>
+                    </div>
+                </nav>
+                
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <!-- <div class="page_menu_title">
+                            <p>게시판 메뉴1</p>
+                        </div> -->
+                        <div class="page_menu_search">
+                            <div class="page_title_box">
+                                <img th:src="@{/images/write.png}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <form th:action="@{/freeboard/write}" method="post" th:object=${freeBoard} enctype="multipart/form-data">
+                                <table class="writepage_table">
+                                    <tbody class="writepage_table_body">
+                                        <tr>
+                                            <td>
+                                                <input class="write_page_title_input" type="text" name="fbtitle" placeholder="제목을 입력해주세요" autofocus>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <textarea rows="5" cols="30" name="fbcontent" placeholder="내용을 입력해 주세요"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                            	<label for="freeBoardFile" class="file_upload_btn" onclick="fileUploadBtn()">파일 첨부</label>
+                                                <input class="select_file" type="file" name="freeBoardFile">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="write_form_btn_box">
+                                    <button type="submit" class="write_btn">등록</button>
+                                    <a th:href="@{/freeboard/pagelist}"><button type="button" class="cancel_btn">취소</button></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+	
+<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+	function fileUploadBtn() {
+	  document.querySelector(".select_file").click();
+	}
+</script>
+</body>
+</html>

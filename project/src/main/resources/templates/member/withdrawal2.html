@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<style>
+@import
+	url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600&display=swap')
+	;
+	
+.join_icon{
+	margin-top: 40px;
+	width: 180px;
+	height: auto;
+}
+
+.complete {
+	padding: 10px;
+	font-size: 24px;
+	color: #555;
+	font-weight: 500;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.complete2 {
+	padding-top: 10px;
+	padding-bottom: 30px;
+	font-size: 14px;
+	color: grey;
+	font-weight: 500;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.home_btn_join {
+	display: block;
+	margin: 0 auto 30px;
+	padding: 6px;
+	border: 1px solid #E1E1E1;
+	border-radius: 4px;
+	box-shadow: 3px 3px 3px #eee;
+	background-color: white;
+	color: #777;
+	text-decoration: none;
+	cursor: pointer;
+
+}
+
+.home_btn_join:hover {
+	background-color: rgba(200, 206, 122, 0.1);
+	border: 1px solid rgba(200, 206, 122, 0.1);
+	color: #777;
+	box-shadow: 3px 3px 3px #eee;
+}
+
+.member_cont_join_ok {
+    text-align: center;
+}
+</style>
+</head>
+<body>
+	<div id="container">
+	<section id="joinform0">
+        <div id="top">
+            <div class="join_header_wrap">
+                <div class="join_header_inner">
+                    <a th:href="@{/}" title="홈으로"><img class="join_logo" th:src="@{/images/join-logo1.png}"></a>
+                        <span></span>회원탈퇴완료
+                </div>
+            </div>
+        </div>
+        <div id="mid">
+            <div class="member_wrap">
+                <div class="member_cont_join_ok">
+                    <div class="join_ok_box">
+                        <div class="join_ok_tit">
+                            <div class="check">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <img src="/images/withdraw-logo1.png" class="join_icon">
+                            <p class="complete">회원탈퇴가 완료되었습니다.</p>
+                            <p class="complete2">그동안 선유책숲을 이용해 주셔서<br>감사드립니다.</p>
+                        </div>
+                        <div class="btn_member_sec">
+                            <a th:href="@{/member/logout}"><button type="button" class="home_btn_join">홈으로</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>
+	</div>
+</body>
+</html>

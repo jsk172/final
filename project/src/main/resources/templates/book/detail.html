@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>도서 상세보기</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="~{header::header-fragment}"></div>
+<div id="container">
+        <section class="page">
+            <div class="page_top">
+                <div class="page_top_imgbox">
+                    <div class="page_img">
+                        <img th:src="@{/images/header-image2.jpg}" alt="img">
+                    </div>
+                    <div class="page_title">
+                        <p>도서상세</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page_content_box">
+                <nav class="page_side_nav">
+                    <div class="nav_content">
+                        <div class="nav_content_top">
+                            <div class="nav_top_title">
+                                <p>도서검색</p>
+                            </div>
+                        </div>
+                        <div class="nav_content_mid">
+                            <div class="nav_links">
+                                <a class="nav_menu" th:href="@{#}">자료검색</a>
+                                <a class="nav_menu" th:href="@{#}">도서목록</a>
+                                <a class="nav_menu" th:href="@{#}">대출베스트(추천도서)</a>
+                                <a class="nav_menu" th:href="@{#}">희망도서신청</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_title">
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="book_detail_content_box">
+                            <div class="book_detail_table_box">
+                           		<input type="hidden" id="able" th:value="${able}">
+            					<input type="hidden" id="memberId" th:if="${member != null}" th:value="${member.memberId}">
+                                <table class="first_table">
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="2" class="first_table_td"><img th:src="@{|/upload/${book.bfilename}|}" alt=""></td>
+                                            <td class="book_detail_title" th:text="${book.bname}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="second_table_box_td">
+                                                <div class="book_detail_info_box">
+                                                    <table class="second_table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>도서번호</td>
+                                                                <td th:text="${book.bookId}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>출판사</td>
+                                                                <td th:text="${book.publisher}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>저자</td>
+                                                                <td th:text="${book.author}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>도서분류</td>
+                                                                <td th:text="${book.category}"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>ISBN</td>
+                                                                <td th:text="${book.bnumber}"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="book_detail_btn_box">
+                                <div class="book_detail_admin_btn">
+                                    <a th:href="@{|/book/update/${book.bookId}|}" sec:authorize="hasAnyAuthority('Admin')">
+                                    <button class="book_detail_update_btn">수정</button></a>
+                                </div>
+                                <div class="book_detail_member_btn">
+                                    <button type="button" class="book_detail_rental_btn" id="rentalBtn">대여</button>
+                                    <a th:href="@{/book/list}"><button type="button" class="book_detail_go_list">목록</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+
+    $("#rentalBtn").click(function(){
+        let able = $("#able").val();
+        let memberId = $("#memberId").val();
+
+        if(able.includes(memberId)){
+            alert("대출 불가능 상태입니다.");
+            return;
+        }
+        let confirmed = confirm('대여하시겠습니까?');
+
+        if (confirmed) {
+            $.ajax({
+                type: "post",
+                contentType: 'application/json; charset=utf-8',
+                url: "/rentalReturn/rental",
+                dataType: 'json',
+                data: JSON.stringify({
+                    book: {
+
+                        bookId : [[${book.bookId}]]
+                    },
+                    rentalDate : new Date(),
+                }),
+                success: function(data){
+                    console.log("대출성공 : " + data)
+                    location.href = "/member/rentallist";
+
+                },
+                error: function (response) {
+                    console.log("대출실패" + response);
+
+                    location.href = "/member/rentallist";
+
+                }
+            });
+        } else {
+            console.log("취소");
+        }
+    });
+</script>
+</body>
+</html>

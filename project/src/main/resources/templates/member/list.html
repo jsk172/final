@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원목록</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	    <div id="container">
+        <section class="page">
+            <div class="page_top">
+                <div class="page_top_imgbox">
+                    <div class="page_img">
+                        <img th:src="@{/images/header-image2.jpg}" alt="img">
+                    </div>
+                    <div class="page_title">
+                        <p>회원 목록</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page_content_box">
+                <nav class="page_side_nav">
+                    <div class="nav_content">
+                        <div class="nav_content_top">
+                            <div class="nav_top_title">
+                                <p>목록</p>
+                            </div>
+                        </div>
+                        <div class="nav_content_mid">
+                            <div class="nav_links">
+                                <a class="nav_menu" th:href="@{/rentalReturn/list}">대출정보</a>
+                                <a class="nav_menu selected_menu" th:href="@{/member/list}">회원목록</a>
+                                <a class="nav_menu" th:href="@{/book/register}">도서등록</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <div class="page_menu_title">
+                        </div>
+                        <!-- <div class="page_menu_search">
+                            <div class="page_menu_search_box">
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <form th:action="@{/member/update}" method="post" th:object="${memberDTO}" class="member_update_form">
+                                <input type="hidden" name="memberId" th:value="${member.memberId}">
+                                    <table th:each="member: ${memberList}">
+									<tbody>
+                                            <tr>
+                                                <td rowspan="3"><img class="user_update_icon" th:src="@{/images/user.png}" alt=""></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="mid">아이디</label></td>
+                                                <td><input type="text" name="mid" id="mid" th:value="${member.mid}" readonly></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="role">권한</label></td>
+                                                <td colspan="2"><input type="text" name="role" id="role" th:value="${member.role}" readonly></td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="memberId">번호</label></td>
+                                                <td colspan="2">
+                                                    <input type="text" name="memberId" id="memberId" th:value="${member.memberId}" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="name">이름</label></td>
+                                                <td colspan="2">
+                                                    <input type="text" name="name" id="name" th:value="${member.name}" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="email">이메일</label></td>
+                                                <td colspan="2">
+                                                    <input type="text" name="email" id="email" th:value="${member.email}" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><label for="createdDate">가입일</label></td>
+                                                <td colspan="2">
+                                                    <input type="text" name="createdDate" id="createdDate" th:value="${#dates.format(member.createdDate, 'yyyy-MM-dd HH:mm')}" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+
+                                                <td><label for="rentalAvailable">대출 가능여부</label></td>
+                                                <td colspan="2">
+                                            		<span th:if="${!#strings.contains(able, member.memberId)}">
+                                                        <input type="text" class="able" name="able" th:value="'대출 가능'" readonly>
+                                                    </span>
+                                                    <span th:unless="${!#strings.contains(able, member.memberId)}">
+                                                        <input type="text" class="able" name="able" th:value="'대출 불가능'" readonly>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                     			<td colspan="3" class="td_btn">
+                                     				<div class="member_list_links">
+    	                                 				<a th:href="@{|/member/${member.memberId}|}"><button type="button">조회</button></a>
+														<a th:href="@{|/member/delete/${member.memberId}|}" onclick="return confirm('삭제하시겠습니까?')"><button type="button">삭제</button></a>
+														<a th:href="@{/}"><button type="button">홈으로</button></a>
+                                     				</div>
+												</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>    
+                                </form>
+                        </div>
+                    </div>
+                    <!-- 페이지네이션 -->
+					<!--<div class="pagination">
+						<ul>
+							&lt;!&ndash; 이전 페이지 &ndash;&gt;
+							<li th:if="${memberPage.hasPrevious()}"><a
+								th:href="@{|/member/list?page=${memberPage.pageable.pageNumber-1}|}">
+									< </a></li>
+
+							&lt;!&ndash; 페이지 번호 &ndash;&gt;
+							<li
+								th:each="pageNum : ${#numbers.sequence(0, memberPage.totalPages-1)}">
+								<a th:href="@{|/member/list?page=${pageNum}|}"
+								th:text="${pageNum + 1}"
+								th:classappend="${pageNum} == ${memberPage.pageable.pageNumber} ? 'current' : ''">
+							</a>
+							</li>
+
+							&lt;!&ndash; 다음 페이지 &ndash;&gt;
+							<li th:if="${memberPage.hasNext()}"><a
+								th:href="@{|/member/list?page=${memberPage.pageable.pageNumber+1}|}">
+									> </a></li>
+						</ul>
+					</div>-->
+					<!-- 페이지네이션 끝 -->
+
+                </div>
+            </div>
+        </section>
+    </div>
+	<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

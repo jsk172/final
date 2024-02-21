@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+.join_logo{width: 150px; height: 60px;}
+
+#container{
+    margin: 60px auto;
+    width: 750px;
+    line-height: 50px;
+}
+
+.joinform ul li{
+    list-style: none;
+    clear: both;
+}
+
+.result {
+    display: none
+}
+.check_password{
+    display: none;
+}
+#checkBtn{
+    float: right;
+    margin-left: 10px;
+}
+
+.input-wrapper label {
+    float: left;
+    width: 50%;
+    padding-right: 10px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.input-wrapper input {
+    width: 70%;
+    padding: 5px;
+    box-sizing: border-box;
+    float: left;
+}
+
+.required{
+    color: orange;
+}
+
+
+

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>나의 서재</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{header::header-fragment}"></div>
+
+<div id="container">
+    <section class="page">
+
+        <div class="page_top">
+            <div class="page_top_imgbox">
+                <div class="page_img">
+                    <img th:src="@{/images/header-image2.jpg}" alt="img">
+                </div>
+                <div class="page_title">
+                    <p>나의 서재</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="page_content_box">
+            <nav class="page_side_nav">
+                <div class="nav_content">
+                    <div class="nav_content_top">
+                        <div class="nav_top_title">
+                            <p>나의 책숲</p>
+                        </div>
+                    </div>
+                    <div class="nav_content_mid">
+                        <div class="nav_links">
+                            <a class="nav_menu selected_menu" th:href="@{/member/rentallist}">내서재</a>
+                            <a class="nav_menu" th:href="@{|/member/update/${member.memberId}|}">내정보수정</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="page_content">
+                <div class="page_content_top">
+                    <div class="page_menu_title">
+                    </div>
+                    <!-- <div class="page_menu_search">
+                        <div class="page_menu_search_box">
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="page_content_mid">
+
+                    <div class="rental_user_info_box">
+                        <div class="rental_state_page_title">
+                            <img th:src="@{/images/logo.png}" alt=""><h2>이용자 대출상태</h2>
+                        </div>
+                        <div class="rental_user_info">
+                            <ul>
+                                <li>이용자 이름: <span th:text="${member.name}"></span></li>
+                                <li>이용자 이메일: <span th:text="${member.email}"></span></li>
+                                <li>회원상태: <span th:text="${rental}"></span>권 대출 중,
+                                    <span th:if="${!#strings.contains(able, member.memberId)}">대출 가능</span>
+                                    <span th:unless="${!#strings.contains(able, member.memberId)}">대출 불가능</span>
+                                </li>
+                                <li>일괄반납연기는 현재 보이는 페이지만 해당이 됩니다. 2페이지 이상일 경우 다음 페이지는 따로 일괄반납연기 해주시기 바랍니다</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="user_rental_current_state">
+                        <div class="user_rental_state_title">
+                            <p>대출현황</p>
+                        </div>
+                        <div class="user_rental_state_box">
+                            <div class="user_rental_state_tbl">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>도서코드</th>
+                                        <th>도서이미지</th>
+                                        <th>서명</th>
+                                        <th>저자</th>
+                                        <th>출판사</th>
+                                        <th>ISBN</th>
+                                        <th>대출일</th>
+                                        <th>반납마감일</th>
+                                        <th>대출상태</th>
+                                        <th>반납하기</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tbody>
+                                    <tr th:each="rental : ${rentalList}">
+                                        <th:block th:if="${rental.returnDate} == null">
+                                            <td th:text="${rental.book.bookId}"></td>
+                                            <td><img th:src="@{|/upload/${rental.book.bfilename}|}" alt="책 이미지"></td>
+                                            <td th:text="${rental.book.bname}"></td>
+                                            <td th:text="${rental.book.author}"></td>
+                                            <td th:text="${rental.book.publisher}"></td>
+                                            <td th:text="${rental.book.bnumber}"></td>
+                                            <td th:text="${#dates.format(rental.rentalDate, 'yyyy-MM-dd')}"></td>
+                                            <td th:text="${#dates.format(rental.deadlineDate, 'yyyy-MM-dd')}"></td>
+                                            <td th:if="${rental.deadlineDate <= #dates.createNow()}" th:text="연체"></td>
+                                            <td th:unless="${rental.deadlineDate <= #dates.createNow()}" th:text="대출중"></td>
+                                            <td>
+                                                <input type="submit" class="returnBtn" th:value="반납" th:data-rental-id="${rental.rentalId}">
+                                            </td>
+                                        </th:block>
+                                    </tr>
+                                    </tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="user_rental_state_paging">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user_rental_past_list">
+                        <div class="user_rental_past_title">
+                            <p>이전대출내역</p>
+                        </div>
+                        <div class="user_rental_past_list_box">
+                            <div class="user_rental_past_list_tbl">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>도서코드</th>
+                                        <th>도서이미지</th>
+                                        <th>서명</th>
+                                        <th>저자</th>
+                                        <th>출판사</th>
+                                        <th>ISBN</th>
+                                        <th>대출일</th>
+                                        <th>반납일</th>
+                                        <th>대출상태</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="rental : ${rentalList}">
+                                        <th:block th:unless="${rental.returnDate} == null">
+                                            <td th:text="${rental.book.bookId}"></td>
+                                            <td><img th:src="@{|/upload/${rental.book.bfilename}|}" alt="책 이미지"></td>
+                                            <td th:text="${rental.book.bname}"></td>
+                                            <td th:text="${rental.book.author}"></td>
+                                            <td th:text="${rental.book.publisher}"></td>
+                                            <td th:text="${rental.book.bnumber}"></td>
+                                            <td th:text="${#dates.format(rental.rentalDate, 'yyyy-MM-dd')}"></td>
+                                            <td th:text="${#dates.format(rental.returnDate, 'yyyy-MM-dd')}"></td>
+                                            <td th:if="${rental.returnDate} != null" th:text="반납완료"></td>
+                                        </th:block>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="user_rental_past_list_paging">
+
+                            </div>
+                        </div>
+                    </div>
+                    <a th:href="@{/}"><button type="button" class="home_btn">Home</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{footer::footer-fragment}"></div>
+<script>
+    $(".returnBtn").click(function (){
+        let rentalId = $(this).data("rental-id");
+        let confirmed = confirm('반납하시겠습니까?');
+        if(confirmed) {
+            console.log(rentalId);
+            $.ajax({
+                type: "PUT",
+                contentType: 'application/json; charset=utf-8',
+                url: "/rentalReturn/return",
+                dataType: 'json',
+                data: JSON.stringify({
+                    rentalId: rentalId,
+                    returnDate: new Date()
+                }),
+                success: function (data) {
+                    console.log("반납완료 : " + data)
+                    console.log(data)
+                    location.href = "/member/rentallist";
+                },
+                error: function (response) {
+                    console.log("반납실패" + response);
+                }
+            });
+        } else{
+            console.log("취소");
+        }
+    })
+</script>
+</body>
+</html>

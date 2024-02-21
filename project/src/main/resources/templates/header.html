@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>선유도서관</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<header th:fragment="header-fragment">
+    <div id="header">
+        <section class="header">
+            <div class="header_logo_box">
+                <a th:href="@{/}"><img class="header_logo" src="/images/main_logo.png" alt="logo"></a>
+            </div>
+            <div class="header_links">
+                <div class="header_link">
+                    <div class="header_link_search">
+                        <a th:href="@{/book/list}">도서검색</a>
+                        <div class="header_sub_link_search">
+                            <p><a th:href="@{/book/list}">자료검색</a></p>
+                            <p><a th:href="@{/rentalReturn/rentalbest}">대출베스트(추천도서)</a></p>
+                            <p><a th:href="@{/wantbook/write}">희망도서신청</a></p>
+                            <p><a th:href="@{/wantbook/pagelist}" sec:authorize="hasAnyAuthority('Admin')">희망도서신청내역</a></p>
+                        </div>
+                    </div>
+                    <div class="header_link_open_space">
+                        <a th:href="@{/freeboard/pagelist}">열린공간</a>
+                        <div class="header_sub_link_open_space">
+                            <p><a th:href="@{/freeboard/pagelist}">자유게시판</a></p>
+                            <p><a th:href="@{/event/pagelist}">독서이벤트</a></p>
+                            <p><a th:href="@{/hopeboard/pagelist}">도서관에바란다</a></p>
+                            <p><a th:href="@{/faq/pagelist}">자주하는질문</a></p>
+                        </div>
+                    </div>
+                    <div class="header_link_library_info">
+                        <a th:href="@{/notice/pagelist}">도서관안내</a>
+                        <div class="header_sub_link_library_info">
+                            <p><a th:href="@{/notice/pagelist}">공지사항</a></p>
+                            <p><a th:href="@{/board/useinfoboard}">이용안내</a></p>
+                            <p><a th:href="@{/board/howtocomeboard}">오시는길</a></p>
+                        </div>
+                    </div>
+                    <div class="header_link_study_room">
+                        <a th:href="@{/readingRoom/room}">열람실</a>
+                        <div class="header_sub_link_study_room">
+                            <p><a th:href="@{/readingRoom/room}">자율학습실현황</a></p>
+                        </div>
+                    </div>
+                    <div class="header_link_my_library">
+                        <a th:href="@{/member/rentallist}">나의책숲</a>
+                        <div class="header_sub_link_my_library">
+
+                            <p><a th:href="@{/member/rentallist}">내서재</a></p>
+
+                            <th:block th:if="${member != null}">
+                                <p><a th:href="@{|/member/update/${member.memberId}|}">내정보수정</a></p>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="header_menu_toggle_box">
+                	<button class="header_menu_toggle_btn"><span>●</span><span>●</span><span>●</span></button>
+                </div>
+            </div>
+            
+            <div class="header_member">
+                <th:block sec:authorize="isAnonymous()">
+                    <a class="header_member_join" th:href="@{/login}">로그인</a> |
+                    <a class="header_member_login" th:href="@{/member/join0}">회원가입</a>
+                </th:block>
+                <th:block sec:authorize="isAuthenticated()">
+
+                <div class="admin_box">
+                  <!-- <a class="header_member_admin"  th:href="@{/member/detail}" sec:authorize="hasAnyAuthority('Admin')" th:text="A"></a> -->
+					<a class="header_member_admin" th:href="@{/member/detail}" sec:authorize="hasAnyAuthority('Admin')">ⓘ</a>
+     	        	<div class="admin_menu">
+        	            <a th:href="@{/rentalReturn/list}" sec:authorize="hasAnyAuthority('Admin')">대출정보</a>
+    	                <a th:href="@{/member/list}" sec:authorize="hasAnyAuthority('Admin')">회원목록</a> <!--관리자 로그인시 보임-->
+	                    <a th:href="@{/book/register}" sec:authorize="hasAnyAuthority('Admin')">도서등록</a> <!--관리자 로그인시 보임-->
+                    </div>
+                </div>
+                    <a class="header_member_join" th:href="'#'" th:text="${member.name} + '님'"></a> |
+                    <a class="header_member_login" th:href="@{/logout}">로그아웃</a>
+                </th:block>
+            </div>
+            <!-- when login, change div element -->
+            <!-- <div class="header_member">
+                <div class="header_member_logout"></div>
+            </div> -->
+        </section>
+    </div>
+<script>
+	const navbarToggle = document.querySelector('.header_menu_toggle_btn');
+	const navbarMenu = document.querySelector('.header_link');
+	
+	navbarToggle.addEventListener('click', () => {
+	    navbarMenu.classList.toggle('header_menu_active');
+	});
+</script>
+</header>
+</html>

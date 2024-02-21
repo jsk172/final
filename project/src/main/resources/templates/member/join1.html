@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+<!--    <script th:src="@{/js/join1.js}"></script>-->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="container">
+	<section id="joinform0">
+        <div id="top">
+            <div class="join_header_wrap">
+                <div class="join_header_inner">
+                    <a th:href="@{/}" title="홈으로"><img class="join_logo" th:src="@{/images/join-logo1.png}"></a>
+                    <span>02.</span> 정보입력
+                </div>
+            </div>
+        </div>
+		<!--<h2>회원가입</h2>-->
+		<form th:action="@{/member/join1}" method="post" th:object="${memberDTO}" class="joinform1">
+			<fieldset class="joinform1_fieldset">
+				<ul class="input-wrapper">
+					<li>
+                        <div class="idCheck">
+                            <label for="mid">아이디 (<span class="required">*</span>)</label>
+                            <button type="button" id="checkBtn" onclick="checkMid()">중복검사</button>
+                        </div>
+                        <div>
+                            <input type="text" name="mid" id="mid" placeholder="아이디는 6글자이상 14글자 이하로 입력해 주세요.">
+                        </div>
+                        <p id="check-result" class="result"></p>
+                        <p id="idMessage" class="id_message"></p>
+					</li>
+					<li>
+						<label for="password">비밀번호 (<span class="required">*</span>)</label>
+						<input type="password" name="password" id="password" placeholder="비밀번호는 영문, 숫자, 특수문자를 모두 포함한 8글자 이상 20자 이하로 입력해 주세요.">
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></p>
+                        <p id="passwordMessage" class="password_message"></p>
+					</li>
+                    <li>
+                        <label for="passwordConfirm">비밀번호 확인 (<span class="required">*</span>)</label>
+                        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="비밀번호 확인">
+                        <p id="passwordConfirm-error" class="check_password"></p>
+                        <p id="passwordConfirm-success" class="check_password"></p>
+                    </li>
+					<li>
+						<label for="email">이메일 (<span class="required">*</span>) </label>
+						<input type="text" name="email" id="email" placeholder="이메일 형식으로 입력해 주세요.">
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></p>
+                        <p id="emailMessage" class="email_message"></p>
+					</li>
+					<li>
+						<label for="name">이름 (<span class="required">*</span>)</label>
+						<input type="text" name="name" id="name" placeholder="한글로 입력해 주세요.">
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></p>
+                        <p id="nameMessage" class="name_message"></p>
+					</li>
+				</ul>
+			</fieldset>
+            <div class="btn_box">
+                <a th:href="@{/member/join0}"><button type="button" class="reset_btn">이전</button></a>
+                <a th:href="@{/member/join1}"><button type="submit" class="join_btn">가입</button></a>
+            </div>
+		</form>
+		</section>
+	</div>
+<script>
+    const hideErrorMessage = (inputField) => {
+        inputField.siblings(".error").css("display", "none");
+    };
+    $("input[type='text'], input[type='password']").focus(function() {
+        hideErrorMessage($(this));
+    });
+    const checkMid = () => {
+        let inputMid = document.getElementById("mid").value;
+        let checkResult = document.getElementById("check-result");
+        let idMessage = document.getElementById("idMessage");
+        $.ajax({
+            type: "POST",
+            url: "/member/check-id",
+            data: {
+                mid: inputMid
+            },
+            success: function (res){
+                if(res == "OK"){
+                    checkResult.innerHTML = "사용가능한 아이디입니다.";
+                    checkResult.style.color = "green";
+                }else if(res == "len"){
+                    checkResult.innerHTML = "아이디는 6글자이상 14글자 이하로 입력해 주세요.";
+                    checkResult.style.color = "#991";
+                }else{
+                    checkResult.innerHTML = "이미 등록된 아이디입니다.";
+                    checkResult.style.color = "red";
+                }
+                checkResult.style.display = "block";
+                idMessage.style.display = "none";
+            },
+            error: function (error){
+                console.log("실패: " , error);
+            }
+        })
+    };
+    $("#checkBtn").click(checkMid);
+
+    $("#mid").on("keyup", function (){
+        let id = $(this).val();
+        let idMessage = $("#idMessage");
+        idMessage.css("display", "block");
+
+        if (id.trim() === '') {
+            idMessage.text("");
+            return;
+        }
+        if (id.length < 6 || id.length > 14) {
+            idMessage.text("아이디는 6글자 이상 14글자 이하여야 합니다.");
+            idMessage.css("color", "#991");
+        } else {
+            idMessage.text("유효한 아이디입니다. 중복검사를 눌러주세요.");
+            idMessage.css("color", "green");
+        }
+        $("#check-result").text("");
+    })
+
+    $("#passwordConfirm").on("keyup", function() {
+        let password = $("#password").val();
+        let passwordConfirm = $(this).val();
+        let errorMessage = $("#passwordConfirm-error");
+        let successMessage = $("#passwordConfirm-success");
+
+        if (password === passwordConfirm) {
+            errorMessage.text("");
+            successMessage.text("비밀번호가 일치합니다.");
+            successMessage.css("color", "green");
+            $(this).css("border-color", "green");
+            successMessage.removeClass("check_password");
+        } else {
+            errorMessage.text("비밀번호가 일치하지 않습니다.");
+            errorMessage.css("color", "red");
+            $(this).css("border-color", "red");
+            successMessage.text("");
+            errorMessage.removeClass("check_password");
+        }
+    });
+
+    $("#password").on("keyup", function (){
+        let password = $(this).val();
+        let passwordMessage = $("#passwordMessage");
+
+        if (password.trim() === '') {
+            passwordMessage.text("");
+            return;
+        }
+        let passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!*]).*$/;
+
+        if (password.length < 8 || password.length > 20) {
+            passwordMessage.text("비밀번호는 8글자 이상 20글자 이하여야 합니다.");
+            passwordMessage.css("color", "red");
+        } else if (!passwordRegex.test(password)) {
+            passwordMessage.text("비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.");
+            passwordMessage.css("color", "red");
+        } else {
+            passwordMessage.text("비밀번호가 유효합니다.");
+            passwordMessage.css("color", "green");
+        }
+    })
+
+    $("#email").on("keyup", function (){
+        let email = $(this).val();
+        let emailMessage = $("#emailMessage");
+
+        if (email.trim() === '') {
+            emailMessage.text("");
+            return;
+        }
+
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailRegex.test(email)) {
+            emailMessage.text("올바른 이메일 형식이 아닙니다.");
+            emailMessage.css("color", "red");
+        } else {
+            emailMessage.text("유효한 이메일입니다.");
+            emailMessage.css("color", "green");
+        }
+    })
+
+    $("#name").on("keyup", function (){
+        let name = $(this).val();
+        let nameMessage = $("#nameMessage");
+
+        if (name.trim() === '') {
+            nameMessage.text("");
+            return;
+        }
+        let nameRegex = /^[가-힣]*$/;
+
+        if (!nameRegex.test(name)) {
+            nameMessage.text("이름은 한글로만 입력해야 합니다.");
+            nameMessage.css("color", "red");
+        } else {
+            nameMessage.text("이름이 유효합니다.");
+            nameMessage.css("color", "green");
+        }
+    })
+</script>
+</body>
+</html>

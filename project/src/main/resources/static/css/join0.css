@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+.join_logo{
+    width: 150px;
+    height: 60px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#joinform0{
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.join_header_inner {
+    color: #779c4b;
+    font-size: 24px;
+    line-height: 60px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#top {
+    margin-bottom: 20px;
+}
+
+.join_header_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#joinform0 fieldset {
+    padding: 10px 20px 30px 20px;
+    border-radius: 10px;
+    line-height: 2;
+    width: 750px;
+    text-align: left;
+}
+#joinform0 fieldset legend {
+    display: inline-block;
+    padding: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#joinform0 fieldset .textbox {
+    width: 730px;
+    height: 300px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: auto;
+    font-size: 0.9rem;
+    line-height: 3;
+}
+.Qagree {
+    font-weight: bold;
+    margin-right: 20px;
+}
+#joinform0 .btnbox {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#joinform0 .btnbox .reset_btn, 
+#joinform0 .btnbox .join_btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#joinform0 .btnbox .reset_btn {
+    background-color: #ccc;
+}
+
+#joinform0 .btnbox .join_btn {
+    background-color: #799c4b;
+}
+
+#joinform0 .btnbox .reset_btn:hover, 
+#joinform0 .btnbox .join_btn:hover {
+    background-color: #5e7e39;
+}
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<style>
+	.login_logo_img {
+		width: 150px;
+		margin: 0 auto;
+	}
+</style>
+<body>
+
+	<div id="container">
+		<section id="login">
+		<div class="login">
+		<div class="login_logo_img"><a th:href="@{/}"><img class="login_logo_img" th:src="@{/images/login-logo1.png}"></a></div><br>
+			<form th:action="@{/login}" method="post" class="loginform">
+				<fieldset class="login_fieldset">
+					<ul>
+						<li>
+							<label for="username">아이디</label>
+							<input type="text" name="username" id="username" placeholder="아이디">
+						</li>
+						<li>
+							<label for="password">비밀번호</label>
+							<input type="password" name="password" id="password" placeholder="비밀번호">
+						</li>
+						<li>
+							<span th:text="${error}" class="error"></span>
+						</li>
+						<li>
+            	            <div class="agree_box">
+	       	                    <input type="checkbox" name="saveId" id="saveId">
+	   	                        <label for="saveId"> 아이디 저장</label>
+	                        </div>
+						</li>
+						<li>
+
+                            <div class="join_login">
+                                <button type="submit" class="loginBtn">로그인</button>
+                            </div>
+                            <div class="">
+                                <a th:href="@{/member/join0}">
+                                    <button type="button" id="btnJoinMember" class="joinBtn">회원가입</button>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="btn_member">
+                                <div>
+                                    <button id="btnFindId" class="btn_member_white" onclick="findId()">아이디 찾기</button>
+                                    <button id="btnFindPwd" class="btn_member_white" onclick="resetPassword()">비밀번호 찾기</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="separator_box">
+                                <span class="separator" th:text="또는"></span>
+                            </div>
+                        </li>
+
+                        <li>
+                            <a th:href="@{|${naverUrl}|}">
+                                <button type="button" class="naverlogin"><img th:src="@{/images/naver.PNG}">네이버로 로그인</button>
+                            </a>
+                            <a th:href="@{/kakao/login}">
+                                <button type="button" class="kakaologin"><img th:src="@{/images/kakao.PNG}">카카오로 로그인</button>
+                            </a>
+                        </li>
+                    </ul>
+
+                </fieldset>
+            </form>
+        </div>
+
+    </section>
+</div>
+<script>
+    function findId(){
+        window.open('/member/searchId', '_blank', 'width = 700, height = 770');
+    }
+    function resetPassword(){
+        window.open('/member/resetPassword', '_blank', 'width = 700, height = 880');
+    }
+</script>
+</body>
+</html>

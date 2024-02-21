@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>선유도서관_게시판</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+    <link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{header::header-fragment}"></div>
+	<div id="container">
+        <section class="page">
+
+            <div class="page_top">
+                <div class="page_top_imgbox">
+                    <div class="page_img">
+                        <img th:src="@{/images/main_library_picture1.PNG}" alt="img">
+                    </div>
+                    <div class="page_title">
+                        <p>PAGE TITLE</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="page_content_box">
+                <nav class="page_side_nav">
+                    <div class="nav_content">
+                        <div class="nav_content_top">
+                            <div class="nav_top_title">
+                                <p>BOARD_TILTE</p>
+                            </div>
+                        </div>
+                        <div class="nav_content_mid">
+                            <div class="nav_links">
+                                <a class="nav_menu selected_menu" th:href="@{#}">게시판 메뉴1</a>
+                                <a class="nav_menu" th:href="@{#}">게시판 메뉴2</a>
+                                <a class="nav_menu" th:href="@{#}">게시판 메뉴3</a>
+                                <a class="nav_menu" th:href="@{#}">게시판 메뉴4</a>
+                                <a class="nav_menu" th:href="@{#}">게시판 메뉴2</a>
+                                <a class="nav_menu" th:href="@{#}">게시판 메뉴3</a>
+                                <a class="nav_menu" th:href="@{#}">게시판 메뉴4</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                
+                <div class="page_content">
+                    <div class="page_content_top">
+                        <!-- <div class="page_menu_title">
+                            <p>게시판 메뉴1</p>
+                        </div> -->
+                        <div class="page_menu_search">
+                            <div class="page_menu_search_box">
+                                <select class="page_menu_search_select">
+                                    <option value="title">제목</option>
+                                    <option value="author">글쓴이</option>
+                                </select>
+                                <input class="page_menu_search_input" type="text">
+                                <button class="page_menu_input_btn" type="submit">
+                                    <img class="page_menu_search_img" th:src="@{/images/magnifying4.png}" alt="">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page_content_mid">
+                        <div class="page_table_box">
+                            <table class="page_table">
+                                <thead class="page_table_head">
+                                    <tr>
+                                        <th class="page_table_no">번호</th>
+                                        <th class="page_table_title">제목</th>
+                                        <th class="page_table_writer">작성자</th>
+                                        <th class="page_table_date">작성일</th>
+                                        <th class="page_table_hit">조회수</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="page_table_body">
+                                    <tr>
+                                        <td>27</td>
+                                        <td>리부트 서버 재오픈 건의</td>
+                                        <td>김지성</td>
+                                        <td>2024.02.01</td>
+                                        <td>265</td>
+                                    </tr>
+                                    <tr>
+                                        <td>26</td>
+                                        <td>맥북 아니면 도서관 오면 안되는거 아닌가요?</td>
+                                        <td>김희린</td>
+                                        <td>2024.01.28</td>
+                                        <td>489</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>피자먹고싶은데 휴게실에서 배달..</td>
+                                        <td>이성재</td>
+                                        <td>2024.01.27</td>
+                                        <td>99</td>
+                                    </tr>
+                                    <tr>
+                                        <td>24</td>
+                                        <td>히히 재밌당 코딩 너무 재미따</td>
+                                        <td>최동현</td>
+                                        <td>2024.01.25</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>27</td>
+                                        <td>리부트 서버 재오픈 건의</td>
+                                        <td>김지성</td>
+                                        <td>2024.02.01</td>
+                                        <td>265</td>
+                                    </tr>
+                                    <tr>
+                                        <td>26</td>
+                                        <td>맥북 아니면 도서관 오면 안되는거 아닌가요?</td>
+                                        <td>김희린</td>
+                                        <td>2024.01.28</td>
+                                        <td>489</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>피자먹고싶은데 휴게실에서 배달..</td>
+                                        <td>이성재</td>
+                                        <td>2024.01.27</td>
+                                        <td>99</td>
+                                    </tr>
+                                    <tr>
+                                        <td>24</td>
+                                        <td>히히 재밌당 코딩 너무 재미따</td>
+                                        <td>최동현</td>
+                                        <td>2024.01.25</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>27</td>
+                                        <td>리부트 서버 재오픈 건의</td>
+                                        <td>김지성</td>
+                                        <td>2024.02.01</td>
+                                        <td>265</td>
+                                    </tr>
+                                    <tr>
+                                        <td>26</td>
+                                        <td>맥북 아니면 도서관 오면 안되는거 아닌가요?</td>
+                                        <td>김희린</td>
+                                        <td>2024.01.28</td>
+                                        <td>489</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>피자먹고싶은데 휴게실에서 배달..</td>
+                                        <td>이성재</td>
+                                        <td>2024.01.27</td>
+                                        <td>99</td>
+                                    </tr>
+                                    <tr>
+                                        <td>24</td>
+                                        <td>히히 재밌당 코딩 너무 재미따</td>
+                                        <td>최동현</td>
+                                        <td>2024.01.25</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>27</td>
+                                        <td>리부트 서버 재오픈 건의</td>
+                                        <td>김지성</td>
+                                        <td>2024.02.01</td>
+                                        <td>265</td>
+                                    </tr>
+                                    <tr>
+                                        <td>26</td>
+                                        <td>맥북 아니면 도서관 오면 안되는거 아닌가요?</td>
+                                        <td>김희린</td>
+                                        <td>2024.01.28</td>
+                                        <td>489</td>
+                                    </tr>
+                                    <tr>
+                                        <td>25</td>
+                                        <td>피자먹고싶은데 휴게실에서 배달..</td>
+                                        <td>이성재</td>
+                                        <td>2024.01.27</td>
+                                        <td>99</td>
+                                    </tr>
+                                    <tr>
+                                        <td>24</td>
+                                        <td>히히 재밌당 코딩 너무 재미따</td>
+                                        <td>최동현</td>
+                                        <td>2024.01.25</td>
+                                        <td>1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="page_content_bottom">
+                        <div class="page_paging">
+                            <span class="page_paging_prev">
+                                <
+                            </span>
+                            <span class="page_paging_number">
+                                <a th:href="@{*}">1</a>
+                                <a th:href="@{*}">2</a>
+                                <a th:href="@{*}">3</a>
+                                <a th:href="@{*}">4</a>
+                                <a th:href="@{*}">5</a>
+                                <a th:href="@{*}">6</a>
+                                <a th:href="@{*}">7</a>
+                                <a th:href="@{*}">8</a>
+                                <a th:href="@{*}">9</a>
+                            </span>
+                            <span class="page_paging_next">
+                                >
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+	
+<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>
