@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>공고/스크랩 관리</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<link rel="stylesheet" th:href="@{/css/member/announ.css}">
+</head>
+<body>
+
+	<div th:replace="~{header::header-fragment}"></div>
+
+	<div id="announ">
+		<h2>마이 페이지</h2>
+	
+		<div id="category">
+			<div><p>스크랩한 채용공고</p><div id="circle"></div></div>
+			<div><p>최근 본 공고</p></div>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th class="announNum">NO</th>
+					<th class="announHos">병원명</th>
+					<th class="announJobpost">채용 공고</th>
+					<th class="announEnd">마감일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="announNum">1</td>
+					<td class="announHos">
+						<p>무야호척추</p>
+					</td>
+					<td class="announJobpost">
+						<p><a>야호</a></p>
+					</td>
+					<td class="announEnd">
+						<p>2024.02.06</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="announNum">2</td>
+					<td class="announHos">
+						<p>무야호척추</p>
+					</td>
+					<td class="announ">
+						<p><a>야호</a></p>
+					</td>
+					<td class="announEnd">
+						<p>2024.02.06</p>
+					</td>
+				</tr>
+			</tbody>		
+		</table>
+	</div>
+	
+	<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

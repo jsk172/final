@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url(Pretendard-Medium.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url(Pretendard-Regular.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url(Pretendard-SemiBold.woff)format('woff');
+}
+
+*{
+	font-family: 'Pretendard-Medium';
+}
+input{outline-color: #4e66ffc9;}
+
+#joinform01 #joinform01_box{
+	width: 755px;
+	height: 930px;
+	border-radius: 5px;
+	border: 1px solid #E0E0E0;
+	margin: 200px auto 150px auto;
+}
+#joinform01 #joinform01_box h2{
+	font-size: 24px;
+	text-align: center;
+	padding: 35px 0;
+}
+#joinform01 #joinform01_box .joinform01_checkbox{
+	width: 675px;
+	margin: 20px auto 8px auto ;
+	display: flex;
+	align-items: center;
+}
+#joinform01 #joinform01_box p{
+	font-size: 14px;
+	padding: 0 4px;
+}
+#joinform01 #joinform01_box .essential{
+	font-size: 15px;
+	color: #F84A71;
+}
+#joinform01 #joinform01_box .joinform01_contentBox{
+	width: 655px;
+	height: 220px;
+	margin: 0 auto;
+	padding: 0 10px 0 10px;
+	border-radius: 3px;
+	border: 1px solid #DFDFDF;
+	overflow: auto; /* 스크롤바 */
+	white-space: pre-line;
+}
+#joinform01 button {
+	font-size: 20px;
+	font-family: "Inter";
+	font-weight: 600;
+	color: #fff;
+	text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	width: 180px;
+	height: 50px;
+    background: linear-gradient(to right, #4E66FF, #1A8DFF);
+    border-radius: 10px;
+    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
+    display: block;
+	margin: 40px auto 0 auto;
+	border: none;
+}
+#joinform01 button:hover {
+    /* background: linear-gradient(to bottom, rgb(200, 200, 200), rgb(243, 243, 243)); */
+    cursor: pointer;
+}
+
+#joinform01 #joinform01_box > .joinform01_checkbox:nth-of-type(1) {
+	margin: 0 auto ;
+}
+
+#joinform01 input[type="checkbox"] {
+	accent-color: #F36523;
+	color: white;
+}

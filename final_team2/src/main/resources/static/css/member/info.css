@@ -1,0 +1,123 @@
+@charset "UTF-8";
+
+input{outline-color: #4e66ffc9;}
+
+ul li{list-style: none;}
+ul{padding: 0;}
+#joinform02 #joinform02_box{
+	width: 590px;
+	height: 730px;
+	border-radius: 5px;
+	border: 1px solid #E0E0E0;
+	margin: 200px auto 150px auto;
+}
+#joinform02 #joinform02_box h2{
+	font-size: 24px;
+	text-align: center;
+	padding: 35px 0;
+}
+#joinform02  ul li{
+	margin: 20px 20px 20px 50px;
+}
+#joinform02 label{
+	width: 120px;
+	font-size: 14px;
+	line-height: 37px;
+	font-family: "Inter";
+	font-weight: 400;
+	float: left; 
+	padding-left: 20px;
+}
+#joinform02 input{
+	padding: 10px 10px;
+	width: 210px;
+	height: 16px;
+	font-size: 12px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+}
+#btn_checkId{
+	font-size: 10px;
+	font-family: "Inter";
+	font-weight: 600;
+	color: #fff;
+	/* text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
+	width: 62px;
+	height: 38px;
+    background: #FF5500;
+    border-radius: 10px;
+    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
+	border: none;
+}
+#joinform02 li .message{
+    margin-left: 140px;
+    display: none;
+}
+#joinform02 li .message p{
+	color: #F84A71;
+	font-size: 12px;
+}
+#joinform02 #email, #domain-txt{
+	width: 75px !important;
+	font-size: 12px;
+}
+#joinform02 #domain-list{
+	width: 109px;
+	height: 37.5px;
+	font-size: 12px;
+	color:rgb(117, 117, 117);
+	padding: 10px 15px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+}
+#joinform02 span{
+	font-size: 14px;
+	padding:  0 0 0 5px;
+}
+#joinform02 #birth-year, #birth-month, #birth-day, #phone_num{
+	width: 90px;
+	height: 37px;
+	font-size: 12px;
+	color:rgb(117, 117, 117);
+	padding: 5px 8px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+}
+#joinform02 #gender {
+	width: 20px;
+	line-height: 37px;
+	float: left;
+}
+#joinform02 #gender-option{
+	height: 37px;
+	display: flex;
+	align-items: center
+}
+#joinform02 p{
+	float: left;
+	font-size:14px;
+	padding: 0 5px;
+}
+#join_button{
+	font-size: 20px;
+	font-family: "Inter";
+	font-weight: 600;
+	color: #fff;
+	text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	width: 180px;
+	height: 50px;
+    background: linear-gradient(to right, #4E66FF, #1A8DFF);
+    border-radius: 10px;
+    /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
+    display: block;
+	margin: 50px auto 35px;
+	border: none;
+}
+#joinform02 button:hover {
+    /* background: linear-gradient(to bottom, rgb(200, 200, 200), rgb(243, 243, 243)); */
+    cursor: pointer;
+}
+#joinform02 input[type="radio"] {
+	accent-color: #4E66FF;	
+	color: white;
+}

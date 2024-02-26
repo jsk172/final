@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta charset="UTF-8">
+<title> 상세페이지</title>
+<link rel="stylesheet" th:href="@{/css/board.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div th:replace="~{header::header-fragment}"></div>
+    <div id="container">
+            <section class="detail">
+                <div id="detail-board">
+                    <!-- 게시판 정보 -->       
+                    <div class="detail-list">
+                        <div class="detail-title">
+                            <p th:text="${board.title}"></p>
+                        </div>
+                        <div class="detail-profile">
+                            <!-- 리뷰일 경우 이미지 display: none -->       
+                            <img th:src="@{/images/board/avatar.png}" class="profile_img">
+                            <div class="profile1">
+                                <p class="pp1" th:text="${board.author}"></p>
+                                <p class="pp2" th:text="${#dates.format(board.createdDate, 'yyyy.MM.dd')}"></p>
+                            </div>
+                        </div>
+                        <div class="detail_img">
+                            <img th:src="@{/images/board/bg_default.png}" class="detail-img">
+                        </div>
+                        <div class="detail-content">
+                            <p th:text="${board.content}"></p>
+                        </div>
+                        <!-- 조회 & 좋아요 & 댓글 수, 리뷰일경우 평점 -->       
+                        <div>
+                            <span class="sp4"><i class="fa-regular fa-eye"></i> <span th:text="${board.views}"></span></span>
+                            <span class="sp5"><i class="fa-regular fa-heart"></i> <span th:text="${board.likes}"></span></span>
+                            <span class="sp6"><i class="fa-regular fa-comment"></i> <span id="comment-count"></span> </span>
+                            <div class="star-container">
+                                <input type="text" id="rating" th:if="${boardType == 'review'}" th:value="${board.rating}" hidden>
+                                <i></i> 
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 댓글입력 -->         
+                    <form class="reply"
+                          method="post"
+                          id="comment-form"
+                          th:object="${comment}"
+                          th:action="@{/board/write/}+${board.id}+@{?boardType=}+${boardType}" >
+                        
+                        <img th:src="@{/images/board/avatar.png}" class="write_img">
+                        <div class="reply-write">
+                            <input type="text"
+                                   id="reply-input"
+                                   name="content"
+                                   placeholder="댓글을 남겨주세요"
+                                   th:value="*{content}" />
+                        </div>
+                        <button type="submit" id="reply-write">댓글</button>
+                    </form>
+                    
+                    <div class="reply-title">댓글 <span id="comment-length"></span></div>
+
+                    <!-- 댓글목록 -->
+                    <div class="reply-container">
+                        <div class="reply-list" th:each="comment: ${commentList}">
+                            <div class="reply-profile">
+                                <img th:src="@{/images/board/avatar.png}" class="profile_img">
+                            </div>
+                            <div class="reply-content">
+                                <p class="p3" th:text="${comment.author}"></p>
+                                <p th:text="${comment.content}">
+                                </p>
+                                <div class="flex-between">
+                                    <p class="pp3" th:text="${#dates.format(comment.createdDate, 'yyyy.MM.dd')}"></p>
+                                    <div class="reply-btns">
+                                        <form id="commnet-update-form">
+                                            <button type="submit" class="update">수정</button>
+                                        </form>
+                                        <form id="commnet-delete-form">
+                                            <button type="submit" class="delete">삭제</button>
+                                        </form>
+                                    </div>
+                                </div>
+                        </div>    
+                    </div>
+                
+                    <div class="backspace">
+                       <span name="boardType"><button type="button" id="write2">목록</button></span>
+                    </div>
+                </div>
+                </div>
+            </section>
+
+    </div>
+    <div th:replace="~{footer::footer-fragment}"></div>
+</body>
+<script>
+  function validateEmpty(array) {
+        // 빈 값 체크
+        const emptyCheck = array.some((temp) => {
+            if(!temp.value || !temp.value.trim()) {
+                alert(temp.name + "을(를) 입력하세요.");
+                return true;
+            }
+            return false
+        })
+        return !emptyCheck
+    }
+    $(document).ready(function() { 
+        function pageChange(value) {
+			if(value == "review") {
+				$(".detail-img").css("display", "block");
+				$(".star-container").css("display", "inline-block");
+             
+                const rating = $("#rating").val();
+                $(".star-container i").each((index, element) => {
+                    if (index < rating) {
+                        element.className = "fa-solid fa-star";
+                    } else {
+                        element.className = "fa-regular fa-star";
+                    }
+                })
+              
+			} else {
+				$(".detail-img").css("display", "none");
+				$(".star-container").css("display", "none");
+			}
+		}
+        const url = new URL(window.location.href);
+        const boardType = url.searchParams.get("boardType");
+        $("#comment-count").text($(".reply-list").length);
+        $("#comment-length").text($(".reply-list").length);
+   
+        pageChange(boardType);
+
+        $(".backspace").on("click", function(e) {
+            history.back();
+        });
+
+        $("#comment-form").submit(function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            const comment = $("#reply-input").val();
+            const validateInfo = [
+                {
+                    name: "댓글",
+                    value: comment
+                },
+            ]
+            const payload = {
+                commnet: comment,
+            };
+            if (!validateEmpty(validateInfo)) {
+                return;
+            }
+
+            this.submit();
+
+        });
+    })
+</script>
+</html>
+

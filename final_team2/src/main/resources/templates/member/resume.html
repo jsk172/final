@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>이력서 관리</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/member/resume.css}">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	
+	<div id="container">
+
+		<div id="resume">
+			<h2>마이 페이지</h2>
+		
+			<div id="category">
+				<div><p>기본 이력서</p><div id="circle"></div></div>
+				<div><p>추가 이력서</p><div></div></div>
+			</div>
+			
+			<!-- board list area -->
+        <div id="board-list">
+            <div class="board">
+                <table class="board-table">
+                    <thead>
+                        <tr>
+                            <th class="th-num">NO</th>
+                            <th class="th-title">이력서 제목</th>
+                            <th class="th-id">수정</th>
+                            <th class="th-date">복사</th>
+                            <th class="th-hit">설정</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="resume : ${resumeList}">
+                            <td class="resumeNum" th:text="${resume.id}"></td>
+							<td class="resumeTitle"><a th:href="@{|/resume/${resume.id}|(page=${resumeList.number+1})}" th:text="${resume.title}"></a></td>
+							<td class="resumeUpdate">
+								<button>수정</button>				
+							</td>
+							<td class="resumeCopy">
+								<button>복사</button>	
+							</td>
+							<td class="resumeSet">
+								<div>
+									<!-- 미구현: 공개 시, .identity_selected / 미공개 시, identity_nonselected -->
+				           			<div id="public" class="identity_selected">공개</div>
+				           			<div id="private" class="identity_nonselected">비공개</div>
+				           		</div>
+							</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+			
+			<!-- 페이지 -->
+			<div id="page">
+				<!-- 페이지 영역 -->
+				<div id="pagination">
+					<!-- 이전 페이지 -->
+				<!-- 2page 클릭하면 db 페이지는 1page -->
+				<a th:href="${resumeList.first}? '#' : 
+					@{/job/job_main(page=${resumeList.number})}"><img th:src="@{/images/job/page_prev.svg}" alt="prev"></a>
+				<!-- 페이지 번호 블럭 -->
+				<span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+				 <!-- 현재 페이지는 링크없이 숫자만 표시 -->
+				    <span th:if="${page == resumeList.number + 1}"  
+				    	th:text="${page}" class="current_page"></span>
+				    <span th:if="${page != resumeList.number + 1}">
+				    	<a th:href="@{/member/resume(page=${page})}" th:text="${page}"></a>
+				    </span>
+				</span>
+				<!-- 다음 페이지 -->
+				<!-- 현재 2page -> 3page  실제페이지는 1page-->
+						<a th:href="${resumeList.last} ? '#' : 
+								@{//member/resume(page=${jobList.number+2})}"><img th:src="@{/images/job/page_next.svg}" alt="map"></a>
+				</div>
+						
+			</div>
+		</div>
+	
+	</div>
+	
+	<div th:replace="~{footer::footer-fragment}"></div>
+	
+	<script>
+	/* 개인,병원 버튼 */
+	/* $(document).ready(function() {
+	    $('#public, #private').click(function() {
+	        // 모든 탭에서 'selected' 클래스 제거
+	        $('#public, #private').removeClass('identity_selected').addClass('identity_nonselected');
+	        
+	        // 클릭된 탭에 'selected' 클래스 추가
+	        $(this).removeClass('identity_nonselected').addClass('identity_selected');
+	    });
+	});
+	 */
+	/* 개인,병원 버튼의 선택 값 hidden input에 넣기 */
+	/* $(document).ready(function() {
+	    $('#public').click(function() {
+	        $('#userType').val('public'); // '개인' 선택 시
+	    });
+	    $('#private').click(function() {
+	        $('#userType').val('private'); // '병원' 선택 시
+	    });
+	}); */
+	</script>
+</body>
+</html>

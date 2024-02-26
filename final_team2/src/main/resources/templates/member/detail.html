@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원 정보 수정</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" th:href="@{/css/member/detail.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<section id="detail" >
+  <div id="detail_box">
+ 	  <form th:action="@{|/member/update/${member.mid}|}" method="post" name="users">
+          <input type="hidden" name="mid" th:value="${member.mid}">
+   	<h2>회원 정보 수정</h2>
+    	<ul>
+    		<li>
+    			<label for="memberId">아이디</label>
+    			<input type="text" id="memberId" name="memberId" readonly th:value="${member.memberId}">
+	   		</li>
+	   		<li>
+	   			<label for="mname">이름</label>
+	   			<input type="text" id="mname" name="mname" readonly th:value="${member.mname}">
+	   		</li>
+	   		<li>
+	   			<label for="gender">성별</label>
+	   			<div id="gender-option">
+	    			<input type="radio" class="gender" name="gender" value="남" checked>
+	    			<p>남자</p>
+	    			<input type="radio" class="gender" name="gender" value="여">
+	    			<p>여자</p>
+	   			</div>
+	   		</li>
+	   		<li>
+	   			<div class="info" id="info__birth">
+	   			<label for="birthday">생년월일</label>
+				  <select class="box" id="birth-year" name="birth-year" >
+				    <option value="" disabled selected>출생 연도</option> <!-- value 초기값 설정 필수 (값이 없을때의 예외 처리 가능 -->
+				  </select>
+				  <select class="box" id="birth-month" name="birth-month" >
+				    <option value="" disabled selected>월</option>
+				  </select>
+				  <select class="box" id="birth-day" name="birth-day" >
+				    <option value="" disabled selected>일</option>
+				  </select>
+                    <!-- 생년월일 전체값 받는 input 박스 -->
+                    <input type="hidden" id="birth" name="birth">
+				</div>
+	   		</li>
+	   		<li>
+	   			<div class="phone">
+	   			<label for="phone">핸드폰 번호</label>
+	   			<select class="box" id="phone_num" name="phone_num">
+	   				<option>010</option>
+	   			</select>
+				  <input type="text" id="phone" name="phone" 
+	   				placeholder="' - ' 제외하고 입력해주세요." th:value="${#strings.substringAfter(member.phone, '010')}">
+				</div>
+	   		</li>
+	   		<li>
+	   			<label for="email">이메일</label>
+	   			<input type="text" id="email-head" name="email-head" placeholder="이메일" th:value="${#strings.substringBefore(member.email, '@')}">
+                <span>@</span>
+                <input type="text" id="domain-txt" class="domain-txt" name="domain-txt" placeholder="이메일" th:value="${#strings.substringAfter(member.email, '@')}">
+					<select class="box" id="domain-list" >
+					  <option value="type">직접 입력</option>
+					  <option value="naver.com">naver.com</option>
+					  <option value="google.com">google.com</option>
+					  <option value="hanmail.net">hanmail.net</option>
+					  <option value="nate.com">nate.com</option>
+					  <option value="kakao.com">kakao.com</option>
+					</select>
+				<!-- 이메일 전체값 받는 input 박스 -->	
+				<input type="hidden" id="email" name="email" value="">
+	   		</li>
+	   	</ul>
+	   	<div class="button">
+	   		<button type="submit" id="update_button" onclick="updateInfo()">수정하기</button>
+	   		<button type="button" id="back_button" onclick="backlocation()">취소하기</button>
+	  	</div>
+  	</form>
+	</div>
+</section>
+<script>
+	const updateInfo = () => {
+		let update = document.getElementById("#update_button");
+		update.submit();
+	};
+	
+	const backloaction = () => {
+		location.href = "/member/mypage";
+	};
+
+    // '출생 연도' 셀렉트 박스 option 목록 동적 생성
+    $(document).ready(function() {
+        // 출생 연도 설정 (1940년부터 2023년까지)
+        for (var year = 1940; year <= 2023; year++) {
+            $('#birth-year').append($('<option>', {
+                value: year,
+                text: year
+            }));
+        }
+        // 월 설정 (1월부터 12월까지)
+        for (var month = 1; month <= 12; month++) {
+            $('#birth-month').append($('<option>', {
+                value: month,
+                text: month
+            }));
+        }
+        // 일 설정 (1일부터 31일까지)
+        for (var day = 1; day <= 31; day++) {
+            $('#birth-day').append($('<option>', {
+                value: day,
+                text: day
+            }));
+        }
+    });
+
+    //생년월일 합치기
+    $(document).ready(function() {
+        // 출생 연도, 월, 일 선택 변경 감지
+        $('#birth-year, #birth-month, #birth-day').change(function() {
+            updateBirthField();
+        });
+
+        // 생년월일 필드 업데이트 함수
+        function updateBirthField() {
+            var year = $('#birth-year').val();
+            var month = $('#birth-month').val();
+            var day = $('#birth-day').val();
+
+            // 값 검증: 모든 필드가 선택되었는지 확인
+            if(year && month && day) {
+                // 월과 일이 한 자리 수일 경우 앞에 0을 추가
+                month = month.padStart(2, '0');
+                day = day.padStart(2, '0');
+
+                // 생년월일 결합
+                var fullBirthDate = year + month + day;
+
+                // 결합된 생년월일을 #birth 필드에 설정
+                $('#birth').val(fullBirthDate);
+            }
+        }
+    });
+
+
+    // 이메일
+    // 도메인 직접 입력 or domain option 선택 및 전체이메일 input #full-email에 값 넣기
+    $(document).ready(function() {
+        // 이메일 앞부분과 도메인 입력 필드 변경 감지
+        $('#email-head, #domain-txt').on('input', function() {
+            updateEmailField();
+        });
+
+        // 도메인 선택 변경 감지
+        $('#domain-list').change(function() {
+            var selectedValue = $(this).val();
+
+            if (selectedValue === 'type') {
+                // '직접 입력' 선택 시
+                $('#domain-txt').prop('readonly', false).val('').focus();
+            } else {
+                // 드롭다운에서 선택한 도메인으로 설정
+                $('#domain-txt').prop('readonly', true).val(selectedValue);
+            }
+            updateEmailField(); // 도메인 리스트 변경 시에도 이메일 필드 업데이트
+        });
+
+        // 이메일 필드 업데이트 함수
+        function updateEmailField() {
+            var emailLocalPart = $('#email-head').val();
+            var emailDomainPart = $('#domain-txt').val();
+
+            // 전체 이메일 주소 결합
+            var fullEmail = emailLocalPart + '@' + emailDomainPart;
+
+            // 결합된 이메일 주소를 #email 필드에 설정
+            $('#email').val(fullEmail);
+        }
+    });
+
+
+    /* 전화번호 유효성 검사 (input 값 입력하면 자동 실행) */
+    function validatePhone() {
+        /* alert('test'); */
+        let tel = document.getElementById('phone_b').value;
+
+        let regexTel = /^[0-9]+$/; //숫자
+
+        if(tel.length !== 0){
+            // ID 길이 검사
+            if(!regexTel.test(tel)){
+                $('#message_phone').css('display', 'block');
+            } else {
+                // 조건을 만족하면 오류 메시지 숨기기
+                $('#message_phone').css('display', 'none');
+            }
+            //값이 없으면 메세지 숨기기
+        }else{
+            $('#message_phone').css('display', 'none');
+        }
+    }
+
+    /* 전화번호 합치기 */
+    document.addEventListener('DOMContentLoaded', function () {
+        // 전화번호 필드의 입력을 감지하는 이벤트 리스너 설정
+        document.getElementById('phone_b').addEventListener('input', updateFullPhone);
+    });
+
+    function updateFullPhone() {
+        // 전화번호 접두사 및 전화번호 필드에서 값을 가져옵니다.
+        let phonePrefix = document.getElementById('phone_num').value;
+        let phone2 = document.getElementById('phone_b').value;
+
+        // 접두사와 전화번호를 결합합니다.
+        let fullPhone = phonePrefix + phone2;
+
+        // 결합된 전체 전화번호를 숨겨진 필드에 설정합니다.
+        document.getElementById('full_phone').value = fullPhone;
+    }
+
+    /* 이름 유효성 검사 (input 값 입력하면 자동 실행) */
+    function validateName() {
+        /* alert('test'); */
+        let mname = document.getElementById('mname').value;
+
+        let regexName = /^[가-힣ㄱ-ㅎ]+$/; //한글
+
+        if(mname.length !== 0){
+            // 이름 검사
+            if(!regexName.test(mname)){
+                $('#message_name').css('display', 'block');
+            } else {
+                // 조건을 만족하면 오류 메시지 숨기기
+                $('#message_name').css('display', 'none');
+            }
+            //값이 없으면 메세지 숨기기
+        }else{
+            $('#message_name').css('display', 'none');
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>공고 상세페이지</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" th:href="@{/css/job/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sqpbvyc558"></script>
+</head>
+<body>
+	 <!-- footer.html 연결  -->
+	<div th:replace="~{header::header-fragment}"></div>
+	
+	<div id="container">
+	   <section id="job_detail">
+	   	<form th:action="@{/apply}" name="applyform" method="post"
+				th:object="${applyDTO}">
+				
+			<!-- 기업회원이 상세보기할때 null 처리되지 않도록  -->
+			<th:block sec:authorize="hasAuthority('MEMBER')">
+				<!-- 구인공고게시글 번호 (jid) -->
+				<input type="hidden" th:value="${job.jid}" name="job.jid">
+				<!-- 이력서 번호 (rsid) -->
+				<input type="hidden" th:value="${1}" name="resume.id">
+				<!-- 지원자 번호 (mid -->
+				<input type="hidden" th:value="${#authentication.principal.member.mid}" name="member.mid">
+				<!-- 해당 구인글의 기업번호 (cid) -->
+				<input type="hidden" th:value="${job.company.cid}" name="company.cid">
+			</th:block>
+	   		
+	   		<p class="title">채용 정보</p>
+	   		
+	   		<!-- 병원 및 글제목 -->
+	   		<div id="job_detail_title">
+		   		<p th:text="${job.company.cname}"></p>
+		   		<p th:text="${job.title}"></p>
+	   		</div>
+	   		
+	   		<!-- 상단 정보 -->
+	   		<div id="information">
+	   			<div>
+	   				<div>
+		   				<span class="job_title">직종</span>
+		   				<div>
+		   					<span class="job_title2" th:text="${job.occupation}">물리치료사</span>
+							<!-- salary가 "회사 내규에 따름"인 경우 -->
+							<span th:if="${job.salary == '회사 내규에 따름'}" th:text="${job.salary}"></span>
+							<!-- salary가 "회사 내규에 따름"이 아닌 경우 , 천단위로 ','표시 (숫자는 소수점 표시 최소,최대 부분)-->
+							<span th:if="${job.salary != '회사 내규에 따름'}" 
+							      th:text="${job.minSalary != null and job.maxSalary != null ? 
+							      '연봉 ' + #numbers.formatDecimal(job.minSalary, 0, 'COMMA', 0, 'COMMA') + ' ~ ' + #numbers.formatDecimal(job.maxSalary, 0, 'COMMA', 0, 'COMMA') + ' 만원 (면접 후 결정)' : 
+							      job.salary}"></span>
+		   				</div>
+	   				</div>
+	   				<div>
+		   				<span class="job_title">경력</span>
+		   				<!-- "경력"이 아닌 경우 -->
+		   				<span th:if="${job.experience != '경력'}" th:text="${job.experience}"></span>
+		   				<!-- "경력"인 경우 -->
+		   				<span th:if="${job.experience == '경력'}" 
+						      th:text="${job.minDuration != null and job.maxDuration != null ? 
+						      ' ' + job.minDuration + ' ~ ' + job.maxDuration + ' 년' : 
+						      job.experience}"></span>
+	   				</div>
+	   				<div>
+		   				<span class="job_title">학력</span>
+		   				<span th:text="${job.education}"></span>
+	   				</div>
+	   				<div>
+		   				<span class="job_title">우대조건</span>
+		   				<span th:text="${job.qualification}"></span>
+	   				</div>
+	   				<div>
+		   				<span class="job_title">면허/자격증</span>
+		   				<span th:text="${job.certification}"></span>
+	   				</div>
+	   				<div>
+		   				<span class="job_title">모집인원</span>
+		   				<span th:text="${job.recruitNum} + ' 명'"></span>
+	   				</div>
+	   			</div>
+	   			
+	   			<div>
+	   				<div>
+		   				<span class="job_title">고용형태</span>
+		   				<span th:text="${job.empType}"></span>
+	   				</div>
+	   				<div>
+		   				<span class="job_title">직급/직책</span>
+		   				<span th:text="${job.position}"></span>
+	   				</div>
+	   				<div>
+		   				<span class="job_title">근무지역</span>
+		   				<span th:text="${job.address01}"></span>
+	   				</div>
+	   				<div>
+		   				<span class="job_title">근무시간</span>
+		   				<div>
+		   					<span th:text="${job.workTimeEtc}"></span>
+			   				<div id="worktime">
+			   					<div>
+					   				<span class="worktime2">평일</span>
+					   				<span th:if="${job.startTimeWk == null && job.endTimeWk == null}"
+					   					th:text="' - '"></span>
+					   				<span th:if="${job.startTimeWk != null && job.endTimeWk != null}"
+					   					th:text="${job.startTimeWk + ' ~ ' + job.endTimeWk}"></span>
+					   				<!-- 09시 00분 ~ 18시 00분 -->
+				   				</div>
+			   					<div>
+					   				<span class="worktime2">토요일</span>
+					   				<span th:if="${job.startTimeWkE == null && job.endTimeWkE == null}"
+					   					th:text="' - '"></span>
+					   				<span th:if="${job.startTimeWkE != null && job.endTimeWkE != null}"
+					   					th:text="${job.startTimeWkE + ' ~ ' + job.endTimeWkE}"></span>
+					   				<!-- 08시 00분 ~ 13시 00분 -->
+				   				</div>
+			   				</div>
+		   				</div>
+	   				</div>
+	   			</div>
+	   		</div>
+	   		<div id="information2">
+	   			<div>
+	   				<span class="job_title">담당업무</span>
+		   			<span th:if="${job.duty == null || job.duty == ''}"
+	   					th:text="' - '"></span>
+	   				<span th:if="${job.duty != null || job.duty != ''}"
+	   					th:text="${job.duty}"></span>
+   				</div>
+   			</div>
+   			
+   			<!-- 위치 정보 -->
+   			<div id="location">
+   				<div id="map_box">
+		   			<div id="map" style=" height:400px;">
+		   				<img th:src="@{/images/job/site_map1.jpg}" alt="map">
+		   				<!-- 지도 표시 -->
+		   			</div>
+		   			<div id="map_button">
+		   				<img th:src="@{/images/job/trafficSign.svg}" alt="direction">&nbsp;
+		   				<a th:href="@{https://map.naver.com/p/search/%EA%B1%B0%EC%9D%B8%EB%B3%91%EC%9B%90/place/1821729893?c=15.00,0,0,0,dh&isCorrectAnswer=true}"><button type="button">길 찾기</button></a>
+	   				</div>
+	   			</div>
+	   			<div id="address">
+	   				<div>
+	   					<div>병원 주소</div> 
+	   					<p th:if="${(job.address01 == null || job.address01 == '') && (job.address02 == null || job.address02 == '')}"
+	   						th:text="' - '"></p>
+	   					<p th:if="${(job.address01 != null || job.address01 != '') && (job.address02 != null || job.address02 != '')}"
+	   						th:text="${job.address01 + ' ' + job.address02}"></p>
+	   				</div>
+	   				<div>
+	   					<div>오시는 길</div> <p>-</p>
+	   				</div>
+	   			</div>
+   			</div>
+   			
+   			<!-- 지원 버튼 -->
+			<div id="apply_btns">
+				<button class="search-button" onclick="apply()">즉시 지원</button>
+				<button class="search-button">이메일 지원</button>
+			</div>
+			
+			<!-- 카테고리 -->
+			<div class="category_main" id="descriptionSection">
+				<div><a href="#descriptionSection" class="scrollLink" id="description_category">상세요강</a><div class="circle" id="description_circle"></div></div>
+			    <div><a href="#applicationSection" class="scrollLink" id="application_category">접수기간/방법</a><div id="application_circle"></div></div>
+			    <div><a href="#hospitalInfoSection" class="scrollLink" id="hospitalInfo_category">병원정보</a><div id="hospitalInfo_circle"></div></div>
+			</div>
+			
+			<!-- 상세요강 -->
+			<div class="description" id="description">
+				<span th:text="${job.description}"></span>
+				 <!-- <img th:src="@{|/upload/${job.filepath}|}" alt="file"> -->
+				 <div th:if="${job.filepath != null and !job.filepath.isEmpty()}">
+				    <img th:src="@{|/upload/${job.filename}|}" alt="file">
+				</div>
+			</div>
+			
+			<!-- 복리후생 -->
+			<div class="category">
+				<div><p>복리후생</p></div>
+			</div>
+			<div id="benefit">
+				<div id="benefit_box" th:if="${job.benefits != null && job.benefits != ''}">
+					<div>
+						<img th:src="@{/images/job/PensionAndInsurance.svg}" alt="benefits">
+						<p>연금/보험</p>
+					</div>
+					<p th:text="${job.benefits}"></p>
+				</div>
+				<div id="benefit_box" th:if="${job.timeOff != null && job.timeOff != ''}">
+					<div>
+						<img th:src="@{/images/job/timeOff.svg}" alt="timeOff">
+						<p>휴무/휴가/행사</p>
+					</div>
+					<p th:text="${job.timeOff}"></p>
+				</div>
+				<div id="benefit_box" th:if="${job.amenities != null && job.amenities != ''}">
+					<div>
+						<img th:src="@{/images/job/amenities.svg}" alt="amenities">
+						<p>생활평의/여가생활</p>
+					</div>
+					<p th:text="${job.amenities}"></p>
+				</div>
+				<div id="benefit_box" th:if="${job.awards != null && job.awards != ''}">
+					<div>
+						<img th:src="@{/images/job/awards.svg}" alt="awards">
+						<p>보상/수당/지원</p>
+					</div>
+					<p th:text="${job.awards}"></p>
+				</div>
+				<div id="benefit_box" th:if="${job.facilities != null && job.facilities != ''}">
+					<div>
+						<img th:src="@{/images/job/facilities.svg}" alt="facilities">
+						<p>시설지원</p>
+					</div>
+					<p th:text="${job.facilities}"></p>
+				</div>
+			
+			
+			</div>
+			
+			<!-- 접수기간/방법 -->
+			<div class="category" id="applicationSection">
+				<div><p>접수기간/방법</p></div>
+			</div>
+			<div id="date">
+				<div>
+					<div>
+						<div id="remaining_time">
+							<div>
+								<p> 남은 기간</p>
+								<p>D-7</p>
+							</div>
+							<div>
+			   					<div>시작일</div> 
+			   					<!-- <p th:text="${job.startDate}"> --><!-- 2024.01.17 (수) --></p>
+			   					<p th:text="${'2024.01.17'}"><!-- 2024.01.17 (수) --></p>
+			   				</div>
+			   				<div>
+			   					<div>마감일</div> 
+			   					<!-- <p th:text="${job.endDate}"> --><!-- 2024.02.29 (목) --></p>
+			   					<p th:text="${'2024.02.27'}"><!-- 2024.02.29 (목) --></p>
+			   				</div>
+						</div>
+						<div id="apply_method">
+							<div>
+				   				<span class="job_title">지원방법</span>
+				   				<p th:if="${job.applyMtd == null || job.applyMtd == ''}"
+				   					th:text="' - '"></p>
+				   				<p th:if="${job.applyMtd != null || job.applyMtd != ''}"
+				   					th:text="${job.applyMtd}"></p>
+			   				</div>
+							<div>
+				   				<span class="job_title">제출서류</span>
+				   				<p>이력서</p>
+			   				</div>
+							<div>
+				   				<span class="job_title">지원서 양식</span>
+				   				<p>피지컬매치 이력서,지원자 자유이력서</p>
+			   				</div>
+						</div>
+					</div>
+				</div>
+				<div id="pic">
+					<div>
+						<div>
+			   				<span class="job_title">인사담당자</span>
+			   				<p>김대준</p>
+		   				</div>
+						<div>
+			   				<span class="job_title">부서명</span>
+			   				<p></p>
+		   				</div>
+	   				</div>
+	   				<div>
+						<div>
+			   				<span class="job_title">전화번호</span>
+			   				<p>02-406-5588</p>
+		   				</div>
+						<div>
+			   				<span class="job_title">휴대폰번호</span>
+			   				<p>비공개</p>
+		   				</div>
+	   				</div>
+				
+				</div>
+			</div>
+			
+			<!-- 병원정보 -->
+			<div class="category" id="hospitalInfoSection">
+				<div><p >병원정보</p></div>
+			</div>
+			<div id="company_information">
+				<div>
+					<p th:text="${job.company.cname}"></p>
+				</div>
+				<div>
+					<div>
+						<div id="information01">
+							<div>
+				   				<span class="job_title">기관분류</span>
+				   				<p>개인의원</p>
+			   				</div>
+							<div>
+				   				<span class="job_title">대표전화</span>
+				   				<p th:if="${job.company.tel == null || job.company.tel == ''}"
+				   					th:text="' - '"></p>
+				   				<p th:text="${job.company.tel}"></p>
+			   				</div>
+							<div>
+				   				<span class="job_title">팩스번호</span>
+				   				<p>-</p>
+			   				</div>
+							<div>
+				   				<span class="job_title">홈페이지</span>
+				   				<p>http://www.mediscope.co.kr/</p>
+			   				</div>
+						</div>
+						<div id="information02">
+							<div>
+				   				<span class="job_title">직원 수</span>
+				   				<p>-</p>
+			   				</div>
+							<div>
+				   				<span class="job_title">설립일</span>
+				   				<p>-</p>
+			   				</div>
+			   				<div>
+				   				<span class="job_title">진료과목</span>
+				   				<p>-</p>
+			   				</div>
+						</div>
+					</div>
+				</div>
+				<div id="c_introduction">
+						<div>
+			   				<span class="job_title">병원소개</span>
+			   				<p>
+			   					거인병원은 지리적으로 부산 및 부산 근교 지역에서
+								접근성이 좋은 동래구 사직동에 위치해
+								스포츠의 메카인 사직운동장을 마주 보는 위치에 자리 잡아
+								관절 및 척추, 스포츠의학을 전문으로 하고 있으며
+								내과(류마티스ㆍ당뇨ㆍ성인만성질환), 영상의학과, 마취통증의학과 전문의들의 협진 시스템으로
+								수술 전후 안전하고, 합병증 없는 체계적으로 진료하는 병원입니다
+							</p>
+		   				</div>
+				</div>
+			</div>
+			
+			<!-- 경고문구 -->
+			<div id="warning">
+				<div>
+					<p>본 정보는 <span class="warning_blue">피지컬매치</span>에서 제공한 자료를 바탕으로 피지컬매치이 편집 및 그 표현방법을 수정하여 완성한 것입니다.</p>
+					<p>본 정보는 피지컬매치의 동의없이 무단전재 또는 재배포, 재가공할 수 없으며, 게재된 채용병원(기업)과 채용담당자의 정보는 구직활동 이외의 용도로 사용될 수 없습니다.</p>
+					<p>피지컬매치은 <span class="warning_blue">피지컬매치</span>에서 게재한 자료에 대한 오류와 사용자가 이를 신뢰하여 취한 조치에 대해 책임을 지지 않습니다.</p>
+					<p>[저작권 ⓒ피지컬매치 무단전재 – 재배포 금지]</p>
+				</div>
+			</div>
+			
+			<!-- 지원 버튼 -->
+				<div id="apply_btns" >
+					<button class="search-button" onclick="apply()">즉시 지원</button>
+					<button class="search-button">이메일 지원</button>
+				</div>
+			</form>
+				   			
+	  </section>
+	</div>
+	
+	<!-- footer.html 연결  -->
+	<div th:replace="~{footer::footer-fragment}"></div>
+	
+	
+	<script>
+	// 지원하기
+	function apply() {
+	   if (confirm('정말로 지원하시겠습니까?')) {
+	       document.applyform.submit();
+	   } else {
+	       return false;
+	    }
+	  }
+	
+    /* jquery 환경 - 버튼 클릭 이벤트 */
+	/* $(function(){
+		//네이버 지도 표시
+		var HOME_PATH = window.HOME_PATH || '.';
+
+	    var cityhall = new naver.maps.LatLng(37.5252328, 126.8927846),
+	      map = new naver.maps.Map('map', {
+	          center: cityhall.destinationPoint(0, 500),
+	          zoom: 15
+	      }),
+	      marker = new naver.maps.Marker({
+	          map: map,
+	          position: cityhall
+	      });
+	
+	    var contentString = [
+	          '<div class="iw_inner">',
+	          '   <h3>영등포 세무서</h3>',
+	          '   <p>서울특별시 영등포구 선유동1로 38 | <br />',
+	          '      영등포 세무서<br />',
+	          '       <img src="'+ HOME_PATH +'/img/example/hi-seoul.jpg" width="55" height="55" alt="영등포 세무서" class="thumb" /><br />',
+	          '       <a href="http://www.seoul.go.kr" target="_blank">www.seoul.go.kr/</a>',
+	          '   </p>',
+	          '</div>'
+	      ].join('');
+	
+	    var infowindow = new naver.maps.InfoWindow({
+	      content: contentString
+	    });
+	
+	    naver.maps.Event.addListener(marker, "click", function(e) {
+	      if (infowindow.getMap()) {
+	          infowindow.close();
+	      } else {
+	          infowindow.open(map, marker);
+	      }
+	    });
+	
+	    infowindow.open(map, marker);
+	}); */
+    
+    //카테고리 상단 고정
+	$(document).ready(function(){
+		/* 각 카테고리 클릭 시, 해당 목록으로 이동 */
+		// '.scrollLink' 클래스를 가진 모든 링크에 대해 이벤트 리스너를 설정합니다.
+	    $('.scrollLink').click(function(e){
+	        // 기본 앵커 이동을 방지합니다.
+	        e.preventDefault();
+
+	        // 이 링크의 href 속성에서 앵커 타겟의 ID를 가져옵니다.
+	        var targetId = $(this).attr('href');
+	        var targetPosition = $(targetId).offset().top; // 타겟 섹션의 위치를 계산합니다.
+	        
+	     	// 고정된 메뉴의 높이를 가져옵니다. 고정된 메뉴가 없다면 이 값을 조정하지 않아도 됩니다.
+	        var menuHeight = $('.category_main.fixed').outerHeight() || 0;
+	        // 해당 ID를 가진 요소로 스크롤합니다.
+	        $('html, body').animate({
+	            scrollTop: targetPosition // 스크롤 위치를 조정
+	        }, 500); // 스크롤 애니메이션 지속 시간을 500ms로 설정
+	    });
+
+	    var menu = $('.category_main'); // 고정시킬 메뉴 선택자
+	    var menuOffsetTop = menu.offset().top; // 메뉴의 초기 위치
+
+	    $(window).scroll(function() {
+	        if ($(window).scrollTop() > menuOffsetTop) {
+	            var menuOffsetLeft = menu.offset().left; // 메뉴의 원래 left 위치
+	            var menuWidth = menu.width(); // 메뉴의 원래 너비
+
+	            menu.addClass('fixed')
+	                .css('left', menuOffsetLeft + 'px') // left 위치 동적 할당
+	                .css('width', menuWidth + 'px'); // width 동적 할당
+	        } else {
+	            menu.removeClass('fixed')
+	                .css('left', '') // left 속성 제거
+	                .css('width', ''); // width 속성 제거
+	        }
+	    });
+	    
+	});
+    
+    /* 카테고리 색변경 및 빨간점 생성 */
+	$(window).scroll(function() {
+	    var scrollPos = $(window).scrollTop();
+	    var descriptionTop = $('#description').offset().top - 40; //20px 더 높은 곳에서 시작
+	    var dateTop = $('#date').offset().top - 40;
+	    var companyInfoTop = $('#company_information').offset().top - 40;
+
+	    var descriptionHeight = $('#description').height();
+	    var dateHeight = $('#date').height();
+	    var companyInfoHeight = $('#company_information').height();
+
+	    // 각 범위 설정
+	    var descriptionRange = descriptionTop + descriptionHeight;
+	    var dateRange = dateTop + dateHeight;
+	    var companyInfoRange = companyInfoTop + companyInfoHeight;
+
+	    // .circle 클래스 제거
+	    $('.circle').removeClass('circle');
+	    $('#description_category, #application_category, #hospitalInfo_category').css('color', ''); // 기본 색상으로 초기화
+
+	 	// 현재 위치에 따라 .circle 클래스 추가 및 카테고리 링크 색상 변경
+	    if (scrollPos < descriptionRange) {
+	        $('#description_circle').addClass('circle');
+	        $('#description_category').css('color', 'black');
+	    } else if (scrollPos >= dateTop && scrollPos < dateRange) {
+	        $('#application_circle').addClass('circle');
+	        $('#application_category').css('color', 'black');
+	    } else if (scrollPos >= companyInfoTop && scrollPos < companyInfoRange) {
+	        $('#hospitalInfo_circle').addClass('circle');
+	        $('#hospitalInfo_category').css('color', 'black');
+	    }
+	});
+    
+
+
+</script>
+
+</body>
+</html>

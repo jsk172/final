@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+<meta charset="UTF-8">
+<title>공고 메인페이지</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" th:href="@{/css/job/style.css}">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+	 <!-- footer.html 연결  -->
+	<div th:replace="~{header::header-fragment}"></div>
+
+	<div id="container">
+	   <section id="job_main">
+	   		
+			<p class="title">채용 정보</p>
+			
+			<!-- 상단 지역선택 부분 -->
+			<div id="body01">
+				<div id="body01_01">
+					<!-- 지도 -->
+					<div id="map">
+						<img th:src="@{/images/job/map.png}" alt="map">
+					</div>
+				</div>
+				<div id="body01_02">
+					<!-- 검색 -->
+					<form id="search" th:action="@{/job/job_main}" method="get">
+						<select id="category-select" name="type">
+							<option th:value="title" th:text="제목" th:selected="${type=='title'}"></option>
+						    <option th:value="cname" th:text="병원" th:selected="${type=='cname'}"></option>
+						</select>
+						<input type="text" id="search-input" placeholder="검색어 입력" name="keyword" th:value="${kw}"/>
+						<!-- 지역 검색 -->
+						<input type="hidden" id="city_input" name="city" value="">
+						<input type="hidden" id="sort_input" name="sort" value="">
+					    <button type="submit" class="search-button">검색</button>
+					</form>
+					
+					<!-- 지역 선택 -->
+					<div id="city">
+					    <div>
+					    	<!-- ${selectedCity로 받은 값이 아래와 같다면 city_selected 클래스를 부여함 -->
+					    	<!-- job_main 처음 들어가면 값이 null임 -->
+					        <div th:class="${selectedCity == null or selectedCity == '' ? 'city_selected' : ''}">전체</div>
+					        <div th:class="${selectedCity == '서울' ? 'city_selected' : ''}">서울</div>
+					        <div th:class="${selectedCity == '부산' ? 'city_selected' : ''}">부산</div>
+					        <div th:class="${selectedCity == '대구' ? 'city_selected' : ''}">대구</div>
+					        <div th:class="${selectedCity == '인천' ? 'city_selected' : ''}">인천</div>
+					        <div th:class="${selectedCity == '광주' ? 'city_selected' : ''}">광주</div>
+					    </div>
+					    <div>
+					        <div th:class="${selectedCity == '대전' ? 'city_selected' : ''}">대전</div>
+					        <div th:class="${selectedCity == '울산' ? 'city_selected' : ''}">울산</div>
+					        <div th:class="${selectedCity == '세종' ? 'city_selected' : ''}">세종</div>
+					        <div th:class="${selectedCity == '경기도' ? 'city_selected' : ''}">경기도</div>
+					        <div th:class="${selectedCity == '강원도' ? 'city_selected' : ''}">강원도</div>
+					        <div th:class="${selectedCity == '충청북도' ? 'city_selected' : ''}">충청북도</div>
+					    </div>
+					    <div>
+					        <div th:class="${selectedCity == '충청남도' ? 'city_selected' : ''}">충청남도</div>
+					        <div th:class="${selectedCity == '전라북도' ? 'city_selected' : ''}">전라북도</div>
+					        <div th:class="${selectedCity == '전라남도' ? 'city_selected' : ''}">전라남도</div>
+					        <div th:class="${selectedCity == '경상북도' ? 'city_selected' : ''}">경상북도</div>
+					        <div th:class="${selectedCity == '경상남도' ? 'city_selected' : ''}">경상남도</div>
+					        <div th:class="${selectedCity == '제주도' ? 'city_selected' : ''}">제주도</div>
+					    </div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 공고글 리스트 부분 -->
+			<div id="body02">
+				<!-- 정렬 -->
+				<div id="sort">
+					<p th:class="${selectedSort == 'register' ? 'selected_sort' : ''}" data-sort="register">등록일순</p>|
+				    <p th:class="${selectedSort == 'deadline' ? 'selected_sort' : ''}" data-sort="deadline">마감일순</p>|
+				    <p th:class="${selectedSort == 'update' ? 'selected_sort' : ''}" data-sort="update">최신업데이트순</p>
+				</div>
+			
+				<!-- 공고글 -->
+				<div id="job_list" th:each="job : ${jobList}">
+					<div>
+						<p th:text="${job.company.cname}"></p>
+					</div>
+					<div>
+						 <p><a th:href="@{|/job/${job.jid}|(page=${jobList.number+1})}" th:text="${job.title}"></a><p>
+						<div>
+							<div th:text="${job.experience}"></div>&nbsp;
+							<div th:text="${job.education}"></div>&nbsp;
+							<div th:text="${job.empType}"></div>&nbsp;
+							<div th:text="${job.address01}"></div>
+						</div>
+						<p><span th:text="${job.occupation}"></span>  : 
+							<!-- salary가 "회사 내규에 따름"인 경우 -->
+							<span th:if="${job.salary == '회사 내규에 따름'}" th:text="${job.salary}"></span>
+							<!-- salary가 "회사 내규에 따름"이 아닌 경우 , 천단위로 ','표시 (숫자는 소수점 표시 최소,최대 부분)-->
+							<span th:if="${job.salary != '회사 내규에 따름'}" 
+							      th:text="${job.minSalary != null and job.maxSalary != null ? 
+							      '연봉 ' + #numbers.formatDecimal(job.minSalary, 0, 'COMMA', 0, 'COMMA') + ' ~ ' + #numbers.formatDecimal(job.maxSalary, 0, 'COMMA', 0, 'COMMA') + ' 만원' : 
+							      job.salary}"></span>
+						</p>
+					</div>	
+					<div><img th:src="@{/images/job/star_selected.svg}" alt="star"></div>				
+					<div>
+						<button class="small_btn">즉시 지원</button>
+						<p >2023-11-06 등록</p>
+						
+						<p th:text="${!job.endDate.isEmpty() ? job.endDate + ' 까지' : '채용시까지'}"></p>
+						<!-- 채용시까지 -->
+					</div>				
+				</div>
+				
+				<!-- 페이지 -->
+				<div id="page">
+					<!-- 페이지 영역 -->
+					<div id="pagination">
+						<!-- 이전 페이지 -->
+						<!-- 2page 클릭하면 db 페이지는 1page -->
+						<a th:href="${jobList.first}? '#' : 
+							@{/job/job_main(page=${jobList.number})}"><img th:src="@{/images/job/page_prev.svg}" alt="prev"></a>
+						<!-- 페이지 번호 블럭 -->
+						<span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+						 <!-- 현재 페이지는 링크없이 숫자만 표시 -->
+						    <span th:if="${page == jobList.number + 1}"  
+						    	th:text="${page}" class="current_page"></span>
+						    <span th:if="${page != jobList.number + 1}">
+						    	<a th:href="@{/job/job_main(page=${page})}" th:text="${page}"></a>
+						    </span>
+						</span>
+						<!-- 다음 페이지 -->
+						<!-- 현재 2page -> 3page  실제페이지는 1page-->
+						<a th:href="${jobList.last} ? '#' : 
+								@{/job/job_main(page=${jobList.number+2})}"><img th:src="@{/images/job/page_next.svg}" alt="map"></a>
+					</div>
+					<!-- 글쓰기 버튼 -->
+					<div class="btn_write" sec:authorize="hasAuthority('COMPANY')">
+					    <a th:href="@{/job/job_write}"><button type="button" class="small_btn">글쓰기</button></a>
+					</div>
+					
+				</div>
+			</div>
+	  </section>
+	</div>
+	
+	<!-- footer.html 연결  -->
+	<div th:replace="~{footer::footer-fragment}"></div>
+	
+	<script>
+		//지역 선택 버튼
+		$(document).ready(function() {
+		    $("#city > div > div").click(function() {
+		        // 클릭된 도시의 텍스트를 hidden input의 값으로 설정
+		        var selectedCity = $(this).text();
+
+		     	// "전체" 선택 시 city 파라미터 값을 비우고, 그렇지 않으면 해당 도시명을 설정
+	            if(selectedCity === "전체") {
+	                $("#city_input").val("");
+	            } else {
+	                $("#city_input").val(selectedCity);
+	            }
+		
+		        // 폼을 제출
+		        $("#search").submit();
+		    });
+		    
+		 	// 정렬 옵션 클릭 이벤트
+		    $("#sort > p").click(function() {
+		        var sortValue = $(this).attr("data-sort"); // 클릭된 정렬 옵션의 data-sort 값을 가져옴
+		        $("#sort_input").val(sortValue); // sort_input 필드에 설정
+		        // 폼을 제출
+		        $("#search").submit();
+		    });
+		});
+	</script>
+
+</body>
+</html>

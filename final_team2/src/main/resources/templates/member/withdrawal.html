@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 탈퇴</title>
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/member/detail.css}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<section id="detail" >
+    <div id="detail_box">
+        <form th:action="@{/member/withdrawal}" method="post" name="users">
+            <input type="hidden" name="mid" th:value="${member.mid}">
+            <h2>회원 탈퇴</h2>
+            <ul>
+                <li>
+                    <label for="memberId">아이디</label>
+                    <input type="text" id="memberId" name="memberId" readonly th:value="${member.memberId}">
+                </li>
+                <li>
+                    <label for="mname">이름</label>
+                    <input type="text" id="mname" name="mname" readonly th:value="${member.mname}">
+                </li>
+                <li>
+                    <label for="mpasswd">비밀번호</label>
+                    <input type="password" id="mpasswd" name="mpasswd" onkeyup="validatePw()"
+                           placeholder="비밀번호를 입력해주세요.">
+                </li>
+            </ul>
+            <div class="button">
+                <button type="submit" id="update_button" onclick="return confirm('정말로 탈퇴하시겠습니까?')">탈퇴하기</button>
+                <button type="button" id="back_button" onclick="backlocation()">취소하기</button>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,233 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url(Pretendard-Medium.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url(Pretendard-Regular.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url(Pretendard-SemiBold.woff)format('woff');
+}
+
+/* 공통 스타일 */
+*{margin: 0; padding: 0; font-family: 'Pretendard-Medium';}
+#container{width: 100%;}
+ul li{list-style: none;}
+a{text-decoration: none;}
+input{outline-color: #4e66ffc9;}
+
+
+h2{
+	margin: 8% 0 5% 0;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+#resume{
+	margin: 0 auto; 
+	width:75%;
+	padding-bottom: 150px;
+}
+
+#resume #category{
+	width: 100%;
+    margin: 0 auto;
+    padding-bottom: 20px;
+    border-bottom: 1.5px black solid;
+    display: flex;
+    font-size: 20px;
+}
+#resume a{
+	color: black;
+}
+#resume #category > div{
+	display: flex;
+   height: 30px;
+}
+#resume #category p{
+	margin-left: 15px;
+	font-family: 'Pretendard-SemiBold';
+	display: flex;
+	align-items: flex-end;
+}
+#resume #category #circle{
+	width: 7px;
+	height: 7px;
+    background: #FF0000;
+    border-radius: 100%;
+}
+
+#resume table{
+	width: 100%;
+	margin: 0 auto;
+}
+
+
+
+#resume .resumeUpdate button{
+	font-size: 15px;
+    color: #fff;
+    width: 58px;
+    height: 30px;
+    background: linear-gradient(to right, #337ff4, #1A8DFF);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#resume .resumeUpdate button:hover{
+	 background: linear-gradient(to right, #216de3, #1A8DFF);
+}
+
+#resume .resumeCopy button{
+	font-size: 15px;
+    color: #fff;
+    width: 58px;
+    height: 30px;
+    background: linear-gradient(to right, #337ff4, #1A8DFF);
+    border: 1.5px solid #4296e9;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#resume .resumeCopy button:hover{
+	 background: linear-gradient(to right, #216de3, #1A8DFF);
+	}
+
+#resume .resumeSet > div{
+	display: flex;
+    width: 115px;
+    border: 2px #CECECE solid;
+    border-radius: 20px;
+    height: 35px;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 15px;
+}
+#resume .resumeSet > div > div{
+	display: flex;
+    border-radius: 13px;
+    width: 45%;
+    height: 81%;
+    align-items: center;
+    justify-content: center;
+    color: #a3a3a3;
+    cursor: pointer;
+}
+#resume .resumeSet .identity_selected{
+	display: flex;
+    background: linear-gradient(to right, #337ff4, #1A8DFF);
+    border: 1.5px solid #4296e9;
+    border-radius: 13px;
+    width: 45%;
+    height: 81%;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+
+#resume #page{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	margin-top: 50px;
+	margin-left: auto;
+}
+#resume #page > div:nth-of-type(1){
+	display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 15px;
+    align-items: center;
+}
+#resume #page > div:nth-of-type(2){
+	display: flex;
+    justify-content: center;
+    font-size: 15px;
+    align-items: center;
+}
+#resume #page img{
+    width: 7px;
+}
+#resume #page #pagination a{
+	margin-right: 20px;
+	color: #6C7AEF;
+	display: flex;
+    align-items: center;
+}
+#resume #page #pagination .current_page{
+	width: 21px;
+    height: 20px;
+    background: #6C7AEF;
+    color: white;
+    border-radius: 7px;
+    margin-right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.board-table {
+    font-size: 16px;
+  }
+  
+  .board-table th{
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .board-table td {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .board-table td a{
+    text-decoration: none;
+  }
+  
+  .board-table .th-num {
+    width: 100px;
+  }
+  
+  .board-table .th-title {
+    width: 740px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 30px;
+  }
+  
+  .board-table .th-id {
+    /* width: 70px; */
+  }
+  
+  .board-table .th-date {
+    width: 150px;
+  }
+  
+  .board-table .th-hit {
+    width: 100px;
+  }
+  
+  .board-table th {
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  .board-table td {
+    padding: 5px 0;
+    text-align: center;
+  }
+  
+  .board {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }

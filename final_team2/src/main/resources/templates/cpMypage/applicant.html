@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>지원 내역</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" th:href="@{/css/cpMypage/applicant.css}">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+
+	<div id="jopapp">
+			<h2>지원자 관리</h2>
+		
+			<div id="category">
+				<div><p>지원자</p><div id="circle"></div></div>
+			</div>
+			
+			<!-- board list area -->
+        <div id="board-list">
+            <div class="board">
+                <table class="board-table">
+                    <thead>
+                        <tr>
+                            <th class="th-num">NO</th>
+                            <th class="th-title">지원한 공고</th>
+                            <th class="th-id">지원한 이력서</th>
+                            <th class="th-hit">삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="apply : ${applyList}">
+                            <td class="resumeNum" th:text="${apply.aid}"></td>
+							<td class="resumeTitle"><a th:href="@{|/job/${apply.job.jid}|(page=${applyList.number+1})}" th:text="${apply.job.title}"></a></td>
+							<td class="resumeUpdate"><a th:href="@{|/resume/${apply.resume.id}|(page=${applyList.number+1})}" th:text="${apply.resume.title}"></a></td>
+							<td class="cancel">
+								<button>삭제</button>
+							</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+			<!-- 페이지 -->
+			<div id="page">
+				<!-- 페이지 영역 -->
+				<div id="pagination">
+					<!-- 이전 페이지 -->
+				<!-- 2page 클릭하면 db 페이지는 1page -->
+				<a th:href="${applyList.first}? '#' : 
+					@{/member/jopapp(page=${applyList.number})}"><img th:src="@{/images/job/page_prev.svg}" alt="prev"></a>
+				<!-- 페이지 번호 블럭 -->
+				<span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+				 <!-- 현재 페이지는 링크없이 숫자만 표시 -->
+				    <span th:if="${page == applyList.number + 1}"  
+				    	th:text="${page}" class="current_page"></span>
+				    <span th:if="${page != applyList.number + 1}">
+				    	<a th:href="@{/member/jopapp(page=${page})}" th:text="${page}"></a>
+				    </span>
+				</span>
+				<!-- 다음 페이지 -->
+				<!-- 현재 2page -> 3page  실제페이지는 1page -->
+						<a th:href="${applyList.last} ? '#' : 
+								@{/member/jopapp(page=${applyList.number+2})}"><img th:src="@{/images/job/page_next.svg}" alt="map"></a>
+				</div>
+				 
+						
+			</div>
+		</div>
+	
+	<div th:replace="~{footer::footer-fragment}"></div>
+</body>
+</html>

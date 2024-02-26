@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>글목록...</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/resume/resume.css}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+
+</head>
+<body>
+    <div th:replace="~{header::header-fragment}"></div>
+    
+    <h1 id="resume-heading">이력서 등록</h1>
+    <form
+          id="resume-form"
+          th:action="@{/resume/write}"
+          th:object="${resume}"
+          method="post"
+          enctype="multipart/form-data">
+        <main id="resume-container">
+            <div class="resume-title">
+                <label for="resume-title">이력서 제목</label>
+                <input type="text"
+                       id="resume-title"
+                       placeholder="제목을 입력하세요."
+                       name="title"
+                       th:value="*{title}"/>
+            </div>
+            <h2>개인 정보</h2>
+            <section class="resume-info">
+                <div class="thumbnail">
+                    <img alt="thumbnail-image" id="resume-photo">
+                    <label for="resume-upload" class="flex jc-center">
+                      <span class="material-symbols-outlined">
+                        add_a_photo
+                      </span>
+                    </label>
+                    <input type="file" id="resume-upload" hidden accept="image/jpeg, image/png, image/jpg">
+                </div>
+                <div class="info-box">
+                    <label for="resume-info-name">이름</label>
+                    <input type="text" id="resume-info-name" placeholder="이름을 입력하세요." name="name" th:value="${name}"/>
+                </div>
+                <div class="info-box">
+                    <label for="resume-info-birthday-year">생년월일</label>
+                    <div class="flex g-13">
+                        <input type="text" class="w-100" id="resume-info-birthday-year" placeholder="1990" name="birthday_year" th:value="*{birthday_year}" />
+                        <input type="text" class="w-80" id="resume-info-birthday-month" placeholder="월" name="birthday_month" th:value="*{birthday_month}"/>
+                        <input type="text" class="w-80" id="resume-info-birthday-day" placeholder="일" name="birthday_day" th:value="*{birthday_day}"/>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <label>성별</label>
+                    <input type="radio" name="gender" id="resume-info-gender-man" th:checked="*{gender eq 'male'}" th:value="male"/>
+                    <label for="resume-info-gender-man" class="ml-5 mr-12">남자</label>
+                    <input type="radio" name="gender" id="resume-info-gender-girl" th:checked="*{gender eq 'female'}" th:value="female" >
+                    <label for="resume-info-gender-girl" class="ml-5">여자</label>
+                </div>
+                <div class="info-box">
+                    <label for="resume-info-phone-next">핸드폰 번호</label>
+                    <div class="flex g-13">
+                        <select id="resume-info-phone-prev">
+                            <option>
+                                +82
+                            </option>
+                        </select>
+                        <input type="text" id="resume-info-phone-next" placeholder="'-' 제외하고 입력해주세요." name="phone" th:value="*{phone}"/>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <label for="resume-info-email-prev">이메일</label>
+                    <div class="flex g-13">
+                        <input type="text" id="resume-info-email-prev" class="w-140" placeholder="이메일" name="email_prev" th:value="*{email_prev}" />
+                        <span> @ </span>
+                        <input type="text" id="resume-info-email-next" class="w-140" name="email_next" th:value="*{email_next}" />
+                    </div>
+                </div>
+                <div class="info-box">
+                    <label for="resume-info-address-prev" class="align-self-start">주소</label>
+                    <div class="flex g-13">
+                        <input type="text" id="resume-info-address-prev" class="w-100" placeholder="우편번호" name="zoneCode" th:value="*{zoneCode}" />
+                        <button type="button" class="postcode-btn border-gray">
+                            우편번호 검색
+                        </button>
+                        <input type="text" id="resume-info-address-next" placeholder="주소" class="full-width" name="address"  th:value="*{address}" />
+                    </div>
+                </div>
+            </section>
+            <h2>학력사항</h2>
+            <section class="resume-edu">
+                <div class="info-box">
+                    <label for="resume-edu-last-prev">최종학력</label>
+                    <div class="flex g-13">
+                        <input type="text" id="resume-edu-last-prev" name="edu_last_prev" th:value="*{edu_last_prev}" />
+                        <input type="text" id="resume-edu-last-next" name="edu_last_next" th:value="*{edu_last_next}" />
+                    </div>
+                </div>
+                <div class="info-box">
+                    <label for="resume-edu-detail_prev">상세학력</label>
+                    <div class="flex g-13">
+                        <input type="text" id="resume-edu-detail_prev" name="edu_detail_prev" th:value="*{edu_detail_prev}" />
+                        <input type="text" id="resume-edu-detail_next" name="edu_detail_next" th:value="*{edu_detail_next}" />
+                    </div>
+
+                </div>
+            </section>
+            <h2>경력사항</h2>
+            <section class="resume-career">
+                <div class="info-box">
+                    <label for="resume-career">경력</label>
+                    <input type="text" id="resume-career" name="career" th:value="*{career}" placeholder="경력을 적어주세요."/>
+                </div>
+            </section>
+            <h2>기타사항</h2>
+            <section class="resume-etc">
+                <div class="info-box">
+                    <label>병역사항</label>
+                    <input type="radio" name="military" id="resume-military-none" th:checked="*{military eq '해당없음'}" th:value="해당없음"/>
+                    <label for="resume-military-none" class="ml-5 mr-12">해당없음</label>
+                    <input type="radio" name="military" id="resume-military-req" th:checked="*{military eq '병역필'}" th:value="병역필" />
+                    <label for="resume-military-req" class="ml-5 mr-12">병역필</label>
+                    <input type="radio" name="military" id="resume-military-exemption" th:checked="*{military eq '면제'}" th:value="면제" />
+                    <label for="resume-military-exemption" class="ml-5 mr-12">면제</label>
+                    <input type="radio" name="military" id="resume-military-not-yet" th:checked="*{military eq '미필'}" th:value="미필" />
+                    <label for="resume-military-not-yet" class="ml-5">미필</label>
+                </div>
+                <div class="info-box">
+                    <label>면허증</label>
+                    <input type="radio" name="license" id="resume-license-1" th:checked="${license eq '1종_보통'}" th:value="1종_보통" />
+                    <label for="resume-license-1" class="ml-5 mr-12">1종 보통</label>
+                    <input type="radio" name="license" id="resume-license-2" th:checked="${license eq '2종_보통'}" th:value="2종_보통" />
+                    <label for="resume-license-2" class="ml-5 mr-12">2종 보통</label>
+                    <input type="radio" name="license" id="resume-license-none" th:checked="${license eq '없음'}" th:value="없음" />
+                    <label for="resume-license-none" class="ml-5">없음</label>
+                </div>
+                <div class="info-box">
+                    <label for="resume-certificate">자격증</label>
+                    <input type="text" id="resume-certificate" name="certificate" th:value="*{certificate}" placeholder="보유하신 자격증을 입력해주세요."/>
+                </div>
+                <div class="info-box">
+                    <label for="resume-language">어학능력</label>
+                    <input type="text" id="resume-language" name="language" th:value="*{language}"  placeholder="보유하신 언어를 입력해주세요."/>
+                </div>
+            </section>
+            <h2>자기소개</h2>
+            <section class="resume-introduce">
+                <div class="info-box">
+                    <label for="resume-introduce-growth">성장과정</label>
+                    <textarea id="resume-introduce-growth" name="growth" th:text="*{growth}" >
+                    </textarea>
+                    <div class="btn-container r">
+                        <button type="button" class="sm">오타 검색</button>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <label for="resume-introduce-specialty">장단점 및 특기</label>
+                    <textarea id="resume-introduce-specialty" name="specialty" th:text="*{specialty}"></textarea>
+                    <div class="btn-container r">
+                        <button type="button" class="sm">오타 검색</button>
+                    </div>
+                </div>
+
+                </div>
+                <div class="info-box">
+                    <label for="resume-introduce-exp">경험 및 경력사항</label>
+                    <textarea id="resume-introduce-exp" name="exp" th:text="*{exp}"></textarea>
+                    <div class="btn-container r">
+                        <button type="button" class="sm">오타 검색</button>
+                    </div>
+                </div>
+            </section>
+            <div class="btn-container">
+                <button type="button" onclick="location.href='/main'" class="first">취소</button>
+                <button type="submit">이력서 등록하기</button>
+            </div>
+        </main>
+    </form>
+    
+    <div th:replace="~{footer::footer-fragment}"></div>
+
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function validateEmail(email) {
+        const regex =
+            /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+        return regex.test(email);
+    }
+
+    function validatePhone(phone) {
+        const regex = /^\d{3}\d{3,4}\d{4}$/;
+        return regex.test(phone);
+    
+    }
+
+    function validateEmpty(array) {
+        // 빈 값 체크
+        const emptyCheck = array.some((temp) => {
+            if(!temp.value || !temp.value.trim()) {
+                alert(temp.name + "을(를) 입력하세요.");
+                return true;
+            }
+            return false
+        })
+        return !emptyCheck
+    }
+
+    function validateDate(year, month, day) {
+        // 빈 값 체크
+        if (!year || !month || !day) {
+            return false;
+        }
+        // 숫자 유효성 체크
+        if (isNaN(year) || isNaN(month) || isNaN(day)) {
+            return false;
+        }
+        // 월 범위 체크
+        if (month < 1 || month > 12) {
+            return false;
+        }
+        // 일 범위 체크
+        const maxDay = new Date(year, month, 0).getDate();
+        if (day < 1 || day > maxDay) {
+            return false;
+        }
+        return true;
+    }
+    $(document).ready(function() {
+        $("#resume-form").submit(function(e) {
+            e.preventDefault();
+            // 이력서 제목
+            const title = $("#resume-title").val();
+            // 게인정보
+            const name = $("#resume-info-name").val();
+            const year = $("#resume-info-birthday-year").val();
+            const month = $("#resume-info-birthday-month").val();
+            const day = $("#resume-info-birthday-day").val();
+
+            if (!validateDate(year, month, day)) {
+                alert("유효하지 않은 생년월일입니다.");
+                return;
+            }
+
+            const gender = $("input[name='gender']:checked").val();
+            const phone = $("#resume-info-phone-next").val();
+
+            if (!validatePhone(phone)) {
+                alert("휴대폰 번호를 다시 확인하세요.");
+                return;
+            }
+            
+            const email_prev = $("#resume-info-email-prev").val();
+            const email_next = $("#resume-info-email-next").val();
+
+            if (!validateEmail(email_prev + "@" + email_next)) {
+                alert("이메일 주소를 다시 확인하세요.");
+                return;
+            }
+
+            const zc = $("#resume-info-address-prev").val();
+            const address = $("#resume-info-address-next").val();
+            const photo = $("#resume-photo").attr("src");
+            // 학력사항
+            const edu_last_prev = $("#resume-edu-last-prev").val();
+            const edu_last_next = $("#resume-edu-last-next").val();
+            const edu_detail_prev = $("#resume-edu-detail_prev").val();
+            const edu_detail_next = $("#resume-edu-detail_next").val();
+            // 경력사항
+            const career = $("#resume-career").val();
+            // 기타사항
+            const military = $("input[name='military']:checked").val();
+            const license = $("input[name='license']:checked").val();
+            const certificate = $("#resume-certificate").val();
+            const language = $("#resume-language").val();
+            // 자기소개
+            const growth = $("#resume-introduce-growth").val();
+            const specialty = $("#resume-introduce-specialty").val();
+            const exp = $("#resume-introduce-exp").val();
+
+            const validateInfo = [
+                {
+                    name: "제목",
+                    value: title
+                },
+                {
+                    name: "이름",
+                    value: name
+                },
+                {
+                    name: "성별",
+                    value: gender
+                },
+                {
+                    name: "우편번호",
+                    value: zc
+                },
+                {
+                    name: "주소",
+                    value: address
+                },
+                {
+                    name: "최종 학력",
+                    value: edu_last_prev
+                },
+                {
+                    name: "최종 학력",
+                    value: edu_last_next
+                },
+                {
+                    name: "상세학력",
+                    value: edu_detail_prev
+                },
+                {
+                    name: "상세학력",
+                    value: edu_detail_next
+                },
+                {
+                    name: "경력",
+                    value: career
+                },
+                {
+                    name: "병역사항",
+                    value: military
+                },
+                {
+                    name: "면허증",
+                    value: license,
+                },
+                {
+                    name: "자격증",
+                    value: certificate
+                },
+                {
+                    name: "어학능력",
+                    value: language,
+                }
+            ]
+            
+            if (!validateEmpty(validateInfo)) {
+                return;
+            }
+
+
+            const payload = {
+                title: title,
+                info: {
+                    name: name,
+                    birthday: {
+                        year: year,
+                        month: month,
+                        day: day
+                    },
+                    gender: gender,
+                    phone: phone,
+                    email: email_prev + "@" + email_next,
+                    zoneCode: zc,
+                    address: address,
+                    photo: photo,
+                },
+                edu: {
+                    last: edu_last_prev + " ~ " + edu_last_next,
+                    detail: edu_detail_prev + " ~ " + edu_detail_next 
+                },
+                career: career,
+                etc: {
+                    military: military,
+                    license: license,
+                    certificate: certificate,
+                    language: language,
+                },
+                introduce: {
+                    growth: growth,
+                    specialty: specialty,
+                    exp: exp
+                }
+                
+            }
+            this.submit();
+            
+        });
+        $(".postcode-btn").click(function() {
+            // 우편 주소
+             new daum.Postcode({
+                oncomplete: function(data) {
+                const zc = $("#resume-info-address-prev");
+                const address = $("#resume-info-address-next");
+                if(!zc || !address) return;
+                zc.val(data.zonecode);
+                address.val(data.address);
+            }
+        }).open();
+        });
+        $("#resume-upload").change(function(e) {
+            const photo = $("#resume-photo");
+            const file = e.target.files[0];
+
+            const reader = new FileReader();
+      
+            reader.onload = function() {
+                // 읽은 파일 내용으로 Photo 돔 배경 이미지 설정
+                photo.attr("src", reader.result);
+                photo.css("z-index", 1);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    })
+</script>
+
+</html>

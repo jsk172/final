@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>공고글 작성</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" th:href="@{/css/job/style.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sqpbvyc558"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+</head>
+<body>
+	 <!-- footer.html 연결  -->
+	<div th:replace="~{header::header-fragment}"></div>
+	
+	<div th:fragment="content">
+	<div id="container">
+	   <form id="job_write" name="job_write" th:action="@{/job/write}" method="post" enctype="multipart/form-data"
+        	th:object="${jobDTO}">
+	   		
+	   		<p class="title">공고 등록</p>
+	   		
+	   		<!-- company_entity_cid 값 -->
+	   		<input type="hidden" th:value="${#authentication.principal.company.cid}" name="company.cid">
+	   		
+	   		<div id="job_write_body01">
+	   			<div>
+					<span class="job_title">제목<span class="required">*</span></span>
+					<input type="text" th:field="*{title}">
+				</div>
+			</div>
+			
+			<div id="job_write_body02">
+				<div>
+					<div>
+		   				<span class="job_title">직종<span class="required">*</span></span>
+		   				<input type="text" th:field="*{occupation}">
+	   				</div>
+					<div id="salary01">
+		   				<span class="job_title">연봉<span class="required">*</span></span>
+		   				<div>
+							<select id="salarySelect" th:field="*{salary}">
+								<option value="회사 내규에 따름">회사 내규에 따름</option>
+								<option value="면접 후 결정">면접 후 결정</option>
+							</select>   
+						</div>
+	   				</div>
+					<div id="salary02">
+		   				<span class="job_title_sub">최소
+		   				<output id="min_value_sl"></output>
+		   				<input type="hidden" th:field="*{minSalary}" id="minSalaryHidden">
+		   				만원
+		   				</span>
+		   				<div>
+		   					<input type="range" id="min_value_input_sl" min="2000" max="10000" step="100" oninput="updateValues()">
+						</div>
+	   				</div>
+					<div id="salary03">
+		   				<span class="job_title_sub">최대
+		   				<output id="max_value_sl"></output>
+		   				<input type="hidden" th:field="*{maxSalary}" id="maxSalaryHidden">
+		   				만원
+		   				</span>
+		   				<div>
+		   					<input type="range" id="max_value_input_sl" min="2000" max="10000" step="100" oninput="updateValues()">
+						</div>
+	   				</div>
+					<div id="experience01">
+		   				<span class="job_title">경력<span class="required">*</span></span>
+		   				<select id="experienceSelect" th:field="*{experience}">
+							<option value="경력무관">경력무관</option>
+							<option value="신입">신입</option>
+							<option value="경력">경력</option>
+						</select>  
+	   				</div>
+	   				<div id="experience02">
+		   				<span class="job_title_sub">최소
+		   				<output id="min_value_ex" ></output>
+		   				<input type="hidden" th:field="*{minDuration}" id="minExHidden">
+		   				년
+		   				</span>
+		   				<div>
+		   					<input type="range" id="min_value_input_ex" min="1" max="20" step="1" oninput="updateValues()">
+						</div>
+	   				</div>
+					<div id="experience03">
+		   				<span class="job_title_sub">최대
+		   				<output id="max_value_ex" ></output>
+		   				<input type="hidden" th:field="*{maxDuration}" id="maxExHidden">
+		   				</span>
+		   				<div>
+		   					<input type="range" id="max_value_input_ex" min="1" max="20" step="1" oninput="updateValues()">
+						</div>
+	   				</div>
+					<div>
+		   				<span class="job_title">학력<span class="required">*</span></span>
+		   				<select th:field="*{education}">
+		   					<option value="고등학교">고등학교</option>
+		   					<option value="대학(2,3년)">대학(2,3년)</option>
+		   					<option value="대학교(4년)">대학교(4년)</option>
+		   					<option value="대학원(석사과정)">대학원(석사과정)</option>
+		   					<option value="대학원(박사과정)">대학원(박사과정)</option>
+		   				</select>
+	   				</div>
+					<div>
+		   				<span class="job_title">우대조건</span>
+		   				<input type="text" th:field="*{qualification}">
+	   				</div>
+					<div>
+		   				<span class="job_title">면허/자격증</span>
+		   				<input type="text" th:field="*{certification}">
+	   				</div>
+					<div id="recruitNum_box">
+		   				<span class="job_title">모집인원<span class="required">*</span></span>
+		   				<input type="text" th:field="*{recruitNum}">
+		   				<p>명 모집</p>
+	   				</div>
+				</div>
+				<div>
+					<div>
+		   				<span class="job_title">고용 형태<span class="required">*</span></span>
+		   				<select th:field="*{empType}">
+			   				<option value="정규직">정규직</option>
+			   				<option value="계약직">계약직</option>
+			   				<option value="기간제">기간제</option>
+		   				</select>
+	   				</div>
+					<div>
+		   				<span class="job_title">직급/직책</span>
+		   				<input type="text" th:field="*{position}">
+	   				</div>
+					<div>
+		   				<span class="job_title">근무지역<span class="required">*</span></span>
+		   				<div>
+		   					<div>
+			   					<input type="text" id="sample4_postcode" placeholder="우편번호" style="width: 100px;" th:field="*{postalCode}">
+								<input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+							</div>	
+							<input type="text" id="sample4_roadAddress" placeholder="도로명주소" size="60" style="width: 300px;" th:field="*{address01}"><br>
+							<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소"  size="60">
+							<span id="guide" style="color:#999;display:none"></span>
+							<input type="text" id="sample4_detailAddress" placeholder="상세주소"  size="60" style="width: 300px;" th:field="*{address02}">
+							<input type="hidden" id="sample4_extraAddress" placeholder="참고항목"  size="60">
+							<input type="hidden" id="sample4_engAddress" placeholder="영문주소"  size="60" >
+	   					</div>
+	   				</div>
+					<div>
+		   				<span class="job_title">근무요일</span>
+		   				<input type="text" placeholder="ex) 주5일 " th:field="*{day}">
+	   				</div>
+					<div id="worktime">
+		   				<span class="job_title">출퇴근 시간</span>
+		   				<div>
+		   					<div>
+				   				<!-- 평일 -->
+				   				<span class="worktime_title">평일</span>
+				   				<input type="time" id="startTimeWk" onchange="updateValues()">&nbsp;&nbsp;~&nbsp;&nbsp;
+				   				<input type="time" id="endTimeWk" onchange="updateValues()">
+				   				<input type="hidden" th:field="*{startTimeWk}" id="startTimeWkHidden">
+				   				<input type="hidden" th:field="*{endTimeWk}" id="endTimeWkHidden">
+	   						</div>
+		   					<div>
+				   				<!-- 토요일 -->
+				   				<span class="worktime_title">토요일</span>
+				   				<input type="time" id="startTimeWkE" onchange="updateValues()">&nbsp;&nbsp;~&nbsp;&nbsp;
+				   				<input type="time" id="endTimeWkWkE" onchange="updateValues()">
+				   				<input type="hidden" th:field="*{startTimeWkE}" id="startTimeWkEHidden">
+				   				<input type="hidden" th:field="*{endTimeWkE}" id="endTimeWkEHidden">
+	   						</div>
+		   					<div>
+				   				<!-- 기타 -->
+				   				<span class="worktime_title">기타</span>
+				   				<input type="text" th:field="*{workTimeEtc}">
+	   						</div>
+	   					</div>
+	   				</div>
+				
+				</div>
+			</div>
+			
+			<div id="job_write_body03">
+				<div>
+					<div>
+		   				<span class="job_title">담당업무</span>
+		   				<input type="text" th:field="*{duty}">
+	   				</div>
+				</div>
+			</div>
+			
+			<div id="job_write_body04">
+				<div>
+					<div>
+		   				<span class="job_title">복리후생</span>
+	   				</div>
+	   				<div id="benefit_boxes">
+	   					<div id="benefit_box">
+		   					<div>
+		   						<input type="checkbox" id="benefitCheckbox01" >
+		   						<label>연금/보험</label>
+		   					</div>
+	   						<input type="text" id="benefitText01" placeholder="ex) 4대보험, 퇴직연금" th:field="*{benefits}">
+	   					</div>
+	   					<div id="benefit_box">
+		   					<div>
+		   						<input type="checkbox" id="benefitCheckbox02">
+		   						<label>휴무/휴가/행사</label>
+		   					</div>
+	   						<input type="text" id="benefitText02" placeholder="ex) 연차, 경조휴가" th:field="*{timeOff}">
+	   					</div>
+	   					<div id="benefit_box">
+		   					<div>
+		   						<input type="checkbox" id="benefitCheckbox03" >
+		   						<label>생활편의/여가행사</label>
+		   					</div>
+	   						<input type="text" id="benefitText03" placeholder="ex) 건강검진, 중식 제공" th:field="*{amenities}">
+	   					</div>
+	   					<div id="benefit_box">
+		   					<div>
+		   						<input type="checkbox" id="benefitCheckbox04">
+		   						<label>보상/수당/지원</label>
+		   					</div>
+	   						<input type="text" id="benefitText04" placeholder="ex) 휴가비지원, 주차비지원" th:field="*{awards}">
+	   					</div>
+	   					<div id="benefit_box">
+		   					<div>
+		   						<input type="checkbox" id="benefitCheckbox05">
+		   						<label>시설지원</label>
+		   					</div>
+	   						<input type="text" id="benefitText05" placeholder="ex) 기숙사, 직원식당" th:field="*{facilities}">
+	   					</div>
+	   				</div>
+					<div id="applyDuration">
+		   				<span class="job_title">접수기간<span class="required">*</span></span>
+		   				<input type="date" id="startDate" onchange="updateValues()">&nbsp;&nbsp;~&nbsp;&nbsp;
+		   				<input type="date" id="endDate" onchange="updateValues()">
+		   				<input type="checkbox" id="apply_ckbox">
+		   				<p>채용 시 까지</p>
+		   				
+		   				
+		   				<input type="hidden" th:field="*{startDate}" id="startDateHidden">
+		   				<input type="hidden" th:field="*{endDate}" id="endDateHidden">
+	   				</div>
+					<div>
+		   				<span class="job_title">접수방법<span class="required">*</span></span>
+		   				<input type="text" th:field="*{applyMtd}">
+	   				</div>
+				</div>
+			</div>
+			
+			<!-- 상세요강 -->
+			<div id="category">
+				<div><p>상세요강</p></div>
+			</div>
+			<div id="description">
+				<textarea th:field="*{description}"></textarea>
+			</div>
+			
+			<!-- 상세요강 파일 -->
+			<div id="description_file">
+				<input type=file name="jobFile">
+			</div>
+			
+			<!-- 지원 버튼 -->
+			<div id="apply_btns">
+				<button class="search-button" type="button" onclick="writeCheck()">공고 올리기</button>
+				<button class="search-button" type="button" onclick="">임시 저장</button>
+			</div>
+			<div>
+			
+			</div>
+	   		
+	  </form>
+	</div>
+	</div>
+	
+	<!-- footer.html 연결  -->
+	<div th:replace="~{footer::footer-fragment}"></div>
+	
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+	
+<script>
+	/*  */
+	function writeCheck() {
+			   let form = document.job_write;
+			   form.submit();
+	};
+
+
+	//주소검색
+    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+    function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 참고 항목 변수
+
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample4_postcode').value = data.zonecode;
+                document.getElementById("sample4_roadAddress").value = roadAddr;
+                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+         
+                document.getElementById("sample4_engAddress").value = data.addressEnglish;
+                       
+                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                if(roadAddr !== ''){
+                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                } else {
+                    document.getElementById("sample4_extraAddress").value = '';
+                }
+
+                var guideTextBox = document.getElementById("guide");
+            }
+        }).open();
+    }
+    
+    /* range 값 */
+    /* 연봉 */
+    const min_value_sl = document.querySelector("#min_value_sl");
+    const min_value_input_sl = document.querySelector("#min_value_input_sl");
+    min_value_sl.textContent = min_value_sl.value;
+    min_value_input_sl.addEventListener("input", (event) => {
+    	min_value_sl.textContent = event.target.value;
+    });
+    
+    const max_value_sl = document.querySelector("#max_value_sl");
+    const max_value_input_sl = document.querySelector("#max_value_input_sl");
+    max_value_sl.textContent = max_value_sl.value;
+    max_value_input_sl.addEventListener("input", (event) => {
+    	max_value_sl.textContent = event.target.value;
+    });
+    /* 경력 */
+    const min_value_ex = document.querySelector("#min_value_ex");
+    const min_value_input_ex = document.querySelector("#min_value_input_ex");
+    min_value_ex.textContent = min_value_ex.value;
+    min_value_input_ex.addEventListener("input", (event) => {
+    	min_value_ex.textContent = event.target.value;
+    });
+    
+    const max_value_ex = document.querySelector("#max_value_ex");
+    const max_value_input_ex = document.querySelector("#max_value_input_ex");
+    max_value_ex.textContent = max_value_sl.value;
+    max_value_input_ex.addEventListener("input", (event) => {
+    	max_value_ex.textContent = event.target.value;
+    });
+    
+    
+    function updateValues() {
+        var salarySelect = document.getElementById('salarySelect').value;
+        var experienceSelect = document.getElementById('experienceSelect').value;
+
+        // 연봉 범위 값
+        var minSalaryInput = document.getElementById('min_value_input_sl');
+        var maxSalaryInput = document.getElementById('max_value_input_sl');
+        var minSalary = minSalaryInput.value;
+        var maxSalary = maxSalaryInput.value;
+
+        // 경력 범위 값
+        var minExInput = document.getElementById('min_value_input_ex');
+        var maxExInput = document.getElementById('max_value_input_ex');
+        var minEx = minExInput.value;
+        var maxEx = maxExInput.value;
+
+        // 평일 출퇴근 시간 및 접수기간 값
+        var startTimeWk = document.getElementById('startTimeWk').value;
+        var endTimeWk = document.getElementById('endTimeWk').value;
+        var startDate = document.getElementById('startDate').value;
+        var endDate = document.getElementById('endDate').value;
+
+        // 토요일 출퇴근 시간 값
+        var startTimeSat = document.getElementById('startTimeWkE').value; // 수정: ID를 정확하게 반영
+        var endTimeSat = document.getElementById('endTimeWkWkE').value; // 수정: ID를 정확하게 반영
+
+        // 연봉 선택에 따른 조건 처리
+        if (salarySelect === "면접 후 결정") {
+            document.getElementById('minSalaryHidden').value = minSalary;
+            document.getElementById('maxSalaryHidden').value = maxSalary;
+        } else {
+            document.getElementById('minSalaryHidden').value = "";
+            document.getElementById('maxSalaryHidden').value = "";
+        }
+
+        // 경력 선택에 따른 조건 처리
+        if (experienceSelect === "경력") {
+            document.getElementById('minExHidden').value = minEx;
+            document.getElementById('maxExHidden').value = maxEx;
+        } else {
+            document.getElementById('minExHidden').value = "";
+            document.getElementById('maxExHidden').value = "";
+        }
+
+        // 출퇴근 시간 및 접수기간 설정
+        document.getElementById('startTimeWkHidden').value = startTimeWk;
+        document.getElementById('endTimeWkHidden').value = endTimeWk;
+        document.getElementById('startDateHidden').value = startDate;
+        document.getElementById('endDateHidden').value = endDate;
+
+        // 토요일 출퇴근 시간 설정
+        document.getElementById('startTimeWkEHidden').value = startTimeSat; // 수정: Hidden 필드 ID를 정확하게 반영
+        document.getElementById('endTimeWkEHidden').value = endTimeSat; // 수정: Hidden 필드 ID를 정확하게 반영
+    }
+    
+     
+     document.addEventListener("DOMContentLoaded", function() {
+   	    const salarySelect = document.getElementById('salarySelect');
+   	    const experienceSelect = document.getElementById('experienceSelect');
+   	    const salary01 = document.getElementById('salary01');
+   	    const salary02 = document.getElementById('salary02');
+   	    const salary03 = document.getElementById('salary03');
+   	    const experience01 = document.getElementById('experience01');
+   	    const experience02 = document.getElementById('experience02');
+   	    const experience03 = document.getElementById('experience03');
+   	    const min_value_input_sl = document.getElementById('min_value_input_sl');
+   	    const max_value_input_sl = document.getElementById('max_value_input_sl');
+   	    const min_value_input_ex = document.getElementById('min_value_input_ex');
+   	    const max_value_input_ex = document.getElementById('max_value_input_ex');
+	   	const input01_sl = document.getElementById('min_value_sl');
+	    const input02_sl = document.getElementById('max_value_sl');
+	   	const input01_ex = document.getElementById('min_value_ex');
+	    const input02_ex = document.getElementById('max_value_ex');
+   	    
+   	    function setSliderToMiddle(input) {
+   	        const min = parseInt(input.min);
+   	        const max = parseInt(input.max);
+   	        const middle = (min + max) / 2;
+   	        input.value = middle;
+   	    }
+		
+   	    /* 연봉 - 면접후 결정, 경력 - 경력 부분 선택 시 css 변경 */
+   	    salarySelect.addEventListener('change', function() {
+   	        if (this.value === "면접 후 결정") {
+   	            salary02.style.display = 'flex';
+   	            salary03.style.display = 'flex';
+   	            salary01.style.marginBottom = '5px';
+   	        } else {
+   	            salary02.style.display = 'none';
+   	            salary03.style.display = 'none';
+   	            salary01.style.marginBottom = '23px';
+   	            setSliderToMiddle(min_value_input_sl);
+   	            setSliderToMiddle(max_value_input_sl);
+	   	        input01_sl.value = "";
+	            input02_sl.value = "";
+   	        }
+   	    });
+
+   	    experienceSelect.addEventListener('change', function() {
+   	        if (this.value === "경력") {
+   	            experience02.style.display = 'flex';
+   	            experience03.style.display = 'flex';
+   	            experience01.style.marginBottom = '5px';
+   	        } else {
+   	            experience02.style.display = 'none';
+   	            experience03.style.display = 'none';
+   	            experience01.style.marginBottom = '23px';
+   	            setSliderToMiddle(min_value_input_ex);
+   	            setSliderToMiddle(max_value_input_ex);
+   	            input01_ex.value = "";
+	            input02_ex.value = "";
+   	        }
+   	    });
+
+   	    // 초기화
+   	    if (salarySelect.value !== "면접 후 결정") {
+   	        setSliderToMiddle(min_value_input_sl);
+   	        setSliderToMiddle(max_value_input_sl);
+   	    }
+   	    if (experienceSelect.value !== "경력") {
+   	        setSliderToMiddle(min_value_input_ex);
+   	        setSliderToMiddle(max_value_input_ex);
+   	    }
+   	    
+   		// 페이지 로드 시 초기 상태 설정
+   	    if (salarySelect.value === "면접 후 결정") {
+   	        salary02.style.display = 'flex';
+   	        salary03.style.display = 'flex';
+   	    } else {
+   	        salary02.style.display = 'none';
+   	        salary03.style.display = 'none';
+   	    }
+   		
+   	    if (experienceSelect.value === "경력") {
+   	    	experience02.style.display = 'flex';
+   	    	experience03.style.display = 'flex';
+   	    } else {
+   	    	experience02.style.display = 'none';
+   	    	experience03.style.display = 'none';
+   	    }
+   	});
+    
+    
+    
+    /* 복리후생 */
+	/* 체크박스 체크하면 input 보이기 */
+	const benefitCheckbox01 = document.querySelector("#benefitCheckbox01");
+	const benefitText01 = document.querySelector("#benefitText01");
+	benefitText01.style.display = "none";
+	
+	benefitCheckbox01.addEventListener("change", () => {
+	  if (benefitCheckbox01.checked) {
+		  benefitText01.style.display = "block";
+		  benefitText01.value = "";
+	  } else {
+		  benefitText01.style.display = "none";
+	  }
+	});
+    
+	const benefitCheckbox02 = document.querySelector("#benefitCheckbox02");
+	const benefitText02 = document.querySelector("#benefitText02");
+	benefitText02.style.display = "none";
+	
+	benefitCheckbox02.addEventListener("change", () => {
+	  if (benefitCheckbox02.checked) {
+		  benefitText02.style.display = "block";
+		  benefitText02.value = "";
+	  } else {
+		  benefitText02.style.display = "none";
+	  }
+	});
+    
+	const benefitCheckbox03 = document.querySelector("#benefitCheckbox03");
+	const benefitText03 = document.querySelector("#benefitText03");
+	benefitText03.style.display = "none";
+	
+	benefitCheckbox03.addEventListener("change", () => {
+	  if (benefitCheckbox03.checked) {
+		  benefitText03.style.display = "block";
+		  benefitText03.value = "";
+	  } else {
+		  benefitText03.style.display = "none";
+	  }
+	});
+    
+	const benefitCheckbox04 = document.querySelector("#benefitCheckbox04");
+	const benefitText04 = document.querySelector("#benefitText04");
+	benefitText04.style.display = "none";
+	
+	benefitCheckbox04.addEventListener("change", () => {
+	  if (benefitCheckbox04.checked) {
+		  benefitText04.style.display = "block";
+		  benefitText04.value = "";
+	  } else {
+		  benefitText04.style.display = "none";
+	  }
+	});
+    
+	const benefitCheckbox05 = document.querySelector("#benefitCheckbox05");
+	const benefitText05 = document.querySelector("#benefitText05");
+	benefitText05.style.display = "none";
+	
+	benefitCheckbox05.addEventListener("change", () => {
+	  if (benefitCheckbox05.checked) {
+		  benefitText05.style.display = "block";
+		  benefitText05.value = "";
+	  } else {
+		  benefitText05.style.display = "none";
+	  }
+	});
+	
+	/* 접수기간의 "채용 시 까지" 버튼 누를시 앞의 input 박스들 비활성화 및 값 초기화*/
+	document.addEventListener("DOMContentLoaded", function() {
+	      // 체크박스와 날짜 입력 필드를 변수로 선언
+	      const applyCheckbox = document.getElementById('apply_ckbox');
+	      const startDateInput = document.getElementById('startDate');
+	      const endDateInput = document.getElementById('endDate');
+	
+	      // 체크박스 상태 변경에 따른 이벤트 핸들러 함수
+	      function handleCheckboxChange() {
+	          if (applyCheckbox.checked) {
+	              // 체크박스가 체크되면 날짜 입력 필드 비활성화 및 값 초기화
+	              startDateInput.disabled = true;
+	              endDateInput.disabled = true;
+	              startDateInput.value = "";
+	              endDateInput.value = "";
+	          } else {
+	              // 체크박스가 해제되면 날짜 입력 필드 활성화
+	              startDateInput.disabled = false;
+	              endDateInput.disabled = false;
+	          }
+	      }
+	
+	      // 체크박스 상태 변경 이벤트 리스너 추가
+	      applyCheckbox.addEventListener('change', handleCheckboxChange);
+	
+	      // 페이지 로드 시 체크박스 초기 상태에 따라 날짜 입력 필드 상태 설정
+	      handleCheckboxChange(); // 초기 상태 설정을 위해 함수 호출
+	  });
+	
+</script>
+	
+
+</body>
+</html>

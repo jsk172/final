@@ -1,0 +1,129 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url(Pretendard-Medium.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url(Pretendard-Regular.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url(Pretendard-SemiBold.woff)format('woff');
+}
+
+
+/* 공통 스타일 */
+*{margin: 0; padding: 0; font-family: 'Pretendard-Medium';}
+#container{width: 100%;}
+ul li{list-style: none;}
+a{text-decoration: none;}
+
+.footer{
+  width: 100%;
+  height: 220px;
+  text-align: center;
+}
+
+
+/*  푸터 첫번째 */
+#ftr_box_1 {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  height: 40px;
+  background: #ededed;
+}
+.footer_info_1{
+  margin: 0;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+.span_list_1{
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0.05rem;
+}
+.span_list_1 a{
+  color: #000;
+  font-weight: 500;
+  padding: 10px;
+}
+
+
+/*  푸터 두번째 */
+#ftr_box_2 {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  height: 170px;
+  background: #fff;
+}
+
+.footer_info_2{
+  margin: 0;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 3%;
+}
+
+.footer_logo{
+  display: flex;
+  width: 30%;
+  height: 100%;
+  float: left;
+  align-items: center;
+}
+.footer_logo_pic{
+  width: 200px;
+  height: 100%;
+}
+
+.span_list_2{
+  width: 100%;
+  text-align: left;
+  justify-content: center;
+  padding-left: 4%;
+}
+
+.t_list_1{
+  text-align: left;
+  flex-direction: row;
+  justify-content: center;
+  letter-spacing: 0.05rem;
+}
+
+.t_list_1,
+.t_list_4 {
+  font-weight: bold;
+}
+
+.span_list_3{
+  width: 50%;
+  padding-left: 2%;
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+  justify-content: center;
+  letter-spacing: 0.05rem;
+  border-left: 1px solid #5d5d5d; 
+}
+
+.span_list_3_center{
+  width: 100%;
+}
+
+.span_list_3_number{
+  font-size: 1.5rem;
+  width: 100%;
+}
+
+.span_list_3_list{
+  width: 100%;
+}

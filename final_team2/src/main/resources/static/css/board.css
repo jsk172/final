@@ -1,0 +1,744 @@
+@charset "UTF-8";
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  section.notice {
+    padding: 80px 0;
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .board-title {
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-bottom: 120px;
+
+  }
+
+  .board-menu {
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    text-align: left;
+    color: #b00;
+  }
+  
+  .board-menu a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #c2baba;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: left;
+    margin: 20px;
+  }
+  .board-menu a:hover{color: #8f8b8b;}
+  
+  .menu-link1.checked,
+  .menu-link2.checked,
+  .menu-link3.checked,
+  .menu-link4.checked {
+    color: black;
+  }
+  
+.menu-link1.checked,
+.menu-link2.checked,
+.menu-link3.checked,
+.menu-link4.checked {
+    position: relative;
+}
+
+.menu-link1.checked::before,
+.menu-link2.checked::before,
+.menu-link3.checked::before,
+.menu-link4.checked::before {
+    content: '';
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 7px;
+    height: 7px;
+    background: #FF0000;
+    border-radius: 100%;
+}
+
+.menu-link1.checked::before{
+bottom: 30px;
+    left: 105px;
+}
+
+.menu-link2.checked::before{
+bottom: 30px;
+    left: 65px;
+}
+
+.menu-link3.checked::before{
+bottom: 30px;
+    left: 130px;
+}
+
+.menu-link4.checked::before{
+bottom: 30px;
+    left: 55px;
+}
+
+  .board-title h3 {
+    height: 20px;
+    margin: 50px 0px;
+    font-size: 60px;
+    font-weight: bold;
+    text-align: left;
+    color: #000000;
+  }
+  
+  #board-list {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  #review-board {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .board-table {
+    font-size: 15px;
+  }
+  
+  .board-table th{
+    border-top: 2px solid #333;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .board-table td {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .board-table td a{
+    text-decoration: none;
+  }
+  
+  .board-table .th-num {
+    width: 120px;
+  }
+  
+  .board-table .th-title {
+    width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* 긴 제목에 대한 처리 */
+  }
+  
+  .board-table .th-id {
+    width: 150px;
+  }
+  
+  .board-table .th-date {
+    width: 150px;
+  }
+  
+  .board-table .th-hit {
+    width: 100px;
+  }
+  
+  .board-table th,
+  .board-table td {
+    padding: 12px 0;
+    text-align: center;
+  }
+  
+  
+  
+  .board {
+    margin: 0 auto;
+  }
+  
+  .blind {
+    position: absolute;
+    margin: -1px;
+    width: 1px;
+    height: 1px;
+  }
+  
+  
+  /* 리뷰 게시판 */
+  section.review {
+    padding: 100px 0;
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  .review1 {
+    width: 1100px;
+    margin: 0 auto;
+  }
+  .review-list {
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px;
+    min-height: 100px;
+    padding: 20px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .p1{
+    font-size: 14px;
+    color:#a19f9f;
+    font-weight: bold;
+  }
+  .p2, .sp1, .sp2, .sp3{
+    font-size: 14px;
+    color:#ccc;
+    margin-left: 20px;
+  }
+  
+  .review-title a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; 
+    font-size: 22px;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .review-content {
+    margin-top: 15px;
+    margin-bottom: 30px;
+  }
+
+  .review-profile{
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .profile{
+    min-width: 300px;
+    height: 25px;
+    line-height: 25px;
+}
+.review_img{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.profile_img{
+  width: 50px;
+  height: 50px;
+}
+  
+
+/* 일반 검색 */
+.search-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  padding: 0;
+  margin-bottom: 40px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 2px solid #cabebe;
+  overflow: hidden;
+  height: 50px;
+  border-radius: 8px;
+}
+
+#search-input {
+  padding: 40px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+#search-select {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.w-1600 {
+  width: 1600px;
+  margin: 0 auto;
+}
+
+.flex-between {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+#write {
+  width: 130px;
+  height: 66px;
+  border-radius: 23px;
+  border: unset;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #5265FF 0%, #057EFF 100%);
+  cursor: pointer;
+}
+
+#search-button {
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  align-items: center;
+  background-color: white;
+  color: black;
+  display: flex;
+}
+
+#search-button i {
+  margin-right: 5px;
+}
+
+
+/* 리뷰 검색 */
+#write1 {
+  padding: 0 20px;
+  font-size: 16px;
+  margin-left: 25%;
+  cursor: pointer;
+  height: 42px;
+  border: none;
+  background: rgb(107, 107, 230);
+  color: white;
+  border-radius: 8px;
+}
+.input-wrapper1 {
+  display: flex;
+  align-items: center;
+  border: 2px solid #cabebe;
+  overflow: hidden;
+  height: 40px;
+  margin-left: 12%;
+  border-radius: 8px;
+}
+
+/* 상세보기 */
+.detail {
+  width: 1100px;
+  margin: 0 auto;
+
+
+  #detail-board {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+
+  .detail-title {
+    margin-top: 100px;
+    margin-bottom: 60px;
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .detail-list {
+    width: 100%;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  .detail-content {
+    margin-top: 16px;
+    margin-bottom: 32px;
+  }
+
+  .detail-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+#pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-wrap #pagination .current_page{
+   width: 21px;
+    height: 20px;
+    background: #6C7AEF;
+    color: white;
+    border-radius: 7px;
+    margin-right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.pagination-wrap #pagination a{
+   margin-right: 20px;
+   color: #6C7AEF;
+   display: flex;
+    align-items: center;
+}
+
+.star-container {
+  margin-left: 20px;
+  display: none;
+}
+    
+.pp1{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.pp2{
+  margin-top: 6px;
+  font-size: 12px;
+  color:#707070;
+}
+
+.detail_img{
+  margin-top: 10px;
+}
+
+.detail-img{
+  display: none;
+  width: 1050px;
+  height: 740px;
+}
+
+.sp4{
+  font-size: 14px;
+  color: #ccc;
+}
+
+.sp5, .sp6{
+  font-size: 14px;
+  color:#ccc;
+  margin-left: 20px;
+}
+
+#comment-form {
+  width: 100%;
+}
+
+.reply{
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.reply-btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & button {
+    border: none;
+    background: unset;
+    font-size: 16px;
+    cursor: pointer;
+    &.update {
+      color: #0084F3;
+    }
+    &.delete {
+      color: #EB6F7F;
+      margin-left: 24px;
+    }
+  } 
+}
+
+.write_img{
+  width: 50px;
+  height: 50px;
+}
+
+.reply-title {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.reply-title span {
+  color: #6C7AEF;
+}
+
+
+#reply-input {
+  width: 100%;
+  height: 50px;
+  vertical-align: top;
+  border-radius: 23px;
+  padding: 4px 15px;
+  border: 2px solid #d6d3d3;
+}
+
+
+.reply-write {
+  flex: 1;
+  display: inline-block;
+  vertical-align: top; /* 이미지와 댓글 창을 상단 정렬하려면 추가 */
+}
+
+#reply-write {
+  cursor: pointer;
+  height: 50px;
+  width: 112px;
+  border: none;
+  background: linear-gradient(90deg, #5265FF 0%, #057EFF 100%);
+  color: white;
+  border-radius: 23px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.reply-title h3 {
+  font-weight: bold;
+  margin-left: 20%;
+}
+
+.reply-container {
+  width: 100%;
+}
+
+.reply-list{
+  padding: 14px 0;
+  margin: 0 auto;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+
+}
+
+.p3{
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.pp3 {
+  font-size: 16px;
+  color: #707070;
+}
+
+.reply-content{
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 16px;
+}
+.backspace {
+  width: 100%;
+  text-align: right;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+#write2 {
+  cursor: pointer;
+  height: 66px;
+  width: 130px;
+  border: none;
+  background: linear-gradient(90deg, #5265FF 0%, #057EFF 100%);
+  color: white;
+  border-radius: 23px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+/* 게시글 작성 */
+.write-category, .write-title, .write-content, .write-pic, .write-star, .write-btns{
+  margin-top: 100px;
+  margin-left: 25%;
+  width: 52%;
+}
+
+.write-pic h2 {
+  margin-bottom: 12px;
+}
+.write-pic p {
+  color: #707070;
+  margin-bottom: 22px;
+}
+
+.write-star {
+  display: none;
+}
+
+.write-pic {
+  display: none;
+  .jc-center {
+    justify-content: center;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .thumbnail {
+    position: relative;
+    width: 285px;
+    height: 208px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border-gray);
+    background-color: #f0f0f0;
+        span {
+            /* 썸네일 카메라 심볼 */
+            font-size: 40px;
+        }
+        img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            z-index: -1;
+        }
+        label {
+            position: absolute;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            &:hover {
+              z-index: 2;
+            }
+        }
+    }
+}
+
+.write-btns {
+  margin-bottom: 100px;
+}
+
+.write-content h2 {
+  margin-bottom: 26px;
+}
+
+.text-range {
+  margin-top: 8px;
+  text-align: right;
+  color: #AAAAAA;
+}
+
+#category {
+  margin-top: 26px;
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  padding:4px 8px;
+  -moz-appearance:none; /* Firefox */
+  -webkit-appearance:none; /* Safari and Chrome */
+  appearance:none;
+  background: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 99%;
+  background-position-y: 8px;
+  background-size: 32px;
+}
+
+#category option {
+  display: block;
+  padding: 20px;
+  height: 50px;
+}
+
+#title-input {
+  border: none; /* 기본 테두리 제거 */
+  border-bottom: 1px solid #ccc; /* 밑줄 스타일 추가 */
+  width: 100%; /* 부모 요소에 꽉 차게 너비 설정 */
+  height: 40px;
+  margin-top: 10px; /* 입력란 위 여백 추가 */
+  padding: 5px; /* 입력란 안 여백 추가 */
+  box-sizing: border-box; /* padding이나 border를 포함한 전체 크기로 설정 */
+  outline: none; /* 포커스 시 테두리 제거 */
+}
+
+#content-input{
+  width: 100%;
+  height: 150px;
+  border-radius: 8px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  margin-top: 0;
+  box-sizing: border-box;
+  text-align: start;
+}
+
+.star-wrapper {
+  margin-top: 26px;
+  display: flex;
+  gap: 8px;
+}
+
+.star-wrapper img {
+  width: 30px;
+  cursor: pointer;
+}
+
+#w1 {
+  width: 183px;
+  font-size: 20px;
+  cursor: pointer;
+  height: 60px;
+  border: 2.5px solid #D7B6B6;
+  background: #fff;
+  border-radius: 23px;
+}
+
+#w2 {
+  width: 387px;
+  font-size: 20px;
+  cursor: pointer;
+  height: 60px;
+  border: unset;
+  border-radius: 23px;
+  color: #fff;
+  background: linear-gradient(90deg, #5265FF 0%, #057EFF 100%);
+
+}
+
+#w3 {
+  width: 80px;
+  font-size: 16px;
+  margin-left: 40px;
+  cursor: pointer;
+  height: 30px;
+  border: none;
+  background: rgb(107, 107, 230);
+  color: white;
+  border-radius: 8px;
+}
+
+#w4 {
+  width: 80px;
+  font-size: 16px;
+  margin-left: 20px;
+  cursor: pointer;
+  height: 30px;
+  border: none;
+  background: rgb(107, 107, 230);
+  color: white;
+  border-radius: 8px;
+}

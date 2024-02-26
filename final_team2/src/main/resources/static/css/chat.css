@@ -1,0 +1,90 @@
+@charset "UTF-8";
+
+/* 공통 스타일 */
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Pretendard-Medium';
+  box-sizing: border-box;
+}
+input{outline-color: #4e66ffc9;}
+#container{width: 100%;}
+ul li{list-style: none;}
+a{text-decoration: none;}
+
+
+body {
+    background-color: #A8D4FF;
+}
+
+b {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    padding: 5%;
+}
+
+.chat_box {
+   max-height: 600px;
+   overflow-y: auto;
+   
+   /* 채팅창 스크롤바 숨기기 */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* 채팅창 스크롤바 숨기기 */
+.chat_box::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.col-12-1{
+  margin: 2%;
+  background: #ffffff;
+  border-radius: 20px;
+  text-align: center;
+  align-items: center;
+  position: relative;
+  box-shadow: inset 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.col-12-1 b{
+   color: #707070;
+   text-align: center;
+   font-family: 'Pretendard-Medium';
+   font-size: 24px;
+   line-height: 22px;
+   font-weight: 600;
+   position: relative;
+   height: 35px;
+   display: flex;
+   align-items: center;
+   justify-content: center; 
+}
+
+#msg {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px;
+    font-size: 14px;
+    width: 90%;
+    height: 8%;
+    border-radius: 20px;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+element.style {
+    width: 40%;
+    float: right;
+    clear: both;
+    margin: 10px 30px 15px;
+    border-radius: 20px;
+    background-image: linear-gradient(to right, #FF3D00, #FF5500);
+    position: relative;
+    border-width: 1px;
+    color: white;    
+}

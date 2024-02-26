@@ -1,0 +1,175 @@
+@charset "UTF-8";
+/* 공통 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#container {
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+button:hover {
+  cursor: pointer;
+}
+input{outline-color: #4e66ffc9;}
+
+
+/* ===top=========================================================== */
+
+#top {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.join_header_wrap {
+  width: 1100px;
+  height: 100px;
+  border-bottom: 1px solid #e3e3e3;
+  position: relative;
+  background: #fff;
+}
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -0.35px !important;
+}
+
+
+.join_header_inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 100px;
+}
+
+.join_header_wrap .join_header_inner>ol li.page_on {
+  font-weight: 900;
+  color: #779c4b;
+}
+
+.join_header_wrap .join_header_inner>ol li {
+  display: inline-block;
+  font-size: 16px;
+  color: #aaa;
+}
+
+
+ol {
+  list-style: none;
+  display: flex;
+}
+
+li {
+  list-style: none;
+  margin-right: 15px;
+  font-size: 16px;
+  position: relative;
+}
+
+li span {
+  font-weight: bold;
+}
+
+/* ===mid=========================================================== */
+
+#mid {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.join_main_visual_inner {
+  width: 1100px;
+  text-align: center;
+}
+
+.join_img {
+  position: relative;
+  width: 1100px;
+}
+
+.backimg {
+  width: 100%;
+  height: 600px;
+  opacity: 0.5;
+}
+
+.join_text {
+  width: 600px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: 2px 2px 5px #555;
+  color: #ffffff;
+}
+
+.primary {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.summary {
+  font-size: 16px;
+}
+
+.member_login_shop {
+  position: absolute;
+  top: 75%; 
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.shop_mall_join  {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #799c4b;
+  font-size: large;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.member_guide_txt {
+  position: absolute;
+  top: 93%; 
+  left: 50%;
+  color: #ffffff;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
+}
+
+#btnLoginMember {
+  color: #f6fbfa;
+  text-decoration: none;
+  font-weight: bold;
+}

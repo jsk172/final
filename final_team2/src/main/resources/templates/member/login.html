@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/member/login.css}">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+
+	<section id="loginform">
+		<form id="loginform_box" th:action="@{/member/login}" method="post">
+			<h2>로그인</h2>
+			<div id="login_identity">
+       			<div id="personal_login" class="login_identity_selected">개인</div>
+       			<div id="hospital_login" class="login_identity_nonselected">병원</div>
+       		</div>
+			<div id="loginbox">
+				<!-- username, password는 시큐리티에서 제공되는 것이기에 바꾸면 안됨 -->
+				<input type="text" id="username" name="username" placeholder="아이디">
+				<input type="password" id="password" name="password" placeholder="비밀번호">
+			</div>
+			<div id="loginform_checkbox">
+				<input type="checkbox"/>
+				<p>로그인상태유지</p>
+			</div>
+			
+			<div class="button">
+		    	<button type="submit" onclick="">로그인</button>
+			</div>
+			<div id="loginform_bottom">
+				<a href="/member/identity">회원가입</a>
+				<a href="">아이디 · 비밀번호 찾기</a>
+			</div>
+			<div class="or">
+				<span class="straight"></span><span class="social_login">간편 로그인</span></span><span class="straight"></span>
+			</div>
+			<div id="easy">
+				<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=06011c7f9e9f29601482ed90e0773c5a&redirect_uri=http://localhost:8080/auth/kakao/callback">
+					<button class="btn1"><img src="/images/kakaologo.png"><span class="plz">카카오 로그인</span></button>
+				</a>
+				<a>
+					<button class="btn2"><img src="/images/naverlogo.png"><span class="plz">네이버 로그인</span></button>
+				</a>
+				<a>
+					<button class="btn3"><img src="/images/googlelogo.png"><span class="plz">구글 로그인</span></button>
+				</a>
+			</div>
+		</form>
+	</section>
+
+	<div th:replace="~{footer::footer-fragment}"></div>
+	
+	<script>
+	/* 개인,병원 버튼 */
+	$(document).ready(function() {
+	    $('#personal_login, #hospital_login').click(function() {
+	        // 모든 탭에서 'selected' 클래스 제거
+	        $('#personal_login, #hospital_login').removeClass('login_identity_selected').addClass('login_identity_nonselected');
+	        
+	        // 클릭된 탭에 'selected' 클래스 추가
+	        $(this).removeClass('login_identity_nonselected').addClass('login_identity_selected');
+	    });
+	});
+	</script>
+</body>
+</html>

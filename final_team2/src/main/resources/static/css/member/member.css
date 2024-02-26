@@ -1,0 +1,460 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url(Pretendard-Medium.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url(Pretendard-Regular.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url(Pretendard-SemiBold.woff)format('woff');
+}
+
+/* 공통 스타일 */
+*{margin: 0; padding: 0; font-family: 'Pretendard-Medium';}
+#container{width: 100%;}
+ul li{list-style: none;}
+a{text-decoration: none;}
+input{outline-color: #4e66ffc9;}
+textarea{outline-color: #4e66ffc9;}
+
+/* identity 스타일 */
+#identity{
+	margin: 0 auto; 
+	width:75%;
+	padding-bottom: 150px;
+}
+
+#classification{
+	display: flex;
+	justify-content: space-around;
+}
+
+#container h2{
+	margin: 8% 0 8% 0;
+    font-size: 35px;
+    text-align: center;
+}
+
+.main_join1{
+	width: 40%;
+    height: 300px;
+    border-radius: 5px;
+    background-position: center; 
+    border: 1.5px #c4c4c4 solid;
+    text-align: center;
+    position: relative;
+ }
+ 
+ .main_join1::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/main/physical therapist6.jpg');
+     background-size: cover; 
+    opacity: 0.7; /* 이미지 투명도 조절 */
+    z-index: -1;
+}
+ 
+.main_join1 p {
+    color: #fff;
+    font-size: 27px;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    font-family: 'Pretendard-SemiBold';
+}
+
+.emailsfc{
+	font-size: 20px;
+    color: #fff;
+    width: 75%;
+    height: 50px;
+    background: linear-gradient(to right, #337ff4, #1A8DFF);
+    border-radius: 5px;
+    border: none;
+    margin-top: 75px;
+    cursor: pointer;
+}
+
+.emailsfc:hover{
+	 background: linear-gradient(to right, #4189f7, #3296fa);
+	}
+
+
+.phonesfc{
+	font-size: 20px;
+    color: #fff;
+    width: 75%;
+    height: 50px;
+    background: linear-gradient(to right, #337ff4, #1A8DFF);
+    border-radius: 5px;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.phonesfc:hover{
+	 background: linear-gradient(to right, #4189f7, #3296fa);
+	}
+
+.main_join2{
+	width: 40%;
+    height: 300px;
+    border-radius: 5px;
+    background-position: center;
+    border: 1.5px #c4c4c4 solid;
+    text-align: center;
+    position: relative;
+}
+
+ .main_join2::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/main/physical therapist.jpg');
+    background-size: cover; 
+    opacity: 0.7;
+    z-index: -1;
+}
+
+.main_join2 p {
+	color: #fff;
+    font-size: 27px;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    font-family: 'Pretendard-SemiBold';
+}
+
+.company_join{
+	font-size: 20px;
+    color: #fff;
+    width: 75%;
+    height: 50px;
+    background: linear-gradient(to right, #337ff4, #1A8DFF);
+    border-radius: 5px;
+    border: none;
+    margin-top: 113px;
+    cursor: pointer;
+}
+.company_join:hover{
+	 background: linear-gradient(to right, #4189f7, #3296fa);
+	}
+	
+@media screen and (min-width: 1280px) {
+   	#identity{
+	    margin: 0 auto; 
+		width:1000px;
+		padding-bottom: 150px;
+   	}
+}
+ 
+
+/* mjoin 스타일 */
+
+#mjoin #mjoin_box{
+	width: 590px;
+    height: 720px;
+    border-radius: 5px;
+    border: 1px solid #E0E0E0;
+    margin: 120px auto 120px auto;
+}
+#mjoin #mjoin_box h2{
+	font-size: 24px;
+	text-align: center;
+	padding: 45px 0 30px 0;
+}
+#mjoin #mjoin_box li p{
+	display: block;
+	margin-top: 3px;
+}
+
+#mjoin  ul li{
+	margin: 20px 20px 20px 50px;
+}
+#mjoin label{
+	width: 120px;
+	font-size: 14\5px;
+	line-height: 37px;
+	font-weight: 400;
+	float: left; 
+	padding-left: 20px;
+}
+#mjoin input{
+	padding: 10px 10px;
+    margin-left: 10px;
+    width: 210px;
+    height: 37px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid rgb(196, 196, 196);
+}
+#mjoin #email-head {
+	width: 90px;
+}
+#mjoin #domain-txt{
+	width: 90px;
+	margin-left: 5px !important;
+}
+#mjoin #phone{
+	width: 194px;
+}
+
+#mjoin #btn_checkId{
+	font-size: 14px;
+    color: #fff;
+    width: 67px;
+    height: 37px;
+    background: #FF5500;
+    border-radius: 10px;
+    border: none;
+}
+
+#valid{
+	display: flex;
+	height: 30px;
+	align-items: center;
+	padding-left: 20px;
+}
+
+#valid p{
+	margin: 0 0;
+}
+
+#check-result{
+	padding-left: 20px;
+	margin-top: 10px;
+}
+
+#mjoin li .message{
+    margin-left: 140px;
+    display: none;
+}
+#mjoin li .message p{
+	color: #F84A71;
+	font-size: 12px;
+}
+#mjoin #domain-list{
+	width: 110px;
+	height: 37px;
+	font-size: 12px;
+	color:rgb(117, 117, 117);
+	padding: 10px 15px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+	margin-left: 7px;
+}
+#mjoin span{
+	font-size: 14px;
+	padding:  0 0 0 5px;
+}
+#mjoin #birth-year, #birth-month, #birth-day, #mjoin #phone_num{
+	margin-left: 10px;
+	width: 90px;
+	height: 37px;
+	font-size: 12px;
+	color:rgb(117, 117, 117);
+	padding: 5px 8px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+}
+#mjoin .gender {
+	width: 20px;
+	line-height: 37px;
+	float: left;
+}
+#mjoin #gender-option{
+	height: 37px;
+	display: flex;
+	align-items: center;
+}
+#mjoin p{
+	float: left;
+	font-size:14px;
+	padding: 0 5px;
+}
+#join_button{
+	font-family: 'Pretendard-SemiBold';
+	font-size: 20px;
+    color: #fff;
+    width: 180px;
+    height: 50px;
+    background: linear-gradient(to right, #4E66FF, #1A8DFF);
+    border-radius: 10px;
+    display: block;
+    margin: 50px auto 35px;
+    border: none;
+}
+#mjoin button:hover {
+    cursor: pointer;
+}
+#mjoin input[type="radio"] {
+	accent-color: #4E66FF;	
+	color: white;
+}
+
+/* cpjoin 스타일 */
+#cpjoin #cpjoin_box{
+	width: 590px;
+	height: 940px;
+	border-radius: 5px;
+	border: 1px solid #E0E0E0;
+	margin: 120px auto 120px auto;
+}
+#cpjoin #cpjoin_box h2{
+	font-size: 24px;
+	text-align: center;
+	padding: 45px 0 30px 0;
+}
+#cpjoin  ul li{
+	margin: 20px 20px 20px 50px;
+}
+#cpjoin label{
+	width: 140px;
+    font-size: 15px;
+    float: left;
+    line-height: 37px;
+    padding-left: 20px;
+}
+
+#cpjoin input{
+	padding: 10px 10px;
+	width: 210px;
+	height: 37px;
+	font-size: 12px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+}
+#cpjoin #ownerphone{
+	width: 90px;
+	height: 37px;
+	font-size: 12px;
+	color:rgb(117, 117, 117);
+	padding: 5px 8px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+}
+
+#cpjoin #email-head{
+	width: 90px;
+}
+#cpjoin #domain-txt{
+	width: 90px;
+    margin-left: 5px !important;
+}
+#cpjoin #domain-list{
+	width: 110px;
+    height: 37px;
+    font-size: 12px;
+    color: rgb(117, 117, 117);
+    padding: 10px 15px;
+    border-radius: 3px;
+    border: 1px solid rgb(196, 196, 196);
+    margin-left: 7px;
+}
+
+#caddress #sample4_postcode{
+	width: 150px;
+}
+
+#caddress #post_btn{
+	width: 90px;
+	height: 37px;
+}
+
+#caddress #sample4_roadAddress{
+	margin: 10px 0 0 140px;
+	width: 240px;
+}
+
+#caddress #sample4_detailAddress{
+	margin: 10px 0 0 140px;
+	width: 240px;
+}
+
+#cpjoin #btn_checkId{
+	font-size: 14px;
+    color: #fff;
+    width: 67px;
+    height: 37px;
+    background: #FF5500;
+    border-radius: 10px;
+    border: none;
+}
+#cpjoin li .message{
+    margin-left: 140px;
+    display: none;
+}
+#cpjoin li .message p{
+	color: #F84A71;
+	font-size: 12px;
+}
+#cpjoin #email, #domain-txt{
+	width: 90px;
+	font-size: 12px;
+}
+#cpjoin #domain-list{
+	width: 109px;
+	height: 37.5px;
+	font-size: 12px;
+	color:rgb(117, 117, 117);
+	padding: 10px 15px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+}
+#cpjoin span{
+	font-size: 14px;
+	padding:  0 0 0 5px;
+}
+#cpjoin #birth-year, #birth-month, #birth-day, #phone_num{
+	width: 90px;
+	height: 37px;
+	font-size: 12px;
+	color:rgb(117, 117, 117);
+	padding: 5px 8px;
+	border-radius: 3px;
+	border: 1px solid rgb(196, 196, 196);
+}
+#cpjoin #gender {
+	width: 20px;
+	line-height: 37px;
+	float: left;
+}
+#cpjoin #gender-option{
+	height: 37px;
+	display: flex;
+	align-items: center
+}
+#cpjoin p{
+	float: left;
+	font-size:14px;
+	padding: 0 5px;
+}
+#join_button{
+	font-size: 20px;
+    color: #fff;
+    width: 180px;
+    height: 50px;
+    background: linear-gradient(to right, #4E66FF, #1A8DFF);
+    border-radius: 10px;
+    display: block;
+    margin: 50px auto 35px;
+    border: none;
+}
+#cpjoin button:hover {
+    cursor: pointer;
+}
+#cpjoin input[type="radio"] {
+	accent-color: #4E66FF;	
+	color: white;
+}

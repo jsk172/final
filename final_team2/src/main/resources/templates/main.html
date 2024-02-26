@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>메인 페이지</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js"
+   crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/main/main.css}">
+
+</head>
+<body>
+   <div th:replace="~{header::header-fragment}"></div>
+
+   <div id="mid">
+       <section id="mid_top">
+               
+           	<img id="mid_top_img" th:src="@{/images/main/main_top.svg}" alt="maintop">
+           	
+           	<!-- 공지사항 -->
+           	<div id="announce_box">
+           		<p><span class="mid_top_subtitle">공지사항</span></p>
+				<a>※코로나19 예방 수칙: 코로나19로 인한 감염 예방을 위해 병원 내에서는 반드시 마스크를 착용하시고, 손 소독제를 이용해 주시기 바랍니다. 또한, 발열이나 기침 등의 증상이 있을 경우 진료를 받기 전에 직원에게 반드시 알려주시기 바랍니다.※</a>
+				<a>※신규 물리치료 프로그램 안내: 저희 병원에서는 최신의 물리치료 기술을 활용한 신규 프로그램을 도입하였습니다. 이 프로그램은 [손목통증 및 어꺠관절 교정]으로 구성되어 있으며, 효과적인 치료를 위해 [8주간] 동안 지속적으로 진행됩니다. 관심 있는 분들은 병원 내 직원에게 문의해 주시기 바랍니다.※</a>
+				<a>※정형외과 진료 시간 변경 안내: 정형외과 진료 시간이 변경되었습니다. 변경된 진료 시간은 [24년02월19일] [11:00]입니다. 변경된 시간에 맞춰 방문해 주시기 바랍니다.※</a>
+				<a>※진료비 지불 방법 안내: 병원 내에서는 현금뿐만 아니라 신용카드, 체크카드, 은행 송금 등 다양한 결제 방법을 지원하고 있습니다. 편하신 결제 방법으로 진료비를 지불하시면 됩니다.※</a>
+				<a>※설날 명절 휴무 안내: 설날을 맞이하여 병원은 [24년2월9일]부터 [24년2월12일]까지 휴무입니다. 휴무 기간 동안에는 진료 및 서비스가 제공되지 않으므로, 이 점 유의하시어 방문하시기 바랍니다.※</a>
+				<a>※기타 휴무 안내: 병원은 주요 공휴일에도 휴무일이 있을 수 있으니, 방문 전에 반드시 전화로 확인하시기 바랍니다.※</a>
+
+           	</div>
+           	
+           	<th:block sec:authorize="isAnonymous()">
+                <!-- 로그인 -->
+                <form id="login_box" th:action="@{/member/login}" method="post">
+                <!-- 로그인 전 -->
+                   <div id="login_box_body01">
+                      <div>
+                         <p><span class="mid_top_subtitle_p">개인회원 로그인</span></p>
+                         <p><span class="mid_top_subtitle_h">기업회원 로그인</span></p>
+                      </div>
+                      
+                      <div>
+                         <div id="personal_login" class="login_identity_selected">개인</div>
+                         <div id="hospital_login" class="login_identity_nonselected">병원</div>
+                      </div>
+                      <!-- 개인/병원 회원 선택 값 -->
+                      <input type="hidden" name="userType" id="userType" value="personal">
+                   </div>
+                   <div id="login_box_body02">
+                      <div>
+                         <!-- username, password는 시큐리티에서 제공되는 것이기에 바꾸면 안됨 -->
+                         <div><input type="text" name="username" placeholder="아이디"></div>
+                         <div><input type="password" name="password" placeholder="비밀번호"></div>
+                      </div>
+                      <div>
+                         <button type="submit">로그인</button>
+                      </div>
+                   </div>
+                
+                   <div id="login_box_body03">
+                      <input type="checkbox">
+                   <p>아이디 저장</p>
+                   </div>
+                   <div id="login_box_body04">
+                      <div>
+                         <a th:href="@{/member/identity}">회원가입</a> |
+                         <a>아이디찾기</a> |
+                         <a>비밀번호찾기</a>
+                      </div>
+                   </div>
+                </form>
+                </th:block>
+                <!-- 로그인 후 -->
+                  <th:block sec:authorize="isAuthenticated()">
+                     <div class="Loginafter_Box">
+                      <div class="Loginafter_profile">
+                          <p id="pro" class="profile_img">
+                          		<!-- 프로필 이미지 -->
+                          		<th:block sec:authorize="hasAuthority('MEMBER')">
+                           		<img th:if="${member.filepath == null or member.filepath == ''}" th:src="@{/images/main/customerPhoto.jpg}" id="customerPhoto" alt="customerPhoto" />
+								<img th:if="${member.filepath != null and member.filepath != ''}"  th:src="@{|/upload/${member.filename}|}" id="customerPhoto" alt="customerPhoto" />
+                          		</th:block>
+                          		<th:block sec:authorize="hasAuthority('COMPANY')">
+                           		<img th:if="${company.filepath == null or company.filepath == ''}" th:src="@{/images/main/customerPhoto.jpg}" id="customerPhoto" alt="customerPhoto" />
+								<img th:if="${company.filepath != null and company.filepath != ''}"  th:src="@{|/upload/${company.filename}|}" id="customerPhoto" alt="customerPhoto" />
+                          		</th:block>
+                          </p>
+                          <div class="profile_name">
+                              <!-- 유저 이름 -->
+                              <th:block sec:authorize="hasAuthority('MEMBER')">
+                           		<p class="profile_name_t1" th:text="${member.mname}"></p>
+                          		</th:block>
+                          		<th:block sec:authorize="hasAuthority('COMPANY')">
+                           		<p class="profile_name_t1" th:text="${company.cname}"></p>
+                          		</th:block>
+                              <p class="profile_name_t2">피지컬매치에<br> 오신 것을 환영합니다&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                          </div>
+                      </div>
+                      
+                      <th:block sec:authorize="hasAuthority('MEMBER')">
+                      		<a class="Loginafter_btn" href="/member/jopapp">이력서 관리</a>
+                      </th:block>
+                      <th:block sec:authorize="hasAuthority('COMPANY')">
+                      		<a class="Loginafter_btn" href="/cpMypage/applicant">지원자 관리</a>
+                      </th:block>
+                      
+                      <!-- 마이페이지 가기 -->
+                      <a sec:authorize="hasAuthority('MEMBER')" th:href="@{/member/mypage}" title="마이페이지바로가기"><i class="fa-solid fa-house-user"></i></a>
+                      <a sec:authorize="hasAuthority('COMPANY')" th:href="@{/member/cpmypage}" title="마이페이지바로가기"><i class="fa-solid fa-house-user"></i></a>
+                      
+                      <div class="cp_LinkBox">
+                      		<th:block sec:authorize="hasAuthority('MEMBER')">
+                          		<a title="지원내역" th:href="@{/member/jopapp}">지원내역<span class="color_blue2_txt"><b> 17</b></span>건</a>
+                          		<a title="스크랩공고" th:href="@{/member/announ}">스크랩공고<span class="color_blue2_txt"><b> 17</b></span>건</a>
+                      		 </th:block>
+                      		 <th:block sec:authorize="hasAuthority('COMPANY')">
+                      		 	<a title="작성한공고글" th:href="@{/job/jobList}">작성한공고글<span class="color_blue2_txt"><b> 17</b></span>건</a>
+                          		<a title="스크랩공고" th:href="@{#}">스크랩이력서<span class="color_blue2_txt"><b> 17</b></span>건</a>
+                     		</th:block>
+                      </div>
+                  </div>
+              	</th:block>
+       </section>
+		
+       <section id="mid_mid">
+         
+         <div class="prod1">
+         	<section id="proposal_list">
+            <h3>추천채용정보</h3>
+            <div class="board-menu">
+               <div class="board">
+                  <div><a href="#" class="menu-link checked">최신순</a><div id="circle"></div></div>
+                  <div><a href="#" class="menu-link">마감일순</a><div></div></div>
+                  <div><a href="#" class="menu-link">조회수순</a><div></div></div>
+                  <div><a href="#" class="menu-link">지원자 多</a><div></div></div>
+               </div>
+            </div>
+         </section>
+         
+            <ul class="prod-list1">
+               <li class="caption">
+               <img src="/images/main/Inside the hospital1.jpg"class="R_img1" alt="병원1">
+                  <div >
+                     <h2>거인병원</h2>
+                     <p>부산 동래구 여고로 12 2~10층</p>
+                     <p>주 5일 / 물리&작업치료과 (주말휴무)</p><br>
+                     <p>고용형태 : 정규직</p>
+                     <p>경력 : 2년 이상</p>
+                     <p><a href="" class="R_detail1">자세히 보기</a></p>
+                  </div>
+               </li>
+               <li class="caption2">
+               <img src="/images/main/Inside the hospital2.jpg"class="R_img1_s" alt="병원2">
+                  <div >
+                     <h2>본베스트 정형외과의원</h2>
+                     <p>서울 강서구 공항대로 627 대신빌딩 3층</p>
+                     <p>주 4.5일 / 평일1, 주말1 휴무 / 주말 오전근무</p><br>
+                     <p>고용형태 : 정규직</p>
+                     <p>경력 : 경력무관</p>
+                     <p><a href="" class="R_detail1_s">자세히 보기</a></p>
+                  </div>
+               </li>
+               <li class="caption2"><img src="/images/main/Inside the hospital3.jpg"class="R_img1_s" alt="병원3">
+                  <div>
+                     <h2>더 열린병원</h2>
+                     <p>대구 달서구 달구벌대로 1571</p>
+                     <p>주 4.5일 / 평일1, 주말1 휴무 / 주말 오전근무</p><br>
+                     <p>고용형태 : 정규직</p>
+                     <p>경력 : 3년 이상</p>
+                     <p><a href="" class="R_detail1_s">자세히 보기</a></p>
+                  </div>
+               </li>
+               <li class="caption2"><img src="/images/main/Inside the hospital5.jpg" class="R_img1_s" alt="병원4">
+                  <div>
+                     <h2>시화병원</h2>
+                     <p>경기 시흥시 군자천로 381</p>
+                     <p>주 5일 / 물리&작업치료과 (주말휴무)</p><br>
+                     <p>고용형태 : 정규직</p>
+                     <p>경력 : 5년 이상</p>
+                     <p><a href="" class="R_detail1_s">자세히 보기</a></p>
+                  </div>
+               </li>
+            </ul>
+         </div>
+         
+         <div class="decorate_img">
+            <a href=""><img class="main_decorate2"
+               src="/images/main/main_decorate2.svg" alt="메인꾸미는이미지2"></a>
+         </div>
+
+         <ul class="prod-list2">
+            <li><img src="/images/main/Inside the hospital1.jpg"
+               class="R_img" alt="병원1">
+               <div class="caption">
+                  <h2>거인병원</h2>
+                  <p>부산 동래구 여고로 12 2~10층</p>
+                  <p>주 5일 / 물리&작업치료과 (주말휴무)</p><br>
+                  <p>고용형태 : 정규직</p>
+                  <p>경력 : 2년 이상</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+            <li><img src="/images/main/Inside the hospital2.jpg"
+               class="R_img" alt="병원2">
+               <div class="caption">
+                  <h2>본베스트 정형외과의원</h2>
+                  <p>서울 강서구 공항대로 627 대신빌딩 3층</p>
+                  <p>주 4.5일 / 평일1, 주말1 휴무 / 주말 오전근무</p><br>
+                  <p>고용형태 : 정규직</p>
+                  <p>경력 : 경력무관</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+            <li><img src="/images/main/Inside the hospital3.jpg"
+               class="R_img" alt="병원3">
+               <div class="caption">
+                  <h2>더 열린병원</h2>
+                  <p>대구 달서구 달구벌대로 1571</p>
+                  <p>주 4.5일 / 평일1, 주말1 휴무 / 주말 오전근무</p><br>
+                  <p>고용형태 : 정규직</p>
+                  <p>경력 : 3년 이상</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+            <li><img src="/images/main/Inside the hospital4.jpg"
+               class="R_img" alt="병원4">
+               <div class="caption">
+                  <h2>서울척탑병원</h2>
+                  <p>경기 고양시 덕양구 권율대로 685 에스아이비타워 6~8</p>
+                  <p>주 5일 / 물리&작업치료과 (주말휴무)</p><br>
+                  <p>고용형태 : 정규전환형 인턴직</p>
+                  <p>경력 : 경력무관</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+            <li><img src="/images/main/Inside the hospital5.jpg"
+               class="R_img" alt="병원5">
+               <div class="caption">
+                  <h2>시화병원</h2>
+                  <p>경기 시흥시 군자천로 381</p>
+                  <p>주 5일 / 물리&작업치료과 (주말휴무)</p><br>
+                  <p>고용형태 : 정규직</p>
+                  <p>경력 : 5년 이상</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+            <li><img src="/images/main/Inside the hospital6.jpg"
+               class="R_img" alt="병원6">
+               <div class="caption">
+                  <h2>210 정형외과의원</h2>
+                  <p>서울 양천구 목동동로 150 목동블루스퀘어 2,4~6층</p>
+                  <p>주 4.5일 / 평일1, 주말1 휴무 / 주말 오전근무</p><br>
+                  <p>고용형태 : 정규직</p>
+                  <p>경력 : 2년 이상</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+            <li><img src="/images/main/Inside the hospital7.jpg"
+               class="R_img" alt="병원7">
+               <div class="caption">
+                  <h2>서울세종 정형외과의원</h2>
+                  <p>서울 영등포구 도신로 90 서울크리닉빌딩 4층</p>
+                  <p>주 4.5일 / 평일1, 주말1 휴무 / 주말 오전근무</p><br>
+                  <p>고용형태 : 정규직</p>
+                  <p>경력 : 2년 이상</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+            <li><img src="/images/main/Inside the hospital8.jpg"
+               class="R_img" alt="병원8">
+               <div class="caption">
+                  <h2>성모튼튼 정형외과의원</h2>
+                  <p>서울 관악구 남부순환로 2056 태림빌딩 3층</p>
+                  <p>주 4.5일 / 평일1, 주말1 휴무 / 주말 오전근무</p><br>
+                  <p>고용형태 : 정규직</p>
+                  <p>경력 : 3년 이상</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+            <li><img src="/images/main/Inside the hospital9.jpg"
+               class="R_img" alt="병원9">
+               <div class="caption">
+                  <h2>마포 바로본 정형외과의원</h2>
+                  <p>서울 마포구 마포대로 89 서울마포우체국 3층</p>
+                  <p>주 4.5일 / 평일1, 주말1 휴무 / 주말 오전근무</p><br>
+                  <p>고용형태 : 정규직</p>
+                  <p>경력 : 5년 이상</p>
+                  <p><a href="" class="R_detail">자세히 보기</a></p>
+               </div>
+            </li>
+         </ul>
+         <!-- <div class="decorate_img">
+            <a href=""><img class="main_decorate2"
+               src="/images/main/main_decorate2.svg" alt="메인꾸미는이미지2"></a>
+         </div> -->
+      </section>
+      <section id="mid_bottom">
+         <div class="title_img">
+            <a href=""><img class="review_title"
+               src="/images/main/review.svg" alt="리뷰 타이틀"></a>
+         </div>
+         
+         <div class="review_list">
+            <div class="review_list_unit">
+               <div class="review_list_unit_img">
+                  <a href=""><img class="H_img"
+                     src="/images/main/Inside the hospital4.jpg" alt="병원4"></a>
+                </div>
+                <div class="review_caption">
+                  <h2>
+                     <b>서울척탑병원</b>&nbsp;-&nbsp;먼저, 병원 내부의 환경은 매우 깨끗하고 친절한 직원들이 있어 환자들이 편안하게 머무를 수 있었습니다. 
+                     또한, 환자들이 필요한 정보를 쉽게 찾을 수 있는 안내판과 친절한 직원들이 있어 환자들이 편안하게 
+                     병원을 이용할 수 있었습니다.
+                  </h2>
+                  <p>먼저, 병원 내부의 환경은 매우 깨끗하고 친절한 직원들이 있어 환자들이 편안하게 머무를 수 있었습니다. 
+                  또한, 환자들이 필요한 정보를 쉽게 찾을 수 있는 안내판과 친절한 직원들이 있어 환자들이 편안하게 병원을 
+                  이용할 수 있었습니다.</p>
+               </div>
+            </div>
+            
+            <div class="review_list_unit">
+               <div class="review_list_unit_img">
+                  <a href=""><img class="H_img"
+                     src="/images/main/Inside the hospital8.jpg" alt="병원8"></a>
+               </div>
+               <div class="review_caption">
+                  <h2>
+                     <b>성모튼튼정형외과의원</b>&nbsp;-&nbsp;병원의 복지 서비스는 환자들의 안전을 최우선으로 생각하지만, 
+                     병원 내부의 시설이 오래되어 환자들의 안전에 대한 우려가 있었습니다. 이러한 부분들을 개선한다면, 
+                     병원의 복지 서비스는 더욱 향상될 것으로 생각됩니다.
+                  </h2>
+                  <p>병원의 복지 서비스는 환자들의 안전을 최우선으로 생각하지만, 
+                     병원 내부의 시설이 오래되어 환자들의 안전에 대한 우려가 있었습니다. 이러한 부분들을 개선한다면, 
+                     병원의 복지 서비스는 더욱 향상될 것으로 생각됩니다.</p>
+               </div>
+            </div>
+            
+            <div class="review_list_unit">
+               <div class="review_list_unit_img">
+                  <a href=""><img class="H_img"
+                     src="/images/main/Inside the hospital6.jpg" alt="병원6"></a>
+               </div>
+               <div class="review_caption">
+                  <h2>
+                     <b>210정형외과의원</b>&nbsp;-&nbsp;이 병원은 직원들의 복지를 고려하는 면에서 매우 긍정적인 면을 가지고 있습니다. 
+                     직원들 간의 원활한 커뮤니케이션과 협력을 위한 다양한 시설이 마련되어 있으며, 
+                     팀워크를 촉진하기 위한 다양한 활동이 이루어지고 있습니다. 
+                  </h2>
+                  <p>이 병원은 직원들의 복지를 고려하는 면에서 매우 긍정적인 면을 가지고 있습니다. 
+                     직원들 간의 원활한 커뮤니케이션과 협력을 위한 다양한 시설이 마련되어 있으며, 
+                     팀워크를 촉진하기 위한 다양한 활동이 이루어지고 있습니다.</p>
+               </div>
+            </div>
+         </div>
+      </section>
+
+   </div>
+
+   <div th:replace="~{footer::footer-fragment}"></div>
+
+   <script>
+   /* 개인, 기업회원 버튼 */
+      $(document).ready(function() {
+    	    // 개인 로그인 및 병원 로그인 버튼 클릭 이벤트
+    	    $('#personal_login, #hospital_login').click(function() {
+    	        // 모든 탭에서 'selected' 클래스 제거
+    	        $('#personal_login, #hospital_login').removeClass('login_identity_selected').addClass('login_identity_nonselected');
+
+    	        // 클릭된 탭에 'selected' 클래스 추가
+    	        $(this).removeClass('login_identity_nonselected').addClass('login_identity_selected');
+
+    	        // 개인 로그인이 선택된 경우
+    	        if ($('#personal_login').hasClass('login_identity_selected')) {
+    	            $('.mid_top_subtitle_p').show(); // 개인회원 로그인 제목 표시
+    	            $('.mid_top_subtitle_h').hide(); // 기업회원 로그인 제목 숨김
+    	            $('#userType').val('personal');  // hidden input 값 'personal'로 설정
+    	        }
+    	        // 병원 로그인이 선택된 경우
+    	        else if ($('#hospital_login').hasClass('login_identity_selected')) {
+    	            $('.mid_top_subtitle_p').hide(); // 개인회원 로그인 제목 숨김
+    	            $('.mid_top_subtitle_h').show(); // 기업회원 로그인 제목 표시
+    	            $('#userType').val('company');   // hidden input 값 'company'로 설정
+    	        }
+    	    });
+    	});
+      
+      /* 위로 올라오는 효과 */
+	    $(window).scroll(function() {
+	        // 각 요소의 상단 위치를 가져옵니다.
+	        var elementTopProdList2 = $('.prod-list2').offset().top;
+	        var elementTopReviewList = $('.review_list').offset().top;
+
+	        // 현재 뷰포트의 하단 위치를 계산합니다.
+	        var viewportBottom = $(window).scrollTop() + $(window).height();
+
+	        // .prod-list2가 뷰포트에 들어왔는지 확인합니다.
+	        if (viewportBottom > elementTopProdList2 +200) {
+	            $('.prod-list2').css({
+	                'opacity': 1,
+	                'transform': 'translateY(-20px)',
+	                'transition': 'all 1s ease-out'
+	            });
+	        } else {
+	            $('.prod-list2').css({
+	                'opacity': 0,
+	                'transform': 'translateY(50px)',
+	                'transition': 'all 1s ease-out'
+	            });
+	        }
+
+	        // .review_list가 뷰포트에 들어왔는지 확인합니다.
+	        if (viewportBottom > elementTopReviewList) {
+	            $('.review_list').css({
+	                'opacity': 1,
+	                'transform': 'translateY(-20px)',
+	                'transition': 'all 1s ease-out'
+	            });
+	        } else {
+	            $('.review_list').css({
+	                'opacity': 0,
+	                'transform': 'translateY(50px)',
+	                'transition': 'all 1s ease-out'
+	            });
+	        }
+	    });
+   </script>
+</body>
+</html>

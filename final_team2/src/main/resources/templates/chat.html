@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<link rel="stylesheet" th:href="@{/css/chat.css}">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="chat_box">
+            <div class="col-12-1">
+                <label><b>거인병원</b></label>
+            </div>
+            <div>
+                <div id="msgArea" class="col"></div>
+                <div class="col-12">
+                    <input type="hidden" id="username" name="username" th:value="${name}">
+                    <div class="input-group mb-3">
+                        <textarea id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        $(document).ready(function(){   
+           
+            const username = document.getElementById("username").value;
+
+            $("#disconn").on("click", (e) => {
+                disconnect();
+            })
+
+            $("#button-send").on("click", (e) => {
+                send();
+            });
+
+            function onEnterKey(event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    send();
+                }
+            }
+         
+            
+            // 채팅창 스크롤을 자동으로 아래로 이동하는 함수
+            function scrollToBottom() {
+                var chatBox = $("#chatBox");
+                chatBox.scrollTop(chatBox.prop("scrollHeight"));
+            }
+
+            // 새로운 채팅 메시지를 추가하고 스크롤을 아래로 이동하는 함수
+            function addChatMessage(message) {
+                var chatBox = $("#chatBox");
+                chatBox.append("<div class='message'>" + message + "</div>");
+                scrollToBottom(); // 스크롤을 아래로 이동
+            }
+
+            
+            // Enter 키 입력 이벤트 리스너 등록
+            document.getElementById("msg").addEventListener("keydown", onEnterKey);
+
+            //const websocket = new WebSocket("ws://192.168.20.17:8080/ws/chat");
+           const websocket = new WebSocket("ws://localhost:8080/ws/chat");
+
+            websocket.onmessage = onMessage;
+            websocket.onopen = onOpen;
+            websocket.onclose = onClose;
+         
+            function send(){
+                let msg = document.getElementById("msg");
+
+                console.log(username + ":" + msg.value);
+                websocket.send(username + ":" + msg.value);
+                msg.value = '';
+            }
+
+            // 채팅창에서 나갔을 때
+            function onClose(evt) {
+                var str = username + ": 님이 방을 나가셨습니다.";
+                websocket.send(str);
+            }
+
+            // 채팅창에 들어왔을 때
+            function onOpen(evt) {
+                var str = username + ": 님이 입장하셨습니다.";
+                websocket.send(str);
+            }
+
+            function onMessage(msg) {
+                var data = msg.data;
+                var sessionId = null;
+                var message = null;
+                var arr = data.split(":");
+
+                for(var i=0; i<arr.length; i++){
+                    console.log('arr[' + i + ']: ' + arr[i]);
+                }
+
+                var cur_session = username;
+
+                console.log("cur_session : " + cur_session);
+                sessionId = arr[0];
+                message = arr[1];
+
+                console.log("sessionID : " + sessionId);
+                console.log("cur_session : " + cur_session);
+
+                if(sessionId == cur_session){
+                    var str = "<div class='col-12'>";
+                    str += "<div class='alert alert-secondary' \
+                    style='width: 40%; float: right; clear: both; margin: 10px 30px 15px; \
+                    border-radius: 20px; background-image: linear-gradient(to right, #FF3D00, #FF5500); \
+                    position: relative; border-width: 1px; color: white; '>";
+
+                    str += "<b>" + sessionId + " : " + message + "</b>";
+                    str += "</div></div>";
+                    $("#msgArea").append(str);
+                }
+                else{
+                    var str = "<div class='col-12'>";
+                    str += "<div class='alert alert-warning' \
+                    style='width:40%; clear:both; margin: 10px 30px 15px; \
+                    border-radius: 20px; background-image: linear-gradient(to right, #4E66FF, #1A8DFF); \
+                    position: relative; border-width: 1px; color: white; '>";
+
+                    str += "<b>" + sessionId + " : " + message + "</b>";
+                    str += "</div></div>";
+                    $("#msgArea").append(str);
+                }
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        })
+    </script>
+    
+</body>
+
+
+</html>

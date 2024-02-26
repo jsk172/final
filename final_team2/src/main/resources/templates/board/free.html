@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>글목록...</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<link rel="stylesheet" th:href="@{/css/board.css}">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+
+	<div id="container">
+	  <section class="notice">
+        <div class="board-title">
+            <div class="board">
+                <h3>커뮤니티</h3>
+            </div>
+        </div>
+        <div class="board-menu">
+            <div class="board">
+                <a th:href="@{/board/noti}" class="menu-link1">공지사항</a>
+                <a th:href="@{/board/qna}" class="menu-link2">QNA</a>
+                <a th:href="@{/board/free}" class="menu-link3 checked">자유게시판</a>
+                <a th:href="@{/rboard/list}" class="menu-link4">리뷰</a>
+            </div>
+        </div>
+        
+        
+    
+        <!-- board list area -->
+          <div id="board-list">
+              <div class="board">
+                  <table class="board-table">
+                      <thead>
+                      <tr>
+                          <th class="th-num">NO</th>
+                          <th class="th-title">제목</th>
+                          <th class="th-id">작성자</th>
+                          <th class="th-date">작성일</th>
+                          <th class="th-hit">조회수</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr id="board_list" th:each="free : ${freeList}">
+                          <td th:text="${free.id}"></td>
+                          <td><a th:href="@{/board/detail/}+${free.id}+@{?boardType=free}" th:text="${free.title}"></a></td>
+                          <td th:text="${free.author}"></td>
+                          <td th:text="${#dates.format(free.createdDate, 'yyyy.MM.dd')}"></td>
+                          <td th:text="${free.views}"></td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+    </section>
+
+    <!-- 검색 -->
+    <div class="search-container">
+        <div class="flex-between">
+            <div class="input-wrapper">
+                <select id="search-select" name="field">
+                    <option value="제목">제목</option>
+                    <option value="작성자">작성자</option>
+                </select>
+                <input type="text" id="search-input" size="10%" th:value="${keyword}">
+                <button id="search-button">
+                    <i class="fas fa-search"></i> <!-- 돋보기 아이콘 -->
+                </button>
+            </div>
+            <a th:href="@{/board/write(boardType='free')}"><button id="write">글쓰기</button></a>
+        </div>
+    </div>
+    <!-- 페이지 영역 -->
+    <div id="page" class="pagination-wrap">
+        <div id="pagination">
+            <!-- 이전 페이지 -->
+            <!-- 2page 클릭하면 db 페이지는 1page -->
+            <a th:href="${freeList.first}? '#' : 
+                @{/board/free(page=${freeList.number})}"><img th:src="@{/images/job/page_prev.svg}" alt="prev"></a>
+            <!-- 페이지 번호 블럭 -->
+            <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+             <!-- 현재 페이지는 링크없이 숫자만 표시 -->
+                <span th:if="${page == freeList.number + 1}"  
+                    th:text="${page}" class="current_page"></span>
+                <span th:if="${page != freeList.number + 1}">
+                    <a th:href="@{/board/free(page=${page})}" th:text="${page}"></a>
+                </span>
+            </span>
+            <!-- 다음 페이지 -->
+            <!-- 현재 2page -> 3page  실제페이지는 1page-->
+            <a th:href="${freeList.last} ? '#' : 
+                    @{/board/free(page=${freeList.number+2})}"><img th:src="@{/images/job/page_next.svg}" alt="map"></a>
+        </div>
+    </div>
+    <div th:replace="~{footer::footer-fragment}"></div>
+</body>
+<script>
+    function search() {
+        const value = document.getElementById("search-input").value;
+        window.location.href = `http://localhost:8080/board/free?keyword=${value}`
+    }
+    $(document).ready(function(){
+        $("#search-button").click(function(){
+            search()
+        });
+        $("#search-input").keydown(function(e){
+            if (e.keyCode === 13) {
+                search();
+            }
+        });
+    })
+</script>
+</html>

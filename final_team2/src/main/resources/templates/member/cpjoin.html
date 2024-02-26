@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>기업회원가입</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" th:href="@{/css/member/member.css}">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<!-- footer.html 연결  -->
+	<div th:replace="~{header::header-fragment}"></div>
+
+<section id="cpjoin" >
+ <div id="cpjoin_box">
+ 	
+ 	  <form th:action="@{/member/cpjoin}" method="post" name="company">
+   	<h2>기업 회원 가입</h2>
+    	<ul>
+    		<li>
+    			<label for="brNum">사업자 등록번호</label>
+    			<input type="text" id="brNum" name="brNum" onkeyup="validateBrNum()"
+   							placeholder="' - ' 제외하고 숫자 10자 입력해주세요">
+ 				<div class ="message" id="message_brNum">
+					<p>'-' 제외하고 숫자 10자 입력해주세요</p>
+				</div>
+	   		</li>
+    		<li>
+    			<label for="cname">병원/기업명</label>
+    			<input type="text" id="cname" name="cname" onkeyup="validateCname()"
+    						placeholder="한글만 사용해주세요.">
+    			<div class ="message" id="message_cname">
+					<p>한글만 사용해주세요.</p>
+				</div>
+	   		</li>
+    		<li>
+    			<label for="ownername">대표자 성함</label>
+    			<input type="text" id="ownername" name="ownername" onkeyup="validateOwnername()"
+    						placeholder="한글만 사용해주세요.">
+    			<div class ="message" id="message_ownername">
+					<p>한글만 사용해주세요.</p>
+				</div>
+	   		</li>
+    		<li>
+    			<label for="tel">병원 대표전화</label>
+    			<input type="text" id="tel" name="tel" onkeyup="validateTel()"
+    						placeholder="' - ' 제외하고 입력해주세요.">
+ 				<div class ="message" id="message_tel">
+					<p>' - ' 제외하고 입력해주세요.</p>
+				</div>
+	   		</li>
+    		<li>
+	    		<div id="caddress">
+	    			<label for="caddress">기업/병원 주소</label>
+	    			<div>
+	    				<div>
+			    			<input type="text" id="sample4_postcode" name="postalcode" placeholder="우편번호">
+							<input type="button" id ="post_btn" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+						</div>
+						<input type="text" id="sample4_roadAddress" name="roadAddress" placeholder="도로명주소" size="60" ><br>
+						<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소"  size="60">
+						<!-- <span id="guide" style="color:#999;display:none"></span> -->
+						<input type="text" id="sample4_detailAddress" name="detailAddress" placeholder="상세주소"  size="60"><br>
+						<input type="hidden" id="sample4_extraAddress" placeholder="참고항목"  size="60">
+						<input type="hidden" id="sample4_engAddress" placeholder="영문주소"  size="60" ><br>
+					</div>	
+				</div>
+	   		</li>
+    		<li>
+    			<label for="companyId">아이디</label>
+    			<input type="text" id="companyId" name="companyId" onkeyup="validateId()"
+    				placeholder="영문, 숫자만 사용해 주세요">
+   				<button type="button" id="btn_checkId" onclick="IdCheck()">중복 확인</button>
+					<div class ="message" id="message_id2">
+						<p>영문, 숫자만 입력하세요</p>
+					</div>
+					<div class ="message" id="message_id3">
+						<p>아이디는 4~15자 이하까지 입력 가능합니다</p>
+						
+					</div>
+					<!-- 중복 체크 여부 -->
+					<input type="hidden" id="check_result" th:value="${'0'}">
+	   		</li>
+	   		<li>
+	   			<label for="cpasswd">비밀번호</label>
+	   			<input type="password" id="cpasswd" name="cpasswd" onkeyup="validatePw()"
+	   				placeholder="8~15자 영문 + 숫자, 특수문자">
+	   			<div class ="message" id="message_pw1">
+	   				<p>영문, 숫자, 특수문자 조합 8~15자를 사용해주세요</p>
+	   			</div>
+	   		</li>
+	   		<li>
+	   			<label for="passwd2">비밀번호 확인</label>
+	   			<input type="password" id="cpasswd2" onkeyup="checkPw()"
+	   				placeholder="비밀번호를 다시 입력해주세요">
+	   			<div class ="message" id="message_pw2">
+	   				<p>비밀번호가 일치하지 않습니다</p>
+	   			</div>
+	   		</li>
+	   		<li>
+	   			<div class="ownerphone" id="phone_box">
+	   			<label for="phone">핸드폰 번호</label>
+	   			<select class="box" id="phone_num" name="ownerphone">
+	   				<option>010</option>
+	   			</select>
+				  <input type="text" id="phone_b" onkeyup="validatePhone()"
+	   				placeholder="' - ' 제외하고 입력해주세요.">
+				</div>
+				<div class ="message" id="message_phone">
+	   				<p>숫자만 입력해주세요</p>
+	   			</div>
+	   			<!-- 전화번호 전체값 받는 input 박스 -->
+	   			<input type="hidden" id="full_phone" name="phone">
+	   		</li>
+	   		<li>
+	   			<label for="email">이메일</label>
+	   			<input type="text" id="email-head" name="email-head"
+	   				placeholder="이메일"><span>@</span>
+	   			<input class="domain_box" id="domain-txt" type="text" name="domain-txt"/>
+					<select class="box" id="domain-list" >
+					  <option value="type">직접 입력</option>
+					  <option value="naver.com">naver.com</option>
+					  <option value="google.com">google.com</option>
+					  <option value="hanmail.net">hanmail.net</option>
+					  <option value="nate.com">nate.com</option>
+					  <option value="kakao.com">kakao.com</option>
+					</select>
+				<div class ="message" id="message_email">
+	   				<p>존재하는 이메일 주소입니다</p>
+	   			</div>
+				<!-- 이메일 전체값 받는 input 박스 -->	
+				<input type="hidden" id="email" name="email" value="">
+	   		</li>
+	   	</ul>
+	   	<div class="button">
+	   		<button type="button" id="join_button" onclick="checkUser()">가입하기</button> 
+	  	</div>
+  	</form>
+	</div>
+</section>
+
+<!-- footer.html 연결  -->
+<div th:replace="~{footer::footer-fragment}"></div>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+	/* 사업자 유효성 (input 값 입력하면 자동 실행) */
+	function validateBrNum() {
+		/* alert('test'); */
+		let brNum = document.getElementById('brNum').value;
+		
+		let regexBrNum = /^[0-9]+$/; //숫자
+	    
+	    if(brNum.length !== 0){
+		    if(!regexBrNum.test(brNum) || brNum.length != 10){
+				$('#message_brNum').css('display', 'block');
+		    } else {
+		        // 조건을 만족하면 오류 메시지 숨기기
+		        $('#message_brNum').css('display', 'none');
+		    }
+		    //값이 없으면 메세지 숨기기
+		}else{
+			$('#message_brNum').css('display', 'none');
+		}
+	}
+	
+	/* 병원명 유효성 검사 (input 값 입력하면 자동 실행) */
+	function validateCname() {
+		/* alert('test'); */
+		let cname = document.getElementById('cname').value;
+		
+		let regexName = /^[가-힣ㄱ-ㅎ]+$/; //한글
+	    
+	    if(cname.length !== 0){
+			// 이름 검사
+		    if(!regexName.test(cname)){
+				$('#message_cname').css('display', 'block');
+		    } else {
+		        // 조건을 만족하면 오류 메시지 숨기기
+		        $('#message_cname').css('display', 'none');
+		    }
+		    //값이 없으면 메세지 숨기기
+		}else{
+			$('#message_cname').css('display', 'none');
+		}
+	}
+	
+	/* 대표자성함 유효성 검사 (input 값 입력하면 자동 실행) */
+	function validateOwnername() {
+		/* alert('test'); */
+		let ownername = document.getElementById('ownername').value;
+		
+		let regexName = /^[가-힣ㄱ-ㅎ]+$/; //한글
+	    
+	    if(ownername.length !== 0){
+			// 이름 검사
+		    if(!regexName.test(ownername)){
+				$('#message_ownername').css('display', 'block');
+		    } else {
+		        // 조건을 만족하면 오류 메시지 숨기기
+		        $('#message_ownername').css('display', 'none');
+		    }
+		    //값이 없으면 메세지 숨기기
+		}else{
+			$('#message_ownername').css('display', 'none');
+		}
+	}
+	
+	/* 대표번호 유효성 검사 (input 값 입력하면 자동 실행) */
+	function validateTel() {
+		/* alert('test'); */
+		let tel = document.getElementById('tel').value;
+		
+		let regexTel = /^[0-9]+$/; //숫자
+	    
+	    if(tel.length !== 0){
+			// ID 길이 검사
+		    if(!regexTel.test(tel)){
+				$('#message_tel').css('display', 'block');
+		    } else {
+		        // 조건을 만족하면 오류 메시지 숨기기
+		        $('#message_tel').css('display', 'none');
+		    }
+		    //값이 없으면 메세지 숨기기
+		}else{
+			$('#message_tel').css('display', 'none');
+		}
+	}
+
+	/* 아이디 중복 체크 */
+	const IdCheck = () => {
+		let inputId = document.getElementById("companyId").value;
+		let checkResult = document.getElementById("check_result");
+		
+		// 아이디 유효성 검사
+	    let idValid = validateId();
+	    if (!idValid) {
+	        alert('아이디를 올바르게 입력해주세요');
+	        checkResult.value = "0";
+	        return; // 유효하지 않은 경우 여기서 함수 종료
+	    }
+		
+		$.ajax({
+	        type: "POST",
+	        url: "/member/check-id",
+	        data: { companyId: inputId },
+	        success: function(res){
+	            console.log("성공: ", res);
+	            if(res == "OK"){
+	                alert('사용 가능한 아이디입니다.');
+	                checkResult.value = "1";
+	            }else{  //res == "NO"
+	                alert('이미 가입된 아이디입니다.');
+	            }
+	        },
+	        error: function(err){
+	            console.log("실패: ", err);
+	        }
+	    });
+	};
+	
+	//아이디 중복 체크: memberId 입력 필드 값 변경 시 check_result 값을 "0"로 설정 
+	//(다른 아이디로 중복체크하고, 아이디를 변경했을때 중복체크한 처리되지 않도록)
+    document.getElementById("companyId").addEventListener("input", function() {
+        document.getElementById("check_result").value = "0";
+    });
+	
+	/* 아이디 유효성 검사 (input 값 입력하면 자동 실행) */
+	function validateId() {
+		/*alert('test');*/
+	    let id = document.getElementById('companyId').value;
+	    let regexId = /^[0-9a-zA-Z]+$/;
+	    
+	    if(id.length !== 0){
+			// ID 길이 검사
+		    if (id.length < 4 || id.length > 15) {
+		        $('#message_id3').css('display', 'block');
+		        $('#message_id2').css('display', 'none');
+		        return false;
+		    } else if (!regexId.test(id)) {
+		        // ID 문자 유형 검사
+		        $('#message_id2').css('display', 'block');
+		        $('#message_id3').css('display', 'none');
+		        return false;
+		    } 
+		    else {
+		        // 조건을 만족하면 오류 메시지 숨기기
+		        $('#message_id2').css('display', 'none');
+		        $('#message_id3').css('display', 'none');
+		        return true;
+		    }
+		    //값이 없으면 메세지 숨기기
+		}else{
+			$('#message_id2').css('display', 'none');
+		    $('#message_id3').css('display', 'none');
+		    return false;
+		}
+	}
+
+	/* 비밀번호 유효성 검사 (input 값 입력하면 자동 실행) */
+	function validatePw() {
+		/* alert('test');*/ 
+	    let pw1 = document.getElementById('cpasswd').value;
+	    let regexPw1 = /[0-9]+/;      //숫자
+		let regexPw2 = /[a-zA-Z]+/;   //영문자
+		let regexPw3 = /[~!@#$%^&*()_+|]+/; //특수문자
+	    
+	    if(pw1.length !== 0){
+			// ID 길이 검사
+		    if(pw1.length < 8 || pw1.length > 15 || !regexPw1.test(pw1) ||
+					!regexPw2.test(pw1) || !regexPw3.test(pw1)){
+				$('#message_pw1').css('display', 'block');
+				return false;
+		    } else {
+		        // 조건을 만족하면 오류 메시지 숨기기
+		        $('#message_pw1').css('display', 'none');
+		    }
+		    //값이 없으면 메세지 숨기기
+		}else{
+			$('#message_pw1').css('display', 'none');
+		}
+	}
+
+	/* 비밀번호 확인 (input 값 입력하면 자동 실행) */
+	function checkPw() {
+		 /*alert('test');*/
+		let pw1 = document.getElementById('cpasswd').value;
+		let pw2 = document.getElementById('cpasswd2').value;
+	    
+	    if(pw2.length !== 0){
+			// ID 길이 검사
+		    if(pw1 != pw2){
+				$('#message_pw2').css('display', 'block');
+		    } else {
+		        // 조건을 만족하면 오류 메시지 숨기기
+		        $('#message_pw2').css('display', 'none');
+		    }
+		    //값이 없으면 메세지 숨기기
+		}else{
+			$('#message_pw2').css('display', 'none');
+		}
+	}
+	
+	/* 전화번호 유효성 검사 (input 값 입력하면 자동 실행) */
+	function validatePhone() {
+		/* alert('test'); */
+		let tel = document.getElementById('phone_b').value;
+		
+		let regexTel = /^[0-9]+$/; //숫자
+	    
+	    if(tel.length !== 0){
+			// ID 길이 검사
+		    if(!regexTel.test(tel)){
+				$('#message_phone').css('display', 'block');
+		    } else {
+		        // 조건을 만족하면 오류 메시지 숨기기
+		        $('#message_phone').css('display', 'none');
+		    }
+		    //값이 없으면 메세지 숨기기
+		}else{
+			$('#message_phone').css('display', 'none');
+		}
+	}
+	
+	/* 전화번호 합치기 */
+	document.addEventListener('DOMContentLoaded', function () {
+	    // 전화번호 필드의 입력을 감지하는 이벤트 리스너 설정
+	    document.getElementById('phone_b').addEventListener('input', updateFullPhone);
+	});
+
+	function updateFullPhone() {
+	    // 전화번호 접두사 및 전화번호 필드에서 값을 가져옵니다.
+	    let phonePrefix = document.getElementById('phone_num').value;
+	    let phone2 = document.getElementById('phone_b').value;
+
+	    // 접두사와 전화번호를 결합합니다.
+	    let fullPhone = phonePrefix + phone2;
+
+	    // 결합된 전체 전화번호를 숨겨진 필드에 설정합니다.
+	    document.getElementById('full_phone').value = fullPhone;
+	}
+	
+	// 이메일
+	// 도메인 직접 입력 or domain option 선택 및 전체이메일 input #full-email에 값 넣기
+	$(document).ready(function() {
+	    // 이메일 앞부분과 도메인 입력 필드 변경 감지
+	    $('#email-head, #domain-txt').on('input', function() {
+	        updateEmailField();
+	    });
+
+	    // 도메인 선택 변경 감지
+	    $('#domain-list').change(function() {
+	        var selectedValue = $(this).val();
+	        
+	        if (selectedValue === 'type') {
+	            // '직접 입력' 선택 시
+	            $('#domain-txt').prop('readonly', false).val('').focus();
+	        } else {
+	            // 드롭다운에서 선택한 도메인으로 설정
+	            $('#domain-txt').prop('readonly', true).val(selectedValue);
+	        }
+	        updateEmailField(); // 도메인 리스트 변경 시에도 이메일 필드 업데이트
+	    });
+
+	    // 이메일 필드 업데이트 함수
+	    function updateEmailField() {
+	        var emailLocalPart = $('#email-head').val();
+	        var emailDomainPart = $('#domain-txt').val();
+
+	        // 전체 이메일 주소 결합
+	        var fullEmail = emailLocalPart + '@' + emailDomainPart;
+
+	        // 결합된 이메일 주소를 #email 필드에 설정
+	        $('#email').val(fullEmail);
+	    }
+	});
+	
+	
+	/* 회원가입 */
+	const checkUser = () => {
+	   let form = document.company;
+		
+	   let brNum = document.getElementById('brNum').value;
+	   let cname = document.getElementById('cname').value;
+	   let ownername = document.getElementById('ownername').value;
+	   let postcode = document.getElementById('sample4_postcode').value;
+	   let roadAddress = document.getElementById('sample4_roadAddress').value;
+	   let detailAddress = document.getElementById('sample4_detailAddress').value;
+	   let id = document.getElementById('companyId').value;
+	   let pw1 = document.getElementById('cpasswd').value;
+	   let pw2 = document.getElementById('cpasswd2').value;
+	   let email = document.getElementById('email-head').value;
+	   let email2 = document.getElementById('domain-txt').value;
+	   let phone_b = document.getElementById('phone_b').value;
+	   let checkResult = document.getElementById('check_result').value;
+	   
+		// 모든 값 입력된 상태인지 확인
+		   if(brNum.length == 0 || cname.length == 0 || ownername.length == 0 || postcode.length == 0 || roadAddress.length == 0 || detailAddress.length == 0 || 
+				   tel.length == 0 || id.length == 0 || pw1.length == 0 || pw2.length == 0 || email.length == 0 || email2.length == 0 || phone_b.length == 0){
+				alert('모든 필드를 입력해야 합니다.');
+				return false;	
+			// 오류 메세지 뜨지 않은 상태인지 확인
+		    } else if ($('.message').filter(function() {
+		        return $(this).css('display') == 'block';
+		    }).length > 0) {
+		        alert('모든 필드를 올바르게 입력해야 합니다.');
+		        return false;  
+		   } else if (checkResult != "1"){
+			   alert('아이디 중복체크를 해주세요.')
+			   return false;
+		   }
+		
+		form.submit();
+	};
+
+	//주소 검색 API
+	//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+	function sample4_execDaumPostcode() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+	            // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+	            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	            var roadAddr = data.roadAddress; // 도로명 주소 변수
+	            var extraRoadAddr = ''; // 참고 항목 변수
+	
+	            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                extraRoadAddr += data.bname;
+	            }
+	            // 건물명이 있고, 공동주택일 경우 추가한다.
+	            if(data.buildingName !== '' && data.apartment === 'Y'){
+	               extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	            }
+	            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	            if(extraRoadAddr !== ''){
+	                extraRoadAddr = ' (' + extraRoadAddr + ')';
+	            }
+	
+	            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	            document.getElementById('sample4_postcode').value = data.zonecode;
+	            document.getElementById("sample4_roadAddress").value = roadAddr;
+	            document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+	     
+	            document.getElementById("sample4_engAddress").value = data.addressEnglish;
+	                   
+	            // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+	            if(roadAddr !== ''){
+	                document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+	            } else {
+	                document.getElementById("sample4_extraAddress").value = '';
+	            }
+	
+	            var guideTextBox = document.getElementById("guide");
+	            // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+	            if(data.autoRoadAddress) {
+	                var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+	                guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+	                guideTextBox.style.display = 'block';
+	
+	            } else if(data.autoJibunAddress) {
+	                var expJibunAddr = data.autoJibunAddress;
+	                guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+	                guideTextBox.style.display = 'block';
+	            } else {
+	                guideTextBox.innerHTML = '';
+	                guideTextBox.style.display = 'none';
+	            }
+	        }
+	    }).open();
+	}
+</script>
+</body>
+</html>

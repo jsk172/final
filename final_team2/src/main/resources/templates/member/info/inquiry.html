@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>문의상담</title>
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
+<script src="https://kit.fontawesome.com/630c352365.js" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" th:href="@{/css/member/info/inquiry.css}">
+</head>
+<body>
+	<div th:replace="~{header::header-fragment}"></div>
+	
+	 <div id="container">
+        <section id="mid">
+            <h3>회원정보</h3>
+            <div class="board-menu">
+                <div class="board">
+                    <div><a href="#" class="menu-link">회원정보 수정</a><div></div></div>
+                    <div><a href="#" class="menu-link ">비밀번호 변경</a><div></div></div>
+                    <div><a th:href="@{/member/inquiry}" class="menu-link checked">문의상담</a><div id="circle"></div></div>
+                    <div><a href="#" class="menu-link">회원탈퇴</a><div></div></div>
+                </div>
+            </div>
+
+            <div class="inquiry_list">
+                <div class="inquiry_title">
+                	<th:block class="login" sec:authorize="hasAuthority('MEMBER')">
+	                    <p class="inquiry_title_detail1">나의 지원 리스트</p>
+	                    <p class="inquiry_title_detail2">내가 지원한 병원에 실시간 문의 후 답변 받아보세요</p>
+                    </th:block>
+                    <th:block class="login" sec:authorize="hasAuthority('COMPANY')">
+                    	<p class="inquiry_title_detail1">지원자 리스트</p>
+	                    <p class="inquiry_title_detail2">지원자들의 문의에 답변하며 우리 기업의 문을 열어보세요</p>
+                    
+                </div>
+                <div class="G_hospital_list">
+                	<th:block class="login" sec:authorize="hasAuthority('MEMBER')">
+	                    <div class="hospital_list1" th:each="apply : ${applyList}">
+	                    	<h2><b><span th:text="${apply.company.cname}"></span></b>&nbsp;&nbsp;-&nbsp;&nbsp;
+	                        	<span th:text="${apply.job.title}"></span></h2>
+	                        <button class="button">
+	                            <span class="button-content" onclick="window.open('/chat', 'popup', 'width=500,height=700'); return false;"><a th:href="@{/chat}">실시간 문의하기</a></span>
+	                        </button> 
+	                    </div>
+                    </th:block>
+                	<th:block class="login" sec:authorize="hasAuthority('COMPANY')">
+	                    <div class="hospital_list1" th:each="apply : ${applyList}">
+                        	<h2><b><span th:text="${apply.member.mname}"></span></b>&nbsp;&nbsp;-&nbsp;&nbsp;
+	                        	<span th:text="${apply.resume.title}"></span></h2>
+	                        <button class="button">
+	                            <span class="button-content" onclick="window.open('/chat', 'popup', 'width=500,height=700'); return false;"><a th:href="@{/chat}">실시간 문의하기</a></span>
+	                        </button> 
+	                    </div>
+                    </th:block>
+                </div>
+                
+                <!-- 페이지 -->
+                <div id="page">
+					<!-- 페이지 영역 -->
+					<div id="pagination">
+						<!-- 이전 페이지 -->
+						<!-- 2page 클릭하면 db 페이지는 1page -->
+						<a th:href="${applyList.first}? '#' : 
+							@{/member/inquiry(page=${applyList.number})}"><img th:src="@{/images/job/page_prev.svg}" alt="prev"></a>
+						<!-- 페이지 번호 블럭 -->
+						<span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+						 <!-- 현재 페이지는 링크없이 숫자만 표시 -->
+						    <span th:if="${page == applyList.number + 1}"  
+						    	th:text="${page}" class="current_page"></span>
+						    <span th:if="${page != applyList.number + 1}">
+						    	<a th:href="@{/member/inquiry(page=${page})}" th:text="${page}"></a>
+						    </span>
+						</span>
+						<!-- 다음 페이지 -->
+						<!-- 현재 2page -> 3page  실제페이지는 1page-->
+						<a th:href="${applyList.last} ? '#' : 
+								@{/member/inquiry(page=${applyList.number+2})}"><img th:src="@{/images/job/page_next.svg}" alt="map"></a>
+					</div>
+				</div>
+                
+            </div>
+        </section>
+    </div>
+	
+	<div th:replace="~{footer::footer-fragment}"></div>
+        <script>
+			function openPopup(url, width, height) {
+		    var screenWidth = window.screen.width;
+		    var screenHeight = window.screen.height;
+		    var leftPosition = screenWidth - width;
+		    var topPosition = screenHeight - height;
+		    window.open(url, 'popup', 'width=' + width + ', height=' + height + ', left=' + leftPosition + ', top=' + topPosition);
+			}
+		</script>
+</body>
+</html>

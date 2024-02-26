@@ -1,0 +1,227 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'Pretendard-Medium';
+    src: url(Pretendard-Medium.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url(Pretendard-Regular.woff)format('woff');
+}
+@font-face {
+    font-family: 'Pretendard-SemiBold';
+    src: url(Pretendard-SemiBold.woff)format('woff');
+}
+
+/* 공통 스타일 */
+*{margin: 0; padding: 0; font-family: 'Pretendard-Medium';}
+#container{width: 100%;}
+ul li{list-style: none;}
+a{text-decoration: none;}
+input{outline-color: #4e66ffc9;}
+
+#mypage_mem{
+	width: 70%;
+    margin: 0 auto;
+    padding-bottom: 150px;
+}
+#mypage_mem h2{
+	margin: 8% 0 5% 0;
+    font-size: 30px;
+    font-weight: 600;
+}
+#mypage_mem a {
+	color: black;
+    font-family: 'Pretendard-SemiBold';
+}
+#first_row{
+	display: flex;
+	justify-content: space-between;
+}
+#first_row > div{
+	width: 32.5%;
+    height: 320px;
+    border: 2px #D9E5F2 solid;
+    position: relative;
+    border-radius: 5px;
+}
+
+#second_row{
+	margin-top: 15px; 
+	display: flex;
+	justify-content: space-between;
+}
+#second_row div{
+	width: 32.5%;
+    height: 320px;
+    border: 2px #D9E5F2 solid;
+    position: relative;
+    border-radius: 5px;
+}
+#mypage_mem h3{
+	font-size: 20px;
+    color: #234379;
+    height: 45px;
+    background: #F0F0F0;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 44px;
+    margin: 30px 35px;
+}
+#profilebox p {
+	font-family: 'Pretendard-Medium';
+    font-size: 23px;
+    font-weight: 600;
+    text-decoration: underline;
+    position: absolute;
+    top: 30px;
+    left: 35px;
+}
+#mypage_mem ul li{
+	font-size: 19px;
+    font-family: 'Pretendard-SemiBold';
+    margin: 0 0 5px 10%;
+    list-style: inside;
+}
+#mypage_mem ul li::marker {
+	color: #0664C7;
+}
+#mypage_mem ul li span{
+	font-size: 27px;
+	color: #0664C7;
+}
+#profilebox button{
+	font-size: 16px;
+    color: #fff;
+    width: 95px;
+    height: 35px;
+    background: linear-gradient(to right, #4E66FF, #1A8DFF);
+    border-radius: 20px;
+    border: none;
+    position: absolute;
+    top: 75px;
+    right: 20px;
+    font-family: 'Pretendard-SemiBold';
+    cursor: pointer;
+}
+
+#profilebox img{
+	position: absolute;
+    bottom: 25px;
+    left: 29px;
+    border-radius: 5px;
+    width: 165px;
+    height: 165px;
+    border: 1.5px solid #D9E5F2;
+}
+#resumebox button{
+	font-family: 'Pretendard-SemiBold';
+    font-size: 16px;
+    color: #fff;
+    width: 55%;
+    height: 40px;
+    background: #FF5500;
+    border-radius: 10px;
+    border: none;
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+}
+
+#jopappbox{
+	width: 455px;
+	height: 365px;
+	border: 1px solid #ccc;
+}
+
+#emptybox{
+	width: 455px;
+	height: 365px;
+	border: 1px solid #ccc;
+}
+
+#announbox{
+	width: 455px;
+	height: 365px;
+	border: 1px solid #ccc;
+}
+
+#detailbox{
+	width: 455px;
+	height: 365px;
+	border: 1px solid #ccc;
+}
+
+#detailbox ul li{
+	margin: 0 0 12px 10%;
+}
+
+
+/* 프로필 수정 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+  background-color: #fff;
+  margin: 20% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  max-width: 410px; /* 최대 너비 지정 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  position: relative;
+}
+.close {
+  	position: absolute;
+    left: 362px;
+    top: 15px;
+    cursor: pointer;
+}
+.close i {
+	font-size: 25px;
+    color: #5a5a5a;
+}
+#profile_pic > div{
+	display: flex;
+    justify-content: center;
+}
+
+#profile_pic > div > button {
+	font-family: 'Pretendard-SemiBold';
+    font-size: 16px;
+    color: #fff;
+    width: 17%;
+    height: 40px;
+    background: #FF5500;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 7px 0 7px;
+    cursor: pointer;
+    border: none;
+}
+#profile_pic p {
+	font-size: 15px;
+}
+#profile_pic p:nth-of-type(1){
+	margin-top: 20px;
+    margin-bottom: 6px
+}
+#profile_pic p:nth-of-type(2){
+	margin-top: 6px;
+    margin-bottom: 25px;
+}
+#profile_pic input {
+	padding: 10px 0 10px 5px;
+    width: 100%;
+    border-top: 1.5px solid #ccc;
+    border-bottom: 1.5px solid #ccc;
+}
