@@ -1,8 +1,6 @@
 package com.example.mini.service;
 
 import com.example.mini.dto.NaverDTO;
-import org.apache.tomcat.util.json.JSONParser;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.json.JSONObject;
 
 @Service
 public class NaverService {
@@ -62,8 +61,7 @@ public class NaverService {
                     String.class
             );
 
-            JSONParser jsonParser = new JSONParser(response.getBody());
-            JSONObject jsonObj = (JSONObject) jsonParser.parse();
+            JSONObject jsonObj = new JSONObject(response.getBody());
 
             accessToken  = (String) jsonObj.get("access_token");
             refreshToken = (String) jsonObj.get("refresh_token");
@@ -91,13 +89,12 @@ public class NaverService {
         );
 
         //Response 데이터 파싱
-        JSONParser jsonParser = new JSONParser(response.getBody());
-        JSONObject jsonObj = (JSONObject) jsonParser.parse();
-        JSONObject account = (JSONObject) jsonObj.get("response");
+        JSONObject jsonObj = new JSONObject(response.getBody());
+        JSONObject account = jsonObj.getJSONObject("response");
 
-        String id = String.valueOf(account.get("id"));
-        String email = String.valueOf(account.get("email"));
-        String name = String.valueOf(account.get("name"));
+        String id = account.getString("id");
+        String email = account.getString("email");
+        String name = account.getString("name");
 
         return NaverDTO.builder()
                 .id(id)
