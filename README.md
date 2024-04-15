@@ -17,5 +17,10 @@
 
 
 
-🗺️ 프로젝트 아키텍처
+![image](https://github.com/jsk172/final/assets/130655306/ae5ce34b-8e18-4906-b6a8-48653c48fb63)
+
 ![image](https://github.com/jsk172/final/assets/130655306/d1925a4b-6721-4adf-b0e0-f77c673951b8)
+![image](https://github.com/jsk172/final/assets/130655306/0ae2c4b4-f112-47f8-86f5-e3df1206c559)
+![image](https://github.com/jsk172/final/assets/130655306/3f241dfb-381a-424c-9402-5ea57d33efb1)
+![image](https://github.com/jsk172/final/assets/130655306/345c6177-bd6c-41a8-a737-cab7ba44bd76)
+![image](https://github.com/jsk172/final/assets/130655306/232a11d2-512b-49eb-bf35-4b06eb59f92a)
