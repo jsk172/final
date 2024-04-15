@@ -1,24 +1,20 @@
-📋 선유책숲 프로젝트
-![image](https://github.com/jsk172/final/assets/130655306/c264ca6f-8684-47ca-9c88-9d70828df5a9)
-
-📅 개발 기간
-
-![image](https://github.com/jsk172/final/assets/130655306/71c00254-a802-4fdb-bac9-c1996ff4c70d)
-
-🛠️ 개발 환경
-![image](https://github.com/jsk172/final/assets/130655306/c88cf0e4-a9b7-4bb1-a72a-3988e15a6f1f)
+![image](https://github.com/jsk172/final/assets/130655306/75f765f6-d245-49a8-b88c-0e5f9c9a62dd)
 
 
-✔️ 주요 기능
-![image](https://github.com/jsk172/final/assets/130655306/3df563e0-5161-4768-8392-0f060876254e)
+![image](https://github.com/jsk172/final/assets/130655306/469d3a44-cbaf-48a4-933b-3e3b6e6e9e58)
 
 
-👬프로젝트 참여자
-![image](https://github.com/jsk172/final/assets/130655306/618e54a1-2257-4f38-b762-b16007311018)
+![image](https://github.com/jsk172/final/assets/130655306/62032aec-5b3f-4f56-80c9-b9a16caaa294)
 
 
-👨🏻‍💻 담당 역할
-![image](https://github.com/jsk172/final/assets/130655306/fabe701b-a493-4000-8d1c-ccc530efe464)
+![image](https://github.com/jsk172/final/assets/130655306/a1871ec1-68d0-44dd-95ca-4790b7e61a7b)
+
+
+![image](https://github.com/jsk172/final/assets/130655306/6678849e-b305-4234-afaf-7db711615096)
+
+
+![image](https://github.com/jsk172/final/assets/130655306/d2659d72-2de2-4232-b7de-66ede92cb166)
+
 
 
 🗺️ 프로젝트 아키텍처
